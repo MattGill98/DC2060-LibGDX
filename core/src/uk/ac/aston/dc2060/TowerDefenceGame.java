@@ -1,5 +1,7 @@
 package uk.ac.aston.dc2060;
 
+import uk.ac.aston.dc2060.view.TileTexture;
+import uk.ac.aston.dc2060.model.Tile;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,15 +15,15 @@ public class TowerDefenceGame extends ApplicationAdapter {
 
     private SpriteBatch batch;
     private Texture tileSheet;
-    private GameTileTexture singleTurret;
+    private TileTexture singleTurret;
     private TextureRegion doubleTurret;
 
     @Override
     public void create () {
         batch = new SpriteBatch();
         tileSheet = new Texture("tilesheet.png");
-        singleTurret = new GameTileTexture(tileSheet, TILE_SIZE, GameTile.SINGLE_TURRET);
-        doubleTurret = new GameTileTexture(tileSheet, TILE_SIZE, GameTile.DOUBLE_TURRET);
+        singleTurret = new TileTexture(tileSheet, TILE_SIZE, Tile.SINGLE_TURRET);
+        doubleTurret = new TileTexture(tileSheet, TILE_SIZE, Tile.DOUBLE_TURRET);
     }
 
     @Override
