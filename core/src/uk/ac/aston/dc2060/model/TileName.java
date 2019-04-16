@@ -1,6 +1,6 @@
 package uk.ac.aston.dc2060.model;
 
-public enum Tile {
+public enum TileName {
 
     SINGLE_TURRET(10, 19),
     DOUBLE_TURRET(10, 20);
@@ -8,7 +8,7 @@ public enum Tile {
     private final int row;
     private final int column;
     
-    private Tile(int row, int column) {
+    private TileName(int row, int column) {
         this.row = row;
         this.column = column;
     }
@@ -20,7 +20,5 @@ public enum Tile {
     public int getColumn() {
         return column;
     }
-    
-    
     
 }

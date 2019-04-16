@@ -1,29 +1,34 @@
 package uk.ac.aston.dc2060;
 
-import uk.ac.aston.dc2060.view.TileTexture;
-import uk.ac.aston.dc2060.model.Tile;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class TowerDefenceGame extends ApplicationAdapter {
 
-    private static final int TILE_SIZE = 64;
-
+    // Sprite components
     private SpriteBatch batch;
-    private Texture tileSheet;
-    private TileTexture singleTurret;
-    private TextureRegion doubleTurret;
+    
+    // Map components
+    private OrthographicCamera mapCamera;
+    private MapRenderer mapRenderer;
+    private TiledMap map;
 
     @Override
     public void create () {
         batch = new SpriteBatch();
-        tileSheet = new Texture("tilesheet.png");
-        singleTurret = new TileTexture(tileSheet, TILE_SIZE, Tile.SINGLE_TURRET);
-        doubleTurret = new TileTexture(tileSheet, TILE_SIZE, Tile.DOUBLE_TURRET);
+        map = new TmxMapLoader().load("tilemap.tmx");
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 50 / 64f);
+        mapCamera = new OrthographicCamera(800, 600);
+        mapCamera.setToOrtho(false);
     }
 
     @Override
@@ -31,14 +36,14 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(singleTurret, 100, 100);
-        batch.draw(doubleTurret, 300, 200);
+        mapCamera.update();
+        mapRenderer.render();
         batch.end();
     }
 
     @Override
     public void dispose () {
         batch.dispose();
-        tileSheet.dispose();
+        map.dispose();
     }
 }
