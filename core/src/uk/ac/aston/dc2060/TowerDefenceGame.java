@@ -5,18 +5,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class TowerDefenceGame extends ApplicationAdapter {
 
+    private static final int TILE_SIZE = 64;
+
     private SpriteBatch batch;
-    private Texture tower;
-    private Texture tile;
+    private Texture tileSheet;
+    private GameTileTexture singleTurret;
+    private TextureRegion doubleTurret;
 
     @Override
     public void create () {
         batch = new SpriteBatch();
-        tower = new Texture("test-tower.png");
-        tile = new Texture("grass-tile.png");
+        tileSheet = new Texture("tilesheet.png");
+        singleTurret = new GameTileTexture(tileSheet, TILE_SIZE, GameTile.SINGLE_TURRET);
+        doubleTurret = new GameTileTexture(tileSheet, TILE_SIZE, GameTile.DOUBLE_TURRET);
     }
 
     @Override
@@ -24,15 +29,14 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(tower, 100, 100);
-        batch.draw(tile, 300, 200);
+        batch.draw(singleTurret, 100, 100);
+        batch.draw(doubleTurret, 300, 200);
         batch.end();
     }
 
     @Override
     public void dispose () {
         batch.dispose();
-        tower.dispose();
-        tile.dispose();
+        tileSheet.dispose();
     }
 }
