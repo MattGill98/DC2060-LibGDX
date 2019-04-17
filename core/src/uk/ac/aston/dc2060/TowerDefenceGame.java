@@ -12,6 +12,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class TowerDefenceGame extends ApplicationAdapter {
 
+    private static final int TILE_WIDTH = 50;
+
     // Map components
     private MapRenderer mapRenderer;
     private TiledMap map;
@@ -23,7 +25,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
     public void create () {
         // Configure Map rendering
         map = new TmxMapLoader().load("tilemap.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map, 50 / 64f);
+        mapRenderer = new OrthogonalTiledMapRenderer(map, TILE_WIDTH / (float) (Integer) map.getProperties().get("tilewidth"));
         OrthographicCamera mapCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         mapCamera.setToOrtho(true);
         mapCamera.update();
