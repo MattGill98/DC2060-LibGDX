@@ -46,7 +46,7 @@ public class TiledRenderer extends ApplicationAdapter {
         }
         if (spriteRenderer != null) {
             spriteRenderer.begin();
-            sprites.forEach(sprite -> spriteRenderer.draw(tiledMap.getTileSets().getTile(sprite.getTileID().getID()).getTextureRegion(), sprite.getActor().getX() * tileSize, sprite.getActor().getY() * tileSize));
+            sprites.forEach(sprite -> spriteRenderer.draw(tiledMap.getTileSets().getTile(sprite.getTileID().getID()).getTextureRegion(), sprite.getActor().getX() * tileSize, sprite.getActor().getY() * tileSize, tileSize, tileSize));
             spriteRenderer.end();
         }
     }

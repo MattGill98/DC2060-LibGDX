@@ -12,7 +12,7 @@ public class CustomTiledMapRenderer extends OrthogonalTiledMapRenderer {
 
         // Configure camera
         OrthographicCamera mapCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        mapCamera.setToOrtho(true);
+        mapCamera.setToOrtho(false);
         mapCamera.update();
         setView(mapCamera);
     }
