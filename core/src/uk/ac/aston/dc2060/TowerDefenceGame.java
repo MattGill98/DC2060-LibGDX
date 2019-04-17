@@ -3,36 +3,34 @@ package uk.ac.aston.dc2060;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import uk.ac.aston.dc2060.model.TileID;
+import uk.ac.aston.dc2060.model.TileMap;
+import uk.ac.aston.dc2060.view.TileMapView;
 
 public class TowerDefenceGame extends ApplicationAdapter {
 
-    private static final int TILE_WIDTH = 50;
+    private static final int TILE_SIZE = 50;
 
-    // Map components
-    private MapRenderer mapRenderer;
-    private TiledMap map;
+    // Map component
+    private TileMapView map;
 
     // Sprite components
     private SpriteBatch batch;
+    private TextureRegion singleTurret;
+    private TextureRegion doubleTurret;
 
     @Override
     public void create () {
         // Configure Map rendering
-        map = new TmxMapLoader().load("tilemap.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map, TILE_WIDTH / (float) (Integer) map.getProperties().get("tilewidth"));
-        OrthographicCamera mapCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        mapCamera.setToOrtho(true);
-        mapCamera.update();
-        mapRenderer.setView(mapCamera);
+        TileMap mapModel = new TileMap("tilemap.tmx");
+        this.map = new TileMapView(mapModel, TILE_SIZE);
 
         // Configure sprite rendering
-        batch = new SpriteBatch();
+        this.batch = new SpriteBatch();
+        this.singleTurret = mapModel.getSprite(TileID.SINGLE_TURRET);
+        this.doubleTurret = mapModel.getSprite(TileID.DOUBLE_TURRET);
     }
 
     @Override
@@ -41,10 +39,12 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Render map
-        mapRenderer.render();
+        map.render();
 
         // Render everything else
         batch.begin();
+        batch.draw(singleTurret, TILE_SIZE * 2, TILE_SIZE * 2);
+        batch.draw(doubleTurret, TILE_SIZE * 3, TILE_SIZE * 3);
         batch.end();
     }
 
