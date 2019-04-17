@@ -12,6 +12,13 @@ public class Sprite {
         this.actor = new Actor();
     }
 
+    public Sprite(TileID tileID, int x, int y) {
+        this.tileID = tileID;
+        this.actor = new Actor();
+        this.actor.setX(x);
+        this.actor.setY(y);
+    }
+
     public Actor getActor() {
         return actor;
     }

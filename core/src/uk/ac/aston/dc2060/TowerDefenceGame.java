@@ -27,14 +27,8 @@ public class TowerDefenceGame extends ApplicationAdapter {
         this.renderer.setSpriteRenderer(new SpriteBatch());
 
         // Configure sprite rendering
-        Sprite singleTurret = new Sprite(TileID.SINGLE_TURRET);
-        singleTurret.getActor().setX(1);
-        singleTurret.getActor().setY(1);
-        renderer.addSprite(singleTurret);
-        Sprite doubleTurret = new Sprite(TileID.DOUBLE_TURRET);
-        doubleTurret.getActor().setX(3);
-        doubleTurret.getActor().setY(3);
-        renderer.addSprite(doubleTurret);
+        renderer.addSprite(new Sprite(TileID.SINGLE_TURRET, 1, 2));
+        renderer.addSprite(new Sprite(TileID.DOUBLE_TURRET, 3, 3));
     }
 
     @Override
