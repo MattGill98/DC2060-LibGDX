@@ -4,6 +4,7 @@
 
 From the project root, run the following command:
 
-~~~
+
+```bash
 ./gradlew run
-~~~
+```
