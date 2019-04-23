@@ -1,4 +1,4 @@
-package uk.ac.aston.dc2060.view;
+package uk.ac.aston.dc2060.model;
 
 public enum TileID {
     SINGLE_TURRET(249), DOUBLE_TURRET(250);
