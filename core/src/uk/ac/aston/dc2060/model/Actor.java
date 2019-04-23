@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 
 public class Actor {
-    private final TextureRegion textureRegion;
-    private int x;
-    private int y;
+    protected final TextureRegion textureRegion;
+    protected int x;
+    protected int y;
 
     public Actor(TextureRegion textureRegion, int x, int y) {
         this.textureRegion = textureRegion;
@@ -36,5 +36,9 @@ public class Actor {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Actor clone() {
+        return new Actor(textureRegion, x, y);
     }
 }
