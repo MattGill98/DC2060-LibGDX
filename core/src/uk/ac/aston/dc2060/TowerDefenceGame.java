@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import uk.ac.aston.dc2060.controller.EnemyController;
+import uk.ac.aston.dc2060.controller.LogicController;
 import uk.ac.aston.dc2060.model.Actor;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.view.MapView;
@@ -36,7 +37,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Game logic
-        enemyController.poll(Gdx.graphics.getDeltaTime());
+        LogicController.pollControllers(Gdx.graphics.getDeltaTime());
 
         // Render loop
         mapView.begin();

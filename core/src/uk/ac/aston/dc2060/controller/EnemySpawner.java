@@ -9,6 +9,8 @@ public class EnemySpawner extends LogicController {
     private final Collection<Enemy> enemies;
     private final Enemy blueprint;
 
+    private boolean alternate;
+
     public EnemySpawner(Collection<Enemy> enemies, Enemy blueprint) {
         super(1000);
         this.enemies = enemies;
@@ -17,6 +19,8 @@ public class EnemySpawner extends LogicController {
 
     @Override
     protected void update() {
-        enemies.add(blueprint.clone());
+        if (alternate = !alternate) {
+            enemies.add(blueprint.clone());
+        }
     }
 }
