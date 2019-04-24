@@ -1,6 +1,5 @@
 package uk.ac.aston.dc2060.view;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -35,6 +34,10 @@ public class MapView {
     public void begin() {
         renderer.render();
         spriteBatch.begin();
+    }
+
+    public void render(Iterable<? extends Actor> actors) {
+        actors.forEach(this::render);
     }
 
     public void render(Actor actor) {
