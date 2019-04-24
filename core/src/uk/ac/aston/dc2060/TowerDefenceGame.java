@@ -9,11 +9,14 @@ import uk.ac.aston.dc2060.controller.EnemyController;
 import uk.ac.aston.dc2060.controller.LogicController;
 import uk.ac.aston.dc2060.model.Actor;
 import uk.ac.aston.dc2060.model.TileID;
+import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.MapView;
 
 public class TowerDefenceGame extends ApplicationAdapter {
 
-    private TiledMap mapModel;
+    private float tileSize;
+
+    private GridView gridView;
     private MapView mapView;
 
     private Actor singleTurret;
@@ -21,14 +24,22 @@ public class TowerDefenceGame extends ApplicationAdapter {
 
     @Override
     public void create () {
-        // Configure Map rendering
-        this.mapModel = new TmxMapLoader().load("tilemap.tmx");
-        this.mapView = new MapView(mapModel,0, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
+        // Configure tile size
+        this.tileSize = Gdx.graphics.getWidth() / 17f;
 
-        singleTurret = new Actor(mapModel.getTileSets(), TileID.SINGLE_TURRET, 1, 2);
+        // Configure Grid rendering
+        this.gridView = new GridView(tileSize);
+        gridView.setEnabled(true);
+
+        // Configure Map rendering
+        TiledMap map = new TmxMapLoader().load("tilemap.tmx");
+        this.mapView = new MapView(map, 0, 0, tileSize);
+
+        singleTurret = new Actor(map.getTileSets(), TileID.SINGLE_TURRET, 1, 2);
 
         // Configure enemy spawning
-        enemyController = new EnemyController(mapModel.getTileSets());
+        enemyController = new EnemyController(map.getTileSets());
+        LogicController.registerController(enemyController);
     }
 
     @Override
@@ -44,6 +55,9 @@ public class TowerDefenceGame extends ApplicationAdapter {
         mapView.render(singleTurret);
         mapView.render(enemyController.getEnemies());
         mapView.end();
+
+        // Render grid
+        gridView.render();
     }
 
     @Override

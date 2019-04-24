@@ -7,25 +7,28 @@ public abstract class LogicController {
 
     private static final Set<LogicController> CONTROLLERS = new HashSet<>();
 
-    protected final float deltaLimit;
-    protected float currentDelta;
+    private final float deltaLimit;
+    private float currentDelta;
 
-    public LogicController(int deltaMs) {
+    LogicController(int deltaMs) {
         this.deltaLimit = deltaMs / 1000f;
-        CONTROLLERS.add(this);
     }
 
-    protected abstract void update();
-
-    public static void pollControllers(float delta) {
-        CONTROLLERS.forEach(controller -> controller.poll(delta));
-    }
-
-    public void poll(float delta) {
+    private void poll(float delta) {
         currentDelta += delta;
         if (currentDelta > deltaLimit) {
             currentDelta = 0;
             update();
         }
+    }
+
+    protected abstract void update();
+
+    public static void registerController(LogicController controller) {
+        CONTROLLERS.add(controller);
+    }
+
+    public static void pollControllers(float delta) {
+        CONTROLLERS.forEach(controller -> controller.poll(delta));
     }
 }

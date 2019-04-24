@@ -8,27 +8,28 @@ import uk.ac.aston.dc2060.model.Actor;
 
 public class MapView {
 
-    private final int mapX;
-    private final int mapY;
-    private final int tileWidth;
-    private final int tileHeight;
+    private final float mapX;
+    private final float mapY;
+    private final float tileSize;
 
     private final SpriteBatch spriteBatch;
     private final OrthogonalTiledMapRenderer renderer;
 
-    public MapView(TiledMap map, int x, int y, int mapHeight, int mapWidth) {
+    public MapView(TiledMap map, int x, int y, float tileSize) {
         this.mapX = x;
         this.mapY = y;
+        this.tileSize = tileSize;
+
+        // Configure renderers
         this.spriteBatch = new SpriteBatch();
-        this.tileWidth = mapWidth / (Integer) map.getProperties().get("width");
-        this.tileHeight = mapHeight / (Integer) map.getProperties().get("height");
-        this.renderer = new OrthogonalTiledMapRenderer(map, tileWidth / (float) (int) (Integer) map.getProperties().get("tilewidth"));
+        this.renderer = new OrthogonalTiledMapRenderer(map, tileSize / (float) (Integer) map.getProperties().get("tileheight"));
+
         // Configure camera
-        OrthographicCamera camera = new OrthographicCamera(tileWidth, tileHeight);
+        OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false);
         camera.translate(-x, -y);
         camera.update();
-        this.renderer.setView(camera);
+        renderer.setView(camera);
     }
 
     public void begin() {
@@ -41,7 +42,7 @@ public class MapView {
     }
 
     public void render(Actor actor) {
-        spriteBatch.draw(actor.getTextureRegion(), mapX + (actor.getX() * tileWidth), mapY + (actor.getY() * tileHeight), tileWidth, tileHeight);
+        spriteBatch.draw(actor.getTextureRegion(), mapX + (actor.getX() * tileSize), mapY + (actor.getY() * tileSize), tileSize, tileSize);
     }
 
     public void end() {
