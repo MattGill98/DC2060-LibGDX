@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EnemyController extends LogicController {
+public class EnemyController implements PolledController {
 
     private static GridPoint2[] ROUTE = {
             new GridPoint2(-1, 10),
@@ -83,11 +83,10 @@ public class EnemyController extends LogicController {
 
     private List<Enemy> enemies;
 
-    public EnemyController(TiledMapTileSets tileSet) {
-        super(1000);
+    public EnemyController(TiledMapTileSets tileSet, UpdateLoop loop) {
         this.enemies = new LinkedList<>();
         EnemySpawner spawner = new EnemySpawner(enemies, new Enemy(tileSet, TileID.SOLDIER, Arrays.asList(ROUTE)));
-        LogicController.registerController(spawner);
+        loop.register(spawner);
     }
 
     public Collection<Enemy> getEnemies() {
@@ -95,7 +94,12 @@ public class EnemyController extends LogicController {
     }
 
     @Override
-    protected void update() {
+    public void update() {
         enemies.removeIf(enemy -> !enemy.move());
+    }
+
+    @Override
+    public int getUpdateFrequencyMs() {
+        return 1000;
     }
 }

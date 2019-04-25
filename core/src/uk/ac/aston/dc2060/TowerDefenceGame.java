@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import uk.ac.aston.dc2060.controller.EnemyController;
-import uk.ac.aston.dc2060.controller.LogicController;
+import uk.ac.aston.dc2060.controller.UpdateLoop;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.GuiView;
@@ -17,6 +17,8 @@ public class TowerDefenceGame extends ApplicationAdapter {
     private GridView gridView;
     private MapView mapView;
     private GuiView guiView;
+
+    private UpdateLoop loop;
 
     private EnemyController enemyController;
 
@@ -36,9 +38,12 @@ public class TowerDefenceGame extends ApplicationAdapter {
         guiView.addTowerTile(map.getTileSets(), TileID.SINGLE_TURRET);
         guiView.addTowerTile(map.getTileSets(), TileID.DOUBLE_TURRET);
 
+        // Configure update loop
+        loop = new UpdateLoop();
+
         // Configure enemy spawning
-        enemyController = new EnemyController(map.getTileSets());
-        LogicController.registerController(enemyController);
+        enemyController = new EnemyController(map.getTileSets(), loop);
+        loop.register(enemyController);
     }
 
     @Override
@@ -47,7 +52,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Game logic
-        LogicController.pollControllers(Gdx.graphics.getDeltaTime());
+        loop.update(Gdx.graphics.getDeltaTime());
 
         // Render map
         mapView.begin();
