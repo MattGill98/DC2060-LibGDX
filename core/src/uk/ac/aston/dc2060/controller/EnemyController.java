@@ -13,6 +13,7 @@ import java.util.List;
 public class EnemyController extends LogicController {
 
     private static GridPoint2[] ROUTE = {
+            new GridPoint2(-1, 10),
             new GridPoint2(0, 10),
             new GridPoint2(1, 10),
             new GridPoint2(2, 10),
@@ -58,7 +59,6 @@ public class EnemyController extends LogicController {
             new GridPoint2(10, 4),
             new GridPoint2(11, 4),
             new GridPoint2(12, 4),
-            new GridPoint2(12, 4),
             new GridPoint2(13, 4),
             new GridPoint2(14, 4),
             new GridPoint2(14, 3),
@@ -78,6 +78,7 @@ public class EnemyController extends LogicController {
             new GridPoint2(2, 1),
             new GridPoint2(1, 1),
             new GridPoint2(0, 1),
+            new GridPoint2(-1, 1)
     };
 
     private List<Enemy> enemies;
@@ -85,7 +86,8 @@ public class EnemyController extends LogicController {
     public EnemyController(TiledMapTileSets tileSet) {
         super(1000);
         this.enemies = new LinkedList<>();
-        new EnemySpawner(enemies, new Enemy(tileSet, TileID.SOLDIER, Arrays.asList(ROUTE)));
+        EnemySpawner spawner = new EnemySpawner(enemies, new Enemy(tileSet, TileID.SOLDIER, Arrays.asList(ROUTE)));
+        LogicController.registerController(spawner);
     }
 
     public Collection<Enemy> getEnemies() {

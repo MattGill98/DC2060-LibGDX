@@ -7,28 +7,38 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import uk.ac.aston.dc2060.controller.EnemyController;
 import uk.ac.aston.dc2060.controller.LogicController;
-import uk.ac.aston.dc2060.model.Actor;
 import uk.ac.aston.dc2060.model.TileID;
+import uk.ac.aston.dc2060.view.GridView;
+import uk.ac.aston.dc2060.view.GuiView;
 import uk.ac.aston.dc2060.view.MapView;
 
 public class TowerDefenceGame extends ApplicationAdapter {
 
-    private TiledMap mapModel;
+    private GridView gridView;
     private MapView mapView;
+    private GuiView guiView;
 
-    private Actor singleTurret;
     private EnemyController enemyController;
 
     @Override
     public void create () {
-        // Configure Map rendering
-        this.mapModel = new TmxMapLoader().load("tilemap.tmx");
-        this.mapView = new MapView(mapModel,0, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
+        // Load tilemap
+        TiledMap map = new TmxMapLoader().load("tilemap.tmx");
 
-        singleTurret = new Actor(mapModel.getTileSets(), TileID.SINGLE_TURRET, 1, 2);
+        // Calculate UI dimensions
+        float mapSize = Gdx.graphics.getWidth() - (float) (Integer) map.getProperties().get("tilewidth");
+        float tileSize = mapSize / (float) (Integer) map.getProperties().get("width");
+
+        // Configure rendering
+        this.gridView = new GridView(tileSize);
+        this.mapView = new MapView(map, 0, 0, tileSize);
+        this.guiView = new GuiView(tileSize, mapSize);
+        guiView.addTowerTile(map.getTileSets(), TileID.SINGLE_TURRET);
+        guiView.addTowerTile(map.getTileSets(), TileID.DOUBLE_TURRET);
 
         // Configure enemy spawning
-        enemyController = new EnemyController(mapModel.getTileSets());
+        enemyController = new EnemyController(map.getTileSets());
+        LogicController.registerController(enemyController);
     }
 
     @Override
@@ -39,11 +49,16 @@ public class TowerDefenceGame extends ApplicationAdapter {
         // Game logic
         LogicController.pollControllers(Gdx.graphics.getDeltaTime());
 
-        // Render loop
+        // Render map
         mapView.begin();
-        mapView.render(singleTurret);
         mapView.render(enemyController.getEnemies());
         mapView.end();
+
+        // Render gui
+        guiView.render();
+
+        // Render grid
+        gridView.render();
     }
 
     @Override
