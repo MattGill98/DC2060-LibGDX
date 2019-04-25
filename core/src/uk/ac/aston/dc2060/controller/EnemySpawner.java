@@ -9,7 +9,7 @@ public class EnemySpawner extends LogicController {
     private final Collection<Enemy> enemies;
     private final Enemy blueprint;
 
-    private boolean alternate;
+    private int counter;
 
     public EnemySpawner(Collection<Enemy> enemies, Enemy blueprint) {
         super(1000);
@@ -19,7 +19,7 @@ public class EnemySpawner extends LogicController {
 
     @Override
     protected void update() {
-        if (alternate = !alternate) {
+        if (counter++ % 4 == 0) {
             enemies.add(blueprint.clone());
         }
     }
