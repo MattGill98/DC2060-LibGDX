@@ -59,7 +59,6 @@ public class EnemyController extends LogicController {
             new GridPoint2(10, 4),
             new GridPoint2(11, 4),
             new GridPoint2(12, 4),
-            new GridPoint2(12, 4),
             new GridPoint2(13, 4),
             new GridPoint2(14, 4),
             new GridPoint2(14, 3),
