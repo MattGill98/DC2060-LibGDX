@@ -15,6 +15,7 @@ public class GridView {
     public GridView(float tileSize) {
         this.tileSize = tileSize;
         this.renderer = new ShapeRenderer();
+        this.enabled = true;
     }
 
     public void setEnabled(boolean enabled) {
