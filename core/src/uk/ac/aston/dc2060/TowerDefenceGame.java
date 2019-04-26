@@ -5,7 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import uk.ac.aston.dc2060.controller.EnemyStage;
 import uk.ac.aston.dc2060.controller.GridStage;
 import uk.ac.aston.dc2060.controller.GuiStage;
@@ -44,7 +47,14 @@ public class TowerDefenceGame extends ApplicationAdapter {
 
         // Configure GUI
         this.guiStage = new GuiStage(new GuiViewport(tileSize, mapWidth));
+        Gdx.input.setInputProcessor(guiStage);
         Tower singleTurret = new Tower(map.getTileSets(), TileID.SINGLE_TURRET);
+        singleTurret.addListener(new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                System.out.println("entered");
+            }
+        });
         guiStage.addActor(singleTurret);
         Tower doubleTurret = new Tower(map.getTileSets(), TileID.DOUBLE_TURRET);
         guiStage.addActor(doubleTurret);

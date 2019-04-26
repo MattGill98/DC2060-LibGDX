@@ -26,4 +26,8 @@ public class DrawableActor extends Actor {
         batch.draw(texture, screenCoords.x, screenCoords.y, screenCoords2.x - screenCoords.x, screenCoords2.y - screenCoords.y);
     }
 
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        return super.hit(x, y, touchable);
+    }
 }
