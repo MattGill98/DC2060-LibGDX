@@ -1,18 +1,13 @@
-package uk.ac.aston.dc2060.controller;
+package uk.ac.aston.dc2060.model;
 
-import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.math.GridPoint2;
-import uk.ac.aston.dc2060.model.Enemy;
-import uk.ac.aston.dc2060.model.TileID;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
-public class EnemyController implements PolledController {
+public class EnemyRoute {
 
-    private static GridPoint2[] ROUTE = {
+    public static List<GridPoint2> ROUTE = Arrays.asList(
             new GridPoint2(-1, 10),
             new GridPoint2(0, 10),
             new GridPoint2(1, 10),
@@ -79,27 +74,6 @@ public class EnemyController implements PolledController {
             new GridPoint2(1, 1),
             new GridPoint2(0, 1),
             new GridPoint2(-1, 1)
-    };
+    );
 
-    private List<Enemy> enemies;
-
-    public EnemyController(TiledMapTileSets tileSet, UpdateLoop loop) {
-        this.enemies = new LinkedList<>();
-        EnemySpawner spawner = new EnemySpawner(enemies, new Enemy(tileSet, TileID.SOLDIER, Arrays.asList(ROUTE)));
-        loop.register(spawner);
-    }
-
-    public Collection<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    @Override
-    public void update() {
-        enemies.removeIf(enemy -> !enemy.move());
-    }
-
-    @Override
-    public int getUpdateFrequencyMs() {
-        return 1000;
-    }
 }

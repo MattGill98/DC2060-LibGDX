@@ -37,4 +37,8 @@ public class GridView {
             renderer.end();
         }
     }
+
+    public void dispose() {
+        renderer.dispose();
+    }
 }

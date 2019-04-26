@@ -7,37 +7,37 @@ import com.badlogic.gdx.math.GridPoint2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Enemy extends Actor {
+public class Enemy extends DrawableActor {
 
     private final List<GridPoint2> route;
 
-    public Enemy(TextureRegion textureRegion, List<GridPoint2> route) {
-        super(textureRegion, route.get(0).x, route.get(0).y);
+    private Enemy(TextureRegion texture, List<GridPoint2> route) {
+        super(texture, route.get(0).x, route.get(0).y);
         this.route = new ArrayList<>(route);
     }
 
     public Enemy(TiledMapTileSets tileSet, TileID tileID, List<GridPoint2> route) {
-        super(tileSet, tileID, route.get(0).x, route.get(0).y);
-        this.route = new ArrayList<>(route);
+        this(tileSet.getTile(tileID.getID()).getTextureRegion(), route);
+    }
+
+    public Enemy(Enemy enemy) {
+        this(enemy.texture, enemy.route);
     }
 
     /**
      * Moves the enemy along the route.
-     *
-     * @return true if the enemy has a square to move to,
-     * or false otherwise.
      */
-    public boolean move() {
+    public void move() {
+        if (!isVisible()) {
+            return;
+        }
         if (!route.isEmpty()) {
             GridPoint2 nextPoint = route.remove(0);
             this.setX(nextPoint.x);
             this.setY(nextPoint.y);
-            return true;
+        } else {
+            setVisible(false);
         }
-        return false;
     }
 
-    public Enemy clone() {
-        return new Enemy(textureRegion, route);
-    }
 }

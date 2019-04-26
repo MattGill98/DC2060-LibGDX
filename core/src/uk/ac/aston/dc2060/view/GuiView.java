@@ -37,4 +37,8 @@ public class GuiView {
         batch.end();
     }
 
+    public void dispose() {
+        batch.dispose();
+    }
+
 }

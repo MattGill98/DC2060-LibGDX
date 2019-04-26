@@ -5,22 +5,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import uk.ac.aston.dc2060.controller.EnemyController;
-import uk.ac.aston.dc2060.controller.UpdateLoop;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import uk.ac.aston.dc2060.controller.EnemyStage;
+import uk.ac.aston.dc2060.model.Enemy;
+import uk.ac.aston.dc2060.model.EnemyRoute;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.GuiView;
-import uk.ac.aston.dc2060.view.MapView;
+import uk.ac.aston.dc2060.view.MapViewport;
+import uk.ac.aston.dc2060.view.TerrainView;
 
 public class TowerDefenceGame extends ApplicationAdapter {
 
+    private Stage stage1;
+
     private GridView gridView;
-    private MapView mapView;
+
+    private TerrainView terrainView;
+
     private GuiView guiView;
-
-    private UpdateLoop loop;
-
-    private EnemyController enemyController;
 
     @Override
     public void create () {
@@ -33,17 +36,13 @@ public class TowerDefenceGame extends ApplicationAdapter {
 
         // Configure rendering
         this.gridView = new GridView(tileSize);
-        this.mapView = new MapView(map, 0, 0, tileSize);
+        this.terrainView = new TerrainView(map, tileSize);
         this.guiView = new GuiView(tileSize, mapSize);
         guiView.addTowerTile(map.getTileSets(), TileID.SINGLE_TURRET);
         guiView.addTowerTile(map.getTileSets(), TileID.DOUBLE_TURRET);
 
-        // Configure update loop
-        loop = new UpdateLoop();
-
-        // Configure enemy spawning
-        enemyController = new EnemyController(map.getTileSets(), loop);
-        loop.register(enemyController);
+        // Configure first stage
+        stage1 = new EnemyStage(new MapViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), tileSize), new Enemy(map.getTileSets(), TileID.SOLDIER, EnemyRoute.ROUTE));
     }
 
     @Override
@@ -51,13 +50,12 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Game logic
-        loop.update(Gdx.graphics.getDeltaTime());
-
         // Render map
-        mapView.begin();
-        mapView.render(enemyController.getEnemies());
-        mapView.end();
+        terrainView.render();
+
+        // Run stage
+        stage1.act();
+        stage1.draw();
 
         // Render gui
         guiView.render();
@@ -68,6 +66,9 @@ public class TowerDefenceGame extends ApplicationAdapter {
 
     @Override
     public void dispose () {
-        mapView.dispose();
+        stage1.dispose();
+        gridView.dispose();
+        terrainView.dispose();
+        guiView.dispose();
     }
 }
