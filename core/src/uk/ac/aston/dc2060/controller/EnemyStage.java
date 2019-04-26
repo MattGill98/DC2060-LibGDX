@@ -17,7 +17,7 @@ public class EnemyStage extends PollingStage {
     public EnemyStage(Viewport viewport, Enemy blueprint) {
         super(viewport, 1000);
         this.enemies = new HashSet<>();
-        this.blueprint = new Enemy(blueprint);
+        this.blueprint = blueprint;
     }
 
     @Override
