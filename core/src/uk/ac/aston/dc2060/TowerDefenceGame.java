@@ -13,7 +13,6 @@ import uk.ac.aston.dc2060.model.Enemy;
 import uk.ac.aston.dc2060.model.EnemyRoute;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.model.Tower;
-import uk.ac.aston.dc2060.view.GridViewport;
 import uk.ac.aston.dc2060.view.GuiViewport;
 import uk.ac.aston.dc2060.view.MapViewport;
 import uk.ac.aston.dc2060.view.TerrainView;
@@ -34,17 +33,17 @@ public class TowerDefenceGame extends ApplicationAdapter {
         TiledMap map = new TmxMapLoader().load("tilemap.tmx");
 
         // Calculate UI dimensions
-        float mapSize = Gdx.graphics.getWidth() - (float) (Integer) map.getProperties().get("tilewidth");
-        float tileSize = mapSize / (float) (Integer) map.getProperties().get("width");
+        int mapWidth = Gdx.graphics.getWidth() - (Integer) map.getProperties().get("tilewidth");
+        float tileSize = mapWidth / (float) (Integer) map.getProperties().get("width");
 
         // Configure grid rendering
-        this.gridStage = new GridStage(new GridViewport(), tileSize);
+        this.gridStage = new GridStage(new MapViewport(tileSize), tileSize);
 
         // Configure terrain rendering
-        this.terrainView = new TerrainView(map, tileSize);
+        this.terrainView = new TerrainView(map, mapWidth);
 
         // Configure GUI
-        this.guiStage = new GuiStage(new GuiViewport(tileSize, mapSize));
+        this.guiStage = new GuiStage(new GuiViewport(tileSize, mapWidth));
         Tower singleTurret = new Tower(map.getTileSets(), TileID.SINGLE_TURRET);
         guiStage.addActor(singleTurret);
         Tower doubleTurret = new Tower(map.getTileSets(), TileID.DOUBLE_TURRET);
