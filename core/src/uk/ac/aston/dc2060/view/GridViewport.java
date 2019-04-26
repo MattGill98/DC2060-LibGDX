@@ -5,13 +5,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class MapViewport extends FitViewport {
+public class GridViewport extends FitViewport {
 
-    private final float tileSize;
-
-    public MapViewport(float tileSize) {
+    public GridViewport() {
         super(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.tileSize = tileSize;
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false);
         camera.update();
@@ -21,8 +18,8 @@ public class MapViewport extends FitViewport {
     @Override
     public Vector2 project(Vector2 worldCoords) {
         Vector2 screenCoords = new Vector2();
-        screenCoords.x = worldCoords.x * tileSize;
-        screenCoords.y = worldCoords.y * tileSize;
+        screenCoords.x = worldCoords.x * getScreenWidth();
+        screenCoords.y = worldCoords.y * getScreenHeight();
         return screenCoords;
     }
 }
