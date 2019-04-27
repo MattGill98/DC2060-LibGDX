@@ -13,6 +13,10 @@ public class DrawableActor extends Actor {
         this.texture = texture;
         setX(x);
         setY(y);
+
+        // Needed for collision detection
+        setWidth(1);
+        setHeight(1);
     }
 
     DrawableActor(TextureRegion texture) {
@@ -26,16 +30,11 @@ public class DrawableActor extends Actor {
         batch.draw(texture, originCoords.x, originCoords.y, endCoords.x - originCoords.x, endCoords.y - originCoords.y);
     }
 
-    @Override
-    public Actor hit(float x, float y, boolean touchable) {
-        return super.hit(x, -y, touchable);
-    }
-
     private Vector2 originLocalToScreenCoordinates() {
         return localToScreenCoordinates(new Vector2(0, 0));
     }
 
     private Vector2 endLocalToScreenCoordinates() {
-        return localToScreenCoordinates(new Vector2(1, 1));
+        return localToScreenCoordinates(new Vector2(getWidth(), getHeight()));
     }
 }
