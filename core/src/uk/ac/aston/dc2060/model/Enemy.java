@@ -34,7 +34,7 @@ public class Enemy extends DrawableActor {
             this.setX(nextPoint.x);
             this.setY(nextPoint.y);
         } else {
-            removeActor(this);
+            removeActor(this).act(-1);
         }
     }
 

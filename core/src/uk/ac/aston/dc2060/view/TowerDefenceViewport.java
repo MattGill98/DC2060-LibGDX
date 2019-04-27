@@ -26,8 +26,8 @@ public class TowerDefenceViewport extends FitViewport {
 
     @Override
     public Vector2 unproject(Vector2 screenCoords) {
-        screenCoords.x = screenCoords.x / tileSize;
-        screenCoords.y = screenCoords.y / tileSize;
+        screenCoords.x = (int) (screenCoords.x / tileSize);
+        screenCoords.y = (int) (screenCoords.y / tileSize);
         return screenCoords;
     }
 }

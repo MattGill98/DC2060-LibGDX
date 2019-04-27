@@ -19,8 +19,12 @@ public class DrawableActor extends Actor {
         setHeight(1);
     }
 
-    DrawableActor(TextureRegion texture) {
+    protected DrawableActor(TextureRegion texture) {
         this(texture, 0, 0);
+    }
+
+    public TextureRegion getTexture() {
+        return texture;
     }
 
     @Override
