@@ -27,10 +27,15 @@ public class DrawableActor extends Actor {
         return texture;
     }
 
+    public void setAlpha(float a) {
+        setColor(1, 1, 1, a);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Vector2 originCoords = originLocalToScreenCoordinates();
         Vector2 endCoords = endLocalToScreenCoordinates();
+        batch.setColor(getColor());
         batch.draw(texture, originCoords.x, originCoords.y, endCoords.x - originCoords.x, endCoords.y - originCoords.y);
     }
 

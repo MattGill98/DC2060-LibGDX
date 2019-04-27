@@ -8,8 +8,6 @@ import uk.ac.aston.dc2060.controller.TowerDefenceStage;
 import uk.ac.aston.dc2060.model.tower.Tower;
 import uk.ac.aston.dc2060.model.tower.TowerIcon;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
-
 public class DragAndDropListener extends ClickListener {
 
     private TowerIcon icon;
@@ -40,7 +38,7 @@ public class DragAndDropListener extends ClickListener {
 
     @Override
     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-        removeActor(placedTower).act(-1);
+        placedTower.realise();
         placedTower = null;
         super.touchUp(event, x, y, pointer, button);
     }
