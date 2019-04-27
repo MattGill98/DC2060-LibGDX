@@ -21,7 +21,6 @@ public class GuiViewport extends TowerDefenceViewport {
     @Override
     public Vector2 unproject(Vector2 screenCoords) {
         screenCoords.x -= mapSize;
-        screenCoords.y = getScreenHeight() - screenCoords.y;
         super.unproject(screenCoords);
         return screenCoords;
     }

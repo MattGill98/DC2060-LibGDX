@@ -31,7 +31,7 @@ public class DragAndDropListener extends ClickListener {
             placedTower = new Tower(icon);
             gameStage.addActor(placedTower);
         }
-        Vector2 screenCoords = gui.stageToScreenCoordinates(new Vector2(x, y));
+        Vector2 screenCoords = gui.stageToScreenCoordinates(new Vector2(x + icon.getX() - 1, y + icon.getY()));
         Vector2 placeCoords = gameStage.screenToStageCoordinates(screenCoords);
         placedTower.setX(placeCoords.x);
         placedTower.setY(placeCoords.y);
