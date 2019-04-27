@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.GridPoint2;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
+
 public class Enemy extends DrawableActor {
 
     private final List<GridPoint2> route;
@@ -32,7 +34,7 @@ public class Enemy extends DrawableActor {
             this.setX(nextPoint.x);
             this.setY(nextPoint.y);
         } else {
-            setVisible(false);
+            removeActor(this);
         }
     }
 
