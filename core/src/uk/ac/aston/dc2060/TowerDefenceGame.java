@@ -5,30 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import uk.ac.aston.dc2060.controller.EnemyStage;
-import uk.ac.aston.dc2060.controller.GridStage;
-import uk.ac.aston.dc2060.controller.GuiStage;
-import uk.ac.aston.dc2060.model.Enemy;
-import uk.ac.aston.dc2060.model.EnemyRoute;
-import uk.ac.aston.dc2060.model.TileID;
-import uk.ac.aston.dc2060.model.Tower;
-import uk.ac.aston.dc2060.view.GuiViewport;
-import uk.ac.aston.dc2060.view.MapViewport;
-import uk.ac.aston.dc2060.view.TerrainView;
+import uk.ac.aston.dc2060.controller.TowerDefenceStage;
+import uk.ac.aston.dc2060.view.GridView;
+import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
+import uk.ac.aston.dc2060.view.TowerDefenceViewport;
 
 public class TowerDefenceGame extends ApplicationAdapter {
 
-    private Stage stage1;
+    private TowerDefenceStage stage;
 
-    private GridStage gridStage;
-
-    private TerrainView terrainView;
-
-    private Stage guiStage;
+    private GridView gridView;
 
     @Override
     public void create () {
@@ -40,27 +26,10 @@ public class TowerDefenceGame extends ApplicationAdapter {
         float tileSize = mapWidth / (float) (Integer) map.getProperties().get("width");
 
         // Configure grid rendering
-        this.gridStage = new GridStage(new MapViewport(tileSize), tileSize);
+        this.gridView = new GridView(tileSize);
 
-        // Configure terrain rendering
-        this.terrainView = new TerrainView(map, mapWidth);
-
-        // Configure GUI
-        this.guiStage = new GuiStage(new GuiViewport(tileSize, mapWidth));
-        Gdx.input.setInputProcessor(guiStage);
-        Tower singleTurret = new Tower(map.getTileSets(), TileID.SINGLE_TURRET);
-        singleTurret.addListener(new ClickListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                System.out.println("entered");
-            }
-        });
-        guiStage.addActor(singleTurret);
-        Tower doubleTurret = new Tower(map.getTileSets(), TileID.DOUBLE_TURRET);
-        guiStage.addActor(doubleTurret);
-
-        // Configure first stage
-        stage1 = new EnemyStage(new MapViewport(tileSize), new Enemy(map.getTileSets(), TileID.SOLDIER, EnemyRoute.ROUTE));
+        // Configure level rendering
+        this.stage = new TowerDefenceStage(new TowerDefenceViewport(tileSize), map.getTileSets(), new TowerDefenceMapRenderer(map, mapWidth));
     }
 
     @Override
@@ -68,25 +37,17 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Render map
-        terrainView.render();
-
-        // Run stage
-        stage1.act();
-        stage1.draw();
-
-        // Render gui
-        guiStage.draw();
+        // Render level
+        stage.act();
+        stage.draw();
 
         // Render grid
-        gridStage.draw();
+        gridView.render();
     }
 
     @Override
     public void dispose () {
-        stage1.dispose();
-        gridStage.dispose();
-        terrainView.dispose();
-        guiStage.dispose();
+        stage.dispose();
+        gridView.dispose();
     }
 }

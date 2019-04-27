@@ -20,10 +20,6 @@ public class Enemy extends DrawableActor {
         this(tileSet.getTile(tileID.getID()).getTextureRegion(), route);
     }
 
-    public Enemy(Enemy enemy) {
-        this(enemy.texture, enemy.route);
-    }
-
     /**
      * Moves the enemy along the route.
      */

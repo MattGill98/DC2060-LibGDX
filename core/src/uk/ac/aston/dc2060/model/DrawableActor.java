@@ -7,11 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class DrawableActor extends Actor {
 
-    final TextureRegion texture;
-
-    DrawableActor(TextureRegion texture) {
-        this.texture = texture;
-    }
+    private final TextureRegion texture;
 
     DrawableActor(TextureRegion texture, int x, int y) {
         this.texture = texture;
@@ -19,15 +15,27 @@ public class DrawableActor extends Actor {
         setY(y);
     }
 
+    DrawableActor(TextureRegion texture) {
+        this(texture, 0, 0);
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Vector2 screenCoords = getStage().getViewport().project(new Vector2(getX(), getY()));
-        Vector2 screenCoords2 = getStage().getViewport().project(new Vector2(getX() + 1, getY() + 1));
-        batch.draw(texture, screenCoords.x, screenCoords.y, screenCoords2.x - screenCoords.x, screenCoords2.y - screenCoords.y);
+        Vector2 originCoords = originLocalToScreenCoordinates();
+        Vector2 endCoords = endLocalToScreenCoordinates();
+        batch.draw(texture, originCoords.x, originCoords.y, endCoords.x - originCoords.x, endCoords.y - originCoords.y);
     }
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        return super.hit(x, y, touchable);
+        return super.hit(x, -y, touchable);
+    }
+
+    private Vector2 originLocalToScreenCoordinates() {
+        return localToScreenCoordinates(new Vector2(0, 0));
+    }
+
+    private Vector2 endLocalToScreenCoordinates() {
+        return localToScreenCoordinates(new Vector2(1, 1));
     }
 }

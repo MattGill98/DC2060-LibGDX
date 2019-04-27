@@ -1,21 +1,19 @@
-package uk.ac.aston.dc2060.controller;
+package uk.ac.aston.dc2060.view;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import static com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line;
 
-public class GridStage extends Stage {
+public class GridView extends ApplicationAdapter {
 
     private final float tileSize;
     private final ShapeRenderer renderer;
 
     private boolean enabled;
 
-    public GridStage(Viewport viewport, float tileSize) {
-        super(viewport);
+    public GridView(float tileSize) {
         this.tileSize = tileSize;
         this.renderer = new ShapeRenderer();
         this.enabled = true;
@@ -26,7 +24,7 @@ public class GridStage extends Stage {
     }
 
     @Override
-    public void draw() {
+    public void render() {
         if (enabled) {
             float screenWidth = Gdx.graphics.getWidth() * 2;
             float screenHeight = Gdx.graphics.getHeight() * 2;
@@ -42,6 +40,7 @@ public class GridStage extends Stage {
         }
     }
 
+    @Override
     public void dispose() {
         renderer.dispose();
     }
