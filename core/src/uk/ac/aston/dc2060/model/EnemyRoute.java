@@ -1,18 +1,13 @@
-package uk.ac.aston.dc2060.controller;
+package uk.ac.aston.dc2060.model;
 
-import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.math.GridPoint2;
-import uk.ac.aston.dc2060.model.Enemy;
-import uk.ac.aston.dc2060.model.TileID;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
-public class EnemyController extends LogicController {
+public class EnemyRoute {
 
-    private static GridPoint2[] ROUTE = {
+    public static List<GridPoint2> ROUTE = Arrays.asList(
             new GridPoint2(-1, 10),
             new GridPoint2(0, 10),
             new GridPoint2(1, 10),
@@ -79,23 +74,6 @@ public class EnemyController extends LogicController {
             new GridPoint2(1, 1),
             new GridPoint2(0, 1),
             new GridPoint2(-1, 1)
-    };
+    );
 
-    private List<Enemy> enemies;
-
-    public EnemyController(TiledMapTileSets tileSet) {
-        super(1000);
-        this.enemies = new LinkedList<>();
-        EnemySpawner spawner = new EnemySpawner(enemies, new Enemy(tileSet, TileID.SOLDIER, Arrays.asList(ROUTE)));
-        LogicController.registerController(spawner);
-    }
-
-    public Collection<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    @Override
-    protected void update() {
-        enemies.removeIf(enemy -> !enemy.move());
-    }
 }
