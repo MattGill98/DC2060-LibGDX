@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import static com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line;
 
+/**
+ * A view for rendering the grid.
+ */
 public class GridView extends ApplicationAdapter {
 
     private final float tileSize;
@@ -13,12 +16,20 @@ public class GridView extends ApplicationAdapter {
 
     private boolean enabled;
 
+    /**
+     * Create a view for rendering the grid.
+     *
+     * @param tileSize the size of each grid square.
+     */
     public GridView(float tileSize) {
         this.tileSize = tileSize;
         this.renderer = new ShapeRenderer();
         this.enabled = true;
     }
 
+    /**
+     * @param enabled whether the grid rendering should be enabled.
+     */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }

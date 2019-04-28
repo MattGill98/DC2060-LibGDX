@@ -5,10 +5,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+/**
+ * A viewport for managing screen space translations for map objects.
+ */
 public class TowerDefenceViewport extends FitViewport {
 
     private final float tileSize;
 
+    /**
+     * Create a viewport for map objects.
+     *
+     * @param tileSize the size on screen of each tile in the map.
+     */
     public TowerDefenceViewport(float tileSize) {
         super(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.tileSize = tileSize;

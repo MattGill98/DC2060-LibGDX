@@ -14,12 +14,24 @@ import uk.ac.aston.dc2060.view.GuiViewport;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
 import uk.ac.aston.dc2060.view.TowerDefenceViewport;
 
+/**
+ * The entrypoint file. The game stage and logic is setup from this class.
+ */
 public class TowerDefenceGame extends ApplicationAdapter {
 
+    /**
+     * The main game stage. The map and all actors are managed by this stage.
+     */
     private TowerDefenceStage stage;
 
+    /**
+     * The GUI stage.
+     */
     private GuiStage gui;
 
+    /**
+     * An object to control grid rendering.
+     */
     private GridView gridView;
 
     @Override
@@ -46,6 +58,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
 
     @Override
     public void render () {
+        // Clear the window
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -64,6 +77,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
     @Override
     public void dispose () {
         stage.dispose();
+        gui.dispose();
         gridView.dispose();
     }
 }

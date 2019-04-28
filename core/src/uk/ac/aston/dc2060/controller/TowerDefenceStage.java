@@ -11,6 +11,9 @@ import uk.ac.aston.dc2060.model.TileID;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * A stage that controls the game scene.
+ */
 public class TowerDefenceStage extends PollingStage {
 
     private TiledMapTileSets tileSet;
@@ -22,6 +25,13 @@ public class TowerDefenceStage extends PollingStage {
     private int enemySpawnInterval;
     private int enemySpawnCounter;
 
+    /**
+     * Create the game stage.
+     *
+     * @param viewport    the viewport to use in rendering the stage.
+     * @param tileSet     the tileset to fetch textures from.
+     * @param mapRenderer the renderer for the tilemap.
+     */
     public TowerDefenceStage(Viewport viewport, TiledMapTileSets tileSet, OrthogonalTiledMapRenderer mapRenderer) {
         super(viewport, 1000);
         this.tileSet = tileSet;
