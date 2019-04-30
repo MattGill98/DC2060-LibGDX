@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import uk.ac.aston.dc2060.view.screen.TowerDefenceScreen;
 
 /**
- * The entrypoint file. The game stage and logic is setup from this class.
+ * The entrypoint file. The screens are managed from this class.
  */
 public class TowerDefenceGame extends ApplicationAdapter {
 

@@ -16,6 +16,9 @@ import uk.ac.aston.dc2060.model.tower.TowerIcon;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
 
+/**
+ * A screen which runs the actual game.
+ */
 public class TowerDefenceScreen implements Screen {
 
     private boolean enabled;
@@ -32,15 +35,15 @@ public class TowerDefenceScreen implements Screen {
         TiledMap map = new TmxMapLoader().load("tilemap.tmx");
 
         // Configure the game view
-        int virtualWidth = 1 + (Integer) map.getProperties().get("width");
+        int virtualMapWidth = (Integer) map.getProperties().get("width");
+        int virtualWidth = 1 + virtualMapWidth;
         int virtualHeight = (Integer) map.getProperties().get("height");
         this.camera = new OrthographicCamera(virtualWidth, virtualHeight);
         this.gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
 
-        // Configure the game logic
-        this.gameStage = new TowerDefenceStage(gameViewport, map.getTileSets(), 16);
-
-        this.mapRenderer = new TowerDefenceMapRenderer(map, camera, virtualWidth - 1);
+        // Configure rendered scene
+        this.gameStage = new TowerDefenceStage(gameViewport, map.getTileSets(), virtualMapWidth);
+        this.mapRenderer = new TowerDefenceMapRenderer(map, camera, virtualMapWidth);
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
 
         // Add GUI icons
