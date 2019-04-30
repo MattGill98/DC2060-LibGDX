@@ -24,7 +24,6 @@ public class TowerDefenceScreen implements Screen {
     private boolean enabled;
 
     private OrthographicCamera camera;
-    private Viewport gameViewport;
     private Stage gameStage;
 
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -39,7 +38,7 @@ public class TowerDefenceScreen implements Screen {
         int virtualWidth = 1 + virtualMapWidth;
         int virtualHeight = (Integer) map.getProperties().get("height");
         this.camera = new OrthographicCamera(virtualWidth, virtualHeight);
-        this.gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
+        Viewport gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
 
         // Configure rendered scene
         this.gameStage = new TowerDefenceStage(gameViewport, map.getTileSets(), virtualMapWidth);
@@ -89,12 +88,12 @@ public class TowerDefenceScreen implements Screen {
 
     @Override
     public void pause() {
-
+        throw new UnsupportedOperationException("Pausing not supported.");
     }
 
     @Override
     public void resume() {
-
+        throw new UnsupportedOperationException("Resuming not supported.");
     }
 
     @Override
