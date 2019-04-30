@@ -61,9 +61,8 @@ public class TowerDefenceStage extends PollingStage {
 
     @Override
     protected void timeout() {
-        enemies.forEach(Enemy::move);
         if (enemySpawnCounter++ % enemySpawnInterval == 0) {
-            Enemy newEnemy = new Enemy(tileSet, TileID.SOLDIER, EnemyRoute.ROUTE);
+            Enemy newEnemy = new Enemy(tileSet, TileID.SOLDIER, EnemyRoute.ROUTE, 1);
             addActor(newEnemy);
         }
     }
