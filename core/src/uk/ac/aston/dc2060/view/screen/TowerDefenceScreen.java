@@ -41,7 +41,7 @@ public class TowerDefenceScreen implements Screen {
         Viewport gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
 
         // Configure rendered scene
-        this.gameStage = new TowerDefenceStage(gameViewport, map.getTileSets(), virtualMapWidth);
+        this.gameStage = new TowerDefenceStage(gameViewport, map, virtualMapWidth, virtualHeight);
         this.mapRenderer = new TowerDefenceMapRenderer(map, camera, virtualMapWidth);
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
 
