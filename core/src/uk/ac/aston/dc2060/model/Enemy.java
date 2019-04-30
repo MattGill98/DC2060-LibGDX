@@ -36,16 +36,19 @@ public class Enemy extends DrawableActor {
     private Pixmap healthBar;
 
     private final List<GridPoint2> route;
+    private float speed;
 
     /**
      * Create an enemy object.
      *
      * @param texture the texture to draw for the enemy.
      * @param route   the route the enemy should follow.
+     * @param speed   the number of tiles per second the enemy should move.
      */
-    private Enemy(TextureRegion texture, List<GridPoint2> route) {
+    private Enemy(TextureRegion texture, List<GridPoint2> route, float speed) {
         super(texture, route.get(0).x, route.get(0).y);
         this.route = new ArrayList<>(route);
+        this.speed = speed;
 
         // Setup health variables
         this.health = 1f;
@@ -58,9 +61,10 @@ public class Enemy extends DrawableActor {
      * @param tileSet the tileset to fetch the enemy texture from.
      * @param tileID the ID of the tile in the tileset to use for the enemy texture.
      * @param route the route the enemy should follow.
+     * @param speed   the number of tiles per second the enemy should move.
      */
-    public Enemy(TiledMapTileSets tileSet, TileID tileID, List<GridPoint2> route) {
-        this(tileSet.getTile(tileID.getID()).getTextureRegion(), route);
+    public Enemy(TiledMapTileSets tileSet, TileID tileID, List<GridPoint2> route, float speed) {
+        this(tileSet.getTile(tileID.getID()).getTextureRegion(), route, speed);
     }
 
     @Override
@@ -74,8 +78,14 @@ public class Enemy extends DrawableActor {
 
     @Override
     public void act(float delta) {
+        if (isVisible()) {
+            move(delta);
+            calculateHealthBar();
+        }
+        super.act(delta);
+    }
 
-        // Calculate new health bar values
+    private void calculateHealthBar() {
         for (Map.Entry<Float, Color> colorEntry : HEALTH_BAR_COLOR_MAP.entrySet()) {
             if (health <= colorEntry.getKey()) {
                 healthBar.setColor(colorEntry.getValue());
@@ -83,28 +93,47 @@ public class Enemy extends DrawableActor {
             }
         }
         healthBar.fill();
-
-        super.act(delta);
     }
 
     /**
      * Moves the enemy along the route, or removes it from the
      * scene if the route is finished.
+     *
+     * @param delta the time passed between frames
      */
-    public void move() {
+    private void move(float delta) {
         if (!isVisible()) {
             return;
         }
         if (!route.isEmpty()) {
 
-            // Get the next point to move to, and angle in degrees to that point
-            GridPoint2 nextPoint = route.remove(0);
-            double angle = Math.toDegrees(Math.atan2(nextPoint.y - getY(), nextPoint.x - getX()));
+            // Find out information about the next point
+            GridPoint2 nextPoint = route.get(0);
+            double distX = nextPoint.x - getX();
+            double distY = nextPoint.y - getY();
+            double angle = Math.toDegrees(Math.atan2(distY, distX));
+            double distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
+            double travelDistance = delta * speed;
 
-            // Set the positions
+            // Since the direction of motion is always at right angles,
+            // we can cheat this maths step by assuming the enemy can move
+            // the entire travel distance on both axes
+            if (distance < travelDistance) {
+                route.remove(0);
+                setX(nextPoint.x);
+                setY(nextPoint.y);
+
+                // Then move the remaining distance
+                move((float) (delta * (1 - (distance / travelDistance))));
+                return;
+            }
+            float moveX = (float) (travelDistance * Math.signum(distX));
+            float moveY = (float) (travelDistance * Math.signum(distY));
+            setX(getX() + moveX);
+            setY(getY() + moveY);
+
+            // Set the rotation
             this.setRotation((float) angle);
-            this.setX(nextPoint.x);
-            this.setY(nextPoint.y);
         } else {
             removeActor(this).act(-1);
         }
