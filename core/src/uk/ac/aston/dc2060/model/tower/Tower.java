@@ -1,5 +1,6 @@
 package uk.ac.aston.dc2060.model.tower;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import uk.ac.aston.dc2060.model.DrawableActor;
 
 /**
@@ -15,6 +16,13 @@ public class Tower extends DrawableActor {
     public Tower(TowerIcon icon) {
         super(icon.getTexture());
         setAlpha(0.65f);
+        addAction(new Action() {
+            @Override
+            public boolean act(float delta) {
+                rotateBy(1);
+                return false;
+            }
+        });
     }
 
     /**

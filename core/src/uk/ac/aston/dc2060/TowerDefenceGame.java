@@ -2,58 +2,21 @@ package uk.ac.aston.dc2060;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import uk.ac.aston.dc2060.controller.GuiStage;
-import uk.ac.aston.dc2060.controller.TowerDefenceStage;
-import uk.ac.aston.dc2060.model.TileID;
-import uk.ac.aston.dc2060.model.tower.TowerIcon;
-import uk.ac.aston.dc2060.view.GridView;
-import uk.ac.aston.dc2060.view.GuiViewport;
-import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
-import uk.ac.aston.dc2060.view.TowerDefenceViewport;
+import uk.ac.aston.dc2060.view.screen.TowerDefenceScreen;
 
 /**
  * The entrypoint file. The game stage and logic is setup from this class.
  */
 public class TowerDefenceGame extends ApplicationAdapter {
 
-    /**
-     * The main game stage. The map and all actors are managed by this stage.
-     */
-    private TowerDefenceStage stage;
-
-    /**
-     * The GUI stage.
-     */
-    private GuiStage gui;
-
-    /**
-     * An object to control grid rendering.
-     */
-    private GridView gridView;
+    private Screen towerDefenceScreen;
 
     @Override
     public void create () {
-        // Load tilemap
-        TiledMap map = new TmxMapLoader().load("tilemap.tmx");
-
-        // Calculate UI dimensions
-        int mapWidth = Gdx.graphics.getWidth() - (Integer) map.getProperties().get("tilewidth");
-        float tileSize = mapWidth / (float) (Integer) map.getProperties().get("width");
-
-        // Configure grid rendering
-        this.gridView = new GridView(tileSize);
-
-        // Configure level rendering
-        this.stage = new TowerDefenceStage(new TowerDefenceViewport(tileSize), map.getTileSets(), new TowerDefenceMapRenderer(map, mapWidth));
-
-        // Configure gui
-        this.gui = new GuiStage(new GuiViewport(tileSize, mapWidth), stage);
-        this.gui.addActor(new TowerIcon(map.getTileSets(), TileID.SINGLE_TURRET));
-        this.gui.addActor(new TowerIcon(map.getTileSets(), TileID.DOUBLE_TURRET));
-        Gdx.input.setInputProcessor(gui);
+        towerDefenceScreen = new TowerDefenceScreen();
+        towerDefenceScreen.show();
     }
 
     @Override
@@ -62,22 +25,12 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Render level
-        stage.act();
-        stage.draw();
-
-        // Render gui
-        gui.act();
-        gui.draw();
-
-        // Render grid
-        gridView.render();
+        float delta = Gdx.graphics.getDeltaTime();
+        towerDefenceScreen.render(delta);
     }
 
     @Override
     public void dispose () {
-        stage.dispose();
-        gui.dispose();
-        gridView.dispose();
+        towerDefenceScreen.dispose();
     }
 }

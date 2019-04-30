@@ -1,6 +1,5 @@
 package uk.ac.aston.dc2060.view;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -16,15 +15,12 @@ public class TowerDefenceMapRenderer extends OrthogonalTiledMapRenderer {
      * until one of the dimensions is fulfilled.
      *
      * @param map       the tilemap to render.
+     * @param camera    the camera to use to render the map.
      * @param mapWidth  the width of the map to draw.
      * @param mapHeight the height of the map to draw.
      */
-    private TowerDefenceMapRenderer(TiledMap map, int mapWidth, int mapHeight) {
+    private TowerDefenceMapRenderer(TiledMap map, OrthographicCamera camera, int mapWidth, int mapHeight) {
         super(map, getMapScale(map, mapWidth, mapHeight));
-        // Configure camera
-        OrthographicCamera camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.update();
         setView(camera);
     }
 
@@ -33,10 +29,11 @@ public class TowerDefenceMapRenderer extends OrthogonalTiledMapRenderer {
      * until the map is the correct width.
      *
      * @param map the tilemap to render.
+     * @param camera    the camera to use to render the map.
      * @param mapWidth the width of the map to draw.
      */
-    public TowerDefenceMapRenderer(TiledMap map, int mapWidth) {
-        this(map, mapWidth, -1);
+    public TowerDefenceMapRenderer(TiledMap map, OrthographicCamera camera, int mapWidth) {
+        this(map, camera, mapWidth, -1);
     }
 
     /**

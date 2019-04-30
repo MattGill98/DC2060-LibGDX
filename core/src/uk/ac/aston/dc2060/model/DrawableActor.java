@@ -1,8 +1,8 @@
 package uk.ac.aston.dc2060.model;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
@@ -24,16 +24,12 @@ public class DrawableActor extends Actor {
         setX(x);
         setY(y);
 
-        // Needed for collision detection
+        // Needed for correct rendering
         setWidth(1);
         setHeight(1);
+        setOrigin(getWidth() / 2f, getHeight() / 2f);
     }
 
-    /**
-     * Create a drawable object at (0,0) in world space.
-     *
-     * @param texture the texture to draw for the enemy.
-     */
     protected DrawableActor(TextureRegion texture) {
         this(texture, 0, 0);
     }
@@ -54,23 +50,8 @@ public class DrawableActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Vector2 originCoords = originLocalToScreenCoordinates();
-        Vector2 endCoords = endLocalToScreenCoordinates();
-        batch.setColor(getColor());
-        batch.draw(texture, originCoords.x, originCoords.y, endCoords.x - originCoords.x, endCoords.y - originCoords.y);
-    }
-
-    /**
-     * @return the screen space coordinates of (0,0) in model space.
-     */
-    private Vector2 originLocalToScreenCoordinates() {
-        return localToScreenCoordinates(new Vector2(0, 0));
-    }
-
-    /**
-     * @return the screen space coordinates of (width,height) in model space.
-     */
-    private Vector2 endLocalToScreenCoordinates() {
-        return localToScreenCoordinates(new Vector2(getWidth(), getHeight()));
+        Color color = getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
 }
