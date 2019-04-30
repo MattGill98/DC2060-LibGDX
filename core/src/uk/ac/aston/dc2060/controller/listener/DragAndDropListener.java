@@ -1,9 +1,7 @@
 package uk.ac.aston.dc2060.controller.listener;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import uk.ac.aston.dc2060.controller.GuiStage;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
 import uk.ac.aston.dc2060.model.tower.Tower;
 import uk.ac.aston.dc2060.model.tower.TowerIcon;
@@ -15,7 +13,6 @@ public class DragAndDropListener extends ClickListener {
 
     private TowerIcon icon;
 
-    private GuiStage gui;
     private TowerDefenceStage gameStage;
 
     private Tower placedTower;
@@ -24,12 +21,10 @@ public class DragAndDropListener extends ClickListener {
      * Create a drag and drop listener.
      *
      * @param icon      the icon on which to listen.
-     * @param gui       the GUI to from which to draw icon coordinates.
-     * @param gameStage the game stage to which to map tower coordinates.
+     * @param gameStage the game stage to use for handling events.
      */
-    public DragAndDropListener(TowerIcon icon, GuiStage gui, TowerDefenceStage gameStage) {
+    public DragAndDropListener(TowerIcon icon, TowerDefenceStage gameStage) {
         this.icon = icon;
-        this.gui = gui;
         this.gameStage = gameStage;
     }
 
@@ -42,10 +37,8 @@ public class DragAndDropListener extends ClickListener {
         }
 
         // Map the object to the tile under the cursor
-        Vector2 screenCoords = gui.stageToScreenCoordinates(new Vector2(x + icon.getX() - 1, y + icon.getY()));
-        Vector2 placeCoords = gameStage.screenToStageCoordinates(screenCoords);
-        placedTower.setX(placeCoords.x);
-        placedTower.setY(placeCoords.y);
+        placedTower.setX((int) event.getStageX());
+        placedTower.setY((int) event.getStageY());
 
         super.touchDragged(event, x, y, pointer);
     }

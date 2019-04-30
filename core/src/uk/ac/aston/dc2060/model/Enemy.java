@@ -47,7 +47,13 @@ public class Enemy extends DrawableActor {
             return;
         }
         if (!route.isEmpty()) {
+
+            // Get the next point to move to, and angle in degrees to that point
             GridPoint2 nextPoint = route.remove(0);
+            double angle = Math.toDegrees(Math.atan2(nextPoint.y - getY(), nextPoint.x - getX()));
+
+            // Set the positions
+            this.setRotation((float) angle);
             this.setX(nextPoint.x);
             this.setY(nextPoint.y);
         } else {

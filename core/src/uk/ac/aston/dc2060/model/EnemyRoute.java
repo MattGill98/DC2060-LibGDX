@@ -10,6 +10,9 @@ import java.util.List;
  */
 public class EnemyRoute {
 
+    /**
+     * A list of world space coordinates constituting the enemy route.
+     */
     public static List<GridPoint2> ROUTE = Arrays.asList(
             new GridPoint2(-1, 10),
             new GridPoint2(0, 10),

@@ -1,7 +1,7 @@
 package uk.ac.aston.dc2060.view;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import static com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line;
@@ -11,7 +11,9 @@ import static com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line;
  */
 public class GridView extends ApplicationAdapter {
 
-    private final float tileSize;
+    private final int virtualWidth;
+    private final int virtualHeight;
+
     private final ShapeRenderer renderer;
 
     private boolean enabled;
@@ -19,12 +21,18 @@ public class GridView extends ApplicationAdapter {
     /**
      * Create a view for rendering the grid.
      *
-     * @param tileSize the size of each grid square.
+     * @param camera the camera to use for viewing the grid.
+     * @param virtualWidth the width in world space of the grid to draw.
+     * @param virtualHeight the height in world space of the grid to draw.
      */
-    public GridView(float tileSize) {
-        this.tileSize = tileSize;
-        this.renderer = new ShapeRenderer();
+    public GridView(Camera camera, int virtualWidth, int virtualHeight) {
+        this.virtualWidth = virtualWidth;
+        this.virtualHeight = virtualHeight;
         this.enabled = true;
+
+        // Configure renderer
+        this.renderer = new ShapeRenderer();
+        renderer.setProjectionMatrix(camera.combined);
     }
 
     /**
@@ -37,15 +45,12 @@ public class GridView extends ApplicationAdapter {
     @Override
     public void render() {
         if (enabled) {
-            float screenWidth = Gdx.graphics.getWidth() * 2;
-            float screenHeight = Gdx.graphics.getHeight() * 2;
-
             renderer.begin(Line);
-            for (float x = 0; x < screenWidth; x += tileSize) {
-                renderer.line(x, 0, x, screenHeight);
+            for (int x = 0; x < virtualWidth; x++) {
+                renderer.line(x, 0, x, virtualHeight);
             }
-            for (float y = 0; y < screenHeight; y += tileSize) {
-                renderer.line(0, y, screenWidth, y);
+            for (float y = 0; y < virtualHeight; y++) {
+                renderer.line(0, y, virtualWidth, y);
             }
             renderer.end();
         }

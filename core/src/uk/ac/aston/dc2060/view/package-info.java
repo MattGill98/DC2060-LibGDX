@@ -1,5 +1,4 @@
 /**
- * This package contains all code relating to the view.
- * All view space coordinates should be handled from this package.
+ * This package contains all general code relating to the view.
  */
 package uk.ac.aston.dc2060.view;
