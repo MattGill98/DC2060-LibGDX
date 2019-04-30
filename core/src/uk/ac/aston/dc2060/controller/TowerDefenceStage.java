@@ -44,6 +44,13 @@ public class TowerDefenceStage extends PollingStage {
         this.enemySpawnInterval = 4;
     }
 
+    /**
+     * @return a set of the enemies in the stage.
+     */
+    public Set<Enemy> getEnemies() {
+        return enemies;
+    }
+
     @Override
     public void addActor(Actor actor) {
         if (actor instanceof Enemy) {

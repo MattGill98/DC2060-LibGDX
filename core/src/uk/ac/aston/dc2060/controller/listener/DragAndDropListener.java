@@ -32,7 +32,7 @@ public class DragAndDropListener extends ClickListener {
     public void touchDragged(InputEvent event, float x, float y, int pointer) {
         // If the drag has started, create a tower to be placed
         if (placedTower == null) {
-            placedTower = new Tower(icon);
+            placedTower = new Tower(icon, gameStage.getEnemies());
             gameStage.addActor(placedTower);
         }
 
