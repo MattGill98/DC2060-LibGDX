@@ -1,6 +1,5 @@
 package uk.ac.aston.dc2060.model.tower;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import uk.ac.aston.dc2060.model.DrawableActor;
 import uk.ac.aston.dc2060.model.TileID;
@@ -10,14 +9,7 @@ import uk.ac.aston.dc2060.model.TileID;
  */
 public class TowerIcon extends DrawableActor {
 
-    /**
-     * Create a tower icon from a given texture.
-     *
-     * @param texture the texture to use for the icon.
-     */
-    private TowerIcon(TextureRegion texture) {
-        super(texture);
-    }
+    protected final TiledMapTileSets tileSet;
 
     /**
      * Create a tower icon from a given texture.
@@ -26,7 +18,8 @@ public class TowerIcon extends DrawableActor {
      * @param tileID  the ID of the tile to take the texture from.
      */
     public TowerIcon(TiledMapTileSets tileSet, TileID tileID) {
-        this(tileSet.getTile(tileID.getID()).getTextureRegion());
+        super(tileSet.getTile(tileID.getID()).getTextureRegion());
+        this.tileSet = tileSet;
     }
 
 }
