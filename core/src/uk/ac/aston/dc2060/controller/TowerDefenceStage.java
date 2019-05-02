@@ -4,10 +4,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.controller.listener.DragAndDropListener;
-import uk.ac.aston.dc2060.model.Enemy;
-import uk.ac.aston.dc2060.model.EnemyRoute;
-import uk.ac.aston.dc2060.model.TileID;
-import uk.ac.aston.dc2060.model.tower.TowerIcon;
+import uk.ac.aston.dc2060.model.enemy.BasicEnemy;
+import uk.ac.aston.dc2060.model.enemy.Enemy;
+import uk.ac.aston.dc2060.model.tower.Tower;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,7 +22,7 @@ public class TowerDefenceStage extends PollingStage {
     private final int mapWidth;
 
     private Set<Enemy> enemies;
-    private List<TowerIcon> icons;
+    private List<Tower> icons;
 
     private int enemySpawnInterval;
     private int enemySpawnCounter;
@@ -56,12 +55,14 @@ public class TowerDefenceStage extends PollingStage {
         if (actor instanceof Enemy) {
             enemies.add((Enemy) actor);
         }
-        if (actor instanceof TowerIcon) {
-            TowerIcon newTowerIcon = (TowerIcon) actor;
-            newTowerIcon.addListener(new DragAndDropListener(newTowerIcon, this));
-            newTowerIcon.setY(icons.size());
-            newTowerIcon.setX(mapWidth);
-            icons.add(newTowerIcon);
+        if (actor instanceof Tower) {
+            Tower tower = (Tower) actor;
+            if (!tower.isEnabled()) {
+                tower.addListener(new DragAndDropListener(tower, this));
+                tower.setY(icons.size());
+                tower.setX(mapWidth);
+                icons.add(tower);
+            }
         }
         super.addActor(actor);
     }
@@ -69,7 +70,7 @@ public class TowerDefenceStage extends PollingStage {
     @Override
     protected void timeout() {
         if (enemySpawnCounter++ % enemySpawnInterval == 0) {
-            Enemy newEnemy = new Enemy(tileSet, TileID.SOLDIER, EnemyRoute.ROUTE, 1);
+            Enemy newEnemy = new BasicEnemy(tileSet);
             addActor(newEnemy);
         }
     }

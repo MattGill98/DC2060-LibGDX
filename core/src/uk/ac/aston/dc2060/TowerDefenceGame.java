@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import uk.ac.aston.dc2060.view.screen.TowerDefenceScreen;
 
 /**
@@ -11,10 +13,13 @@ import uk.ac.aston.dc2060.view.screen.TowerDefenceScreen;
  */
 public class TowerDefenceGame extends ApplicationAdapter {
 
+    public static TiledMap TILE_MAP;
+
     private Screen towerDefenceScreen;
 
     @Override
     public void create () {
+        TILE_MAP = new TmxMapLoader().load("tilemap.tmx");
         towerDefenceScreen = new TowerDefenceScreen();
         towerDefenceScreen.show();
     }

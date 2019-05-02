@@ -1,98 +1,60 @@
-package uk.ac.aston.dc2060.model;
+package uk.ac.aston.dc2060.model.enemy;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.math.GridPoint2;
+import uk.ac.aston.dc2060.model.DrawableActor;
+import uk.ac.aston.dc2060.model.TileID;
+import uk.ac.aston.dc2060.model.health.HealthBar;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 
 /**
  * A class modelling an enemy.
  */
-public class Enemy extends DrawableActor {
+public abstract class Enemy extends DrawableActor {
 
-    /**
-     * Map representing below which value the enemy health
-     * needs to be to correspond to a particular color.
-     */
-    private static Map<Float, Color> HEALTH_BAR_COLOR_MAP = new LinkedHashMap<>();
-
-    static {
-        HEALTH_BAR_COLOR_MAP.put(0.2f, new Color(1, 0, 0, 1));
-        HEALTH_BAR_COLOR_MAP.put(0.5f, new Color(1, 0.9f, 0.3f, 1));
-        HEALTH_BAR_COLOR_MAP.put(1f, new Color(0, 1, 0, 1));
-    }
-
-    private float health;
-    private Pixmap healthBar;
+    private TextureRegion texture;
 
     private final List<GridPoint2> route;
     private float speed;
 
-    /**
-     * Create an enemy object.
-     *
-     * @param texture the texture to draw for the enemy.
-     * @param route   the route the enemy should follow.
-     * @param speed   the number of tiles per second the enemy should move.
-     */
-    private Enemy(TextureRegion texture, List<GridPoint2> route, float speed) {
-        super(texture, route.get(0).x, route.get(0).y);
-        this.route = new ArrayList<>(route);
-        this.speed = speed;
-
-        // Setup health variables
-        this.health = 1f;
-        this.healthBar = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-    }
+    private HealthBar healthBar;
 
     /**
      * Create an enemy object.
      *
      * @param tileSet the tileset to fetch the enemy texture from.
      * @param tileID the ID of the tile in the tileset to use for the enemy texture.
-     * @param route the route the enemy should follow.
      * @param speed   the number of tiles per second the enemy should move.
      */
-    public Enemy(TiledMapTileSets tileSet, TileID tileID, List<GridPoint2> route, float speed) {
-        this(tileSet.getTile(tileID.getID()).getTextureRegion(), route, speed);
+    Enemy(TiledMapTileSets tileSet, TileID tileID, float speed) {
+        this.texture = tileSet.getTile(tileID.getID()).getTextureRegion();
+        this.route = new ArrayList<>(EnemyRoute.ROUTE);
+        setX(route.get(0).x);
+        setY(route.get(0).y);
+        this.speed = speed;
+        this.healthBar = new HealthBar();
     }
 
     @Override
     public void draw(Batch batch) {
-        super.draw(batch);
-
-        // Draw health bar
-        float barWidth = 0.5f * health;
-        batch.draw(new Texture(healthBar), getX() + 0.5f - (barWidth / 2f), getY() + 0.85f, barWidth, 0.04f);
+        batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        healthBar.draw(batch);
     }
 
     @Override
     public void act(float delta) {
         if (isVisible()) {
             move(delta);
-            calculateHealthBar();
+            healthBar.setX(getX());
+            healthBar.setY(getY() + 0.85f);
         }
         super.act(delta);
-    }
-
-    private void calculateHealthBar() {
-        for (Map.Entry<Float, Color> colorEntry : HEALTH_BAR_COLOR_MAP.entrySet()) {
-            if (health <= colorEntry.getKey()) {
-                healthBar.setColor(colorEntry.getValue());
-                break;
-            }
-        }
-        healthBar.fill();
     }
 
     /**
