@@ -47,7 +47,6 @@ public class TowerDefenceScreen implements Screen {
 
         // Add GUI icons
         this.gameStage.addActor(new TowerIcon(map.getTileSets(), TileID.SINGLE_TURRET));
-        this.gameStage.addActor(new TowerIcon(map.getTileSets(), TileID.DOUBLE_TURRET));
     }
 
     @Override
@@ -69,12 +68,12 @@ public class TowerDefenceScreen implements Screen {
             // Render map
             mapRenderer.render();
 
+            // Render grid
+            grid.render();
+
             // Render actors
             gameStage.act();
             gameStage.draw();
-
-            // Render grid
-            grid.render();
         }
     }
 

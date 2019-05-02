@@ -5,9 +5,10 @@ package uk.ac.aston.dc2060.model;
  */
 public enum TileID {
     SINGLE_TURRET(249),
+    SINGLE_TURRET_BASE(180),
+    SINGLE_TURRET_GUNFIRE(296),
     DOUBLE_TURRET(250),
-    SOLDIER(245),
-    GUN_FIRE(297);
+    SOLDIER(245);
 
     private int id;
 

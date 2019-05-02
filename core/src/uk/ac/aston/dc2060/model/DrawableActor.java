@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 /**
  * A class modelling a drawable object on screen.
  */
-public class DrawableActor extends Actor {
+public abstract class DrawableActor extends Actor {
 
     private final TextureRegion texture;
 
@@ -49,9 +49,13 @@ public class DrawableActor extends Actor {
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
+    public final void draw(Batch batch, float parentAlpha) {
         Color color = getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        draw(batch);
+    }
+
+    public void draw(Batch batch) {
         batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
 }

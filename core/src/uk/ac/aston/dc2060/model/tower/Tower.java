@@ -14,6 +14,7 @@ import java.util.Collection;
  */
 public class Tower extends DrawableActor {
 
+    private TextureRegion base;
     private TextureRegion gunfire;
 
     private Collection<Enemy> enemies;
@@ -27,7 +28,8 @@ public class Tower extends DrawableActor {
      */
     public Tower(TowerIcon icon, Collection<Enemy> enemies) {
         super(icon.getTexture());
-        this.gunfire = icon.tileSet.getTile(TileID.GUN_FIRE.getID()).getTextureRegion();
+        this.base = icon.tileSet.getTile(TileID.SINGLE_TURRET_BASE.getID()).getTextureRegion();
+        this.gunfire = icon.tileSet.getTile(TileID.SINGLE_TURRET_GUNFIRE.getID()).getTextureRegion();
         this.enemies = enemies;
         setAlpha(0.65f);
     }
@@ -43,15 +45,18 @@ public class Tower extends DrawableActor {
     int counter;
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
+    public void draw(Batch batch) {
         counter = ++counter % 4;
+        batch.draw(base, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), 0);
         if (counter < 3) {
-            float offsetX = (float) Math.cos(Math.toRadians(getRotation() + 90)) * 0.7f;
-            float offsetY = (float) Math.sin(Math.toRadians(getRotation() + 90)) * 0.7f;
+            float offsetX = (float) Math.cos(Math.toRadians(getRotation() + 90)) * 0.9f;
+            float offsetY = (float) Math.sin(Math.toRadians(getRotation() + 90)) * 0.9f;
 
             batch.draw(gunfire, getX() + offsetX, getY() + offsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         }
-        super.draw(batch, parentAlpha);
+        float offsetX = (float) Math.cos(Math.toRadians(getRotation() + 90)) * 0.17f;
+        float offsetY = (float) Math.sin(Math.toRadians(getRotation() + 90)) * 0.17f;
+        batch.draw(getTexture(), getX() + offsetX, getY() + offsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
     }
 
     /**

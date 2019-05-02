@@ -68,8 +68,8 @@ public class Enemy extends DrawableActor {
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+    public void draw(Batch batch) {
+        super.draw(batch);
 
         // Draw health bar
         float barWidth = 0.5f * health;
