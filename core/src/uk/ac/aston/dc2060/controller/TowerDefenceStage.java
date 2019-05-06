@@ -3,7 +3,6 @@ package uk.ac.aston.dc2060.controller;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import uk.ac.aston.dc2060.controller.listener.DragAndDropListener;
 import uk.ac.aston.dc2060.model.enemy.BasicEnemy;
 import uk.ac.aston.dc2060.model.enemy.Enemy;
 import uk.ac.aston.dc2060.model.tower.Tower;
@@ -65,7 +64,6 @@ public class TowerDefenceStage extends PollingStage {
         if (actor instanceof Tower) {
             Tower tower = (Tower) actor;
             if (!tower.isPlaced()) {
-                tower.addListener(new DragAndDropListener(this));
                 tower.setY(icons.size());
                 tower.setX(mapWidth);
                 icons.add(tower);

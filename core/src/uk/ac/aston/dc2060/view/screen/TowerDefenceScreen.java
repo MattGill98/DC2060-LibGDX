@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
 import uk.ac.aston.dc2060.model.tower.BasicTower;
+import uk.ac.aston.dc2060.model.tower.spawner.TowerSpawner;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
 
@@ -43,6 +44,9 @@ public class TowerDefenceScreen implements Screen {
 
         // Add GUI icons
         this.gameStage.addActor(new BasicTower());
+
+        // Add Tower generator
+        this.gameStage.addListener(new TowerSpawner());
     }
 
     @Override

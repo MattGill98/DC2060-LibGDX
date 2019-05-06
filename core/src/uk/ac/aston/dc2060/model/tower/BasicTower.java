@@ -19,6 +19,11 @@ public class BasicTower extends Tower {
     }
 
     @Override
+    public Tower clone() {
+        return new BasicTower();
+    }
+
+    @Override
     public void draw(Batch batch) {
         if (!placed) {
             batch.draw(turret, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());

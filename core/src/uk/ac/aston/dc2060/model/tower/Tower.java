@@ -52,4 +52,6 @@ public abstract class Tower extends DrawableActor {
         }
         super.act(delta);
     }
+
+    public abstract Tower clone();
 }
