@@ -32,13 +32,14 @@ public class TowerDefenceScreen implements Screen {
     public TowerDefenceScreen() {
         // Configure the game view
         int virtualMapWidth = (Integer) TILE_MAP.getProperties().get("width");
+        int virtualMapHeight = (Integer) TILE_MAP.getProperties().get("height");
         int virtualWidth = 1 + virtualMapWidth;
-        int virtualHeight = (Integer) TILE_MAP.getProperties().get("height");
+        int virtualHeight = virtualMapHeight;
         this.camera = new OrthographicCamera(virtualWidth, virtualHeight);
         Viewport gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
 
         // Configure rendered scene
-        this.gameStage = new TowerDefenceStage(gameViewport, virtualMapWidth, virtualHeight);
+        this.gameStage = new TowerDefenceStage(gameViewport, virtualMapWidth, virtualMapHeight);
         this.mapRenderer = new TowerDefenceMapRenderer(camera, virtualMapWidth);
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
 
