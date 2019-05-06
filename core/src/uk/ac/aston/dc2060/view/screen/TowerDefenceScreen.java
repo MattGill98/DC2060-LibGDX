@@ -38,8 +38,8 @@ public class TowerDefenceScreen implements Screen {
         Viewport gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
 
         // Configure rendered scene
-        this.gameStage = new TowerDefenceStage(gameViewport, TILE_MAP.getTileSets());
-        this.mapRenderer = new TowerDefenceMapRenderer(TILE_MAP, camera, virtualMapWidth);
+        this.gameStage = new TowerDefenceStage(gameViewport, virtualMapWidth, virtualHeight);
+        this.mapRenderer = new TowerDefenceMapRenderer(camera, virtualMapWidth);
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
 
         // Add GUI icons
@@ -47,7 +47,7 @@ public class TowerDefenceScreen implements Screen {
         this.gameStage.addActor(new BasicTower(virtualMapWidth, 1));
 
         // Add Tower generator
-        this.gameStage.addListener(new TowerSpawner());
+        this.gameStage.addListener(new TowerSpawner((TowerDefenceStage) gameStage));
     }
 
     @Override
