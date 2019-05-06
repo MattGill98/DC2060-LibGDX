@@ -2,21 +2,14 @@ package uk.ac.aston.dc2060.controller;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import uk.ac.aston.dc2060.model.TimedEvent;
 
 /**
  * A stage that runs a task after a given time period.
  */
 public abstract class PollingStage extends Stage {
 
-    /**
-     * The window delta after which to run the task.
-     */
-    private float deltaLimit;
-
-    /**
-     * A running total of the window delta time elapsed.
-     */
-    private float currentDelta;
+    private TimedEvent event;
 
     /**
      * Create a stage with a recurring task.
@@ -26,21 +19,13 @@ public abstract class PollingStage extends Stage {
      */
     PollingStage(Viewport viewport, float deltaLimit) {
         super(viewport);
-        this.deltaLimit = deltaLimit;
+        this.event = new TimedEvent(deltaLimit, this::timeout);
     }
 
-    /**
-     * Cause all actors in the scene to act. This will be run as usual every frame.
-     * @param delta the time elapsed between frames.
-     */
     @Override
     public void act(float delta) {
         super.act(delta);
-        currentDelta += delta * 1000f;
-        if (currentDelta > deltaLimit) {
-            currentDelta = 0;
-            timeout();
-        }
+        event.test(delta);
     }
 
     /**

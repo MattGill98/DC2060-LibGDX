@@ -12,8 +12,7 @@ public class NearestEnemyStrategy extends TowerAimingStrategy {
         super(enemies);
     }
 
-    @Override
-    public void aim(Tower tower) {
+    public Enemy getTarget(Tower tower) {
         Float distanceToNearest = null;
         Enemy nearestEnemy = null;
         for (Enemy enemy : enemies) {
@@ -23,8 +22,6 @@ public class NearestEnemyStrategy extends TowerAimingStrategy {
                 distanceToNearest = distance;
             }
         }
-        if (nearestEnemy != null) {
-            tower.setRotation((float) Math.toDegrees(Math.atan2(nearestEnemy.getY() - tower.getY(), nearestEnemy.getX() - tower.getX())) - 90);
-        }
+        return nearestEnemy;
     }
 }

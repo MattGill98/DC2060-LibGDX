@@ -3,6 +3,8 @@ package uk.ac.aston.dc2060.model.tower;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import uk.ac.aston.dc2060.model.TileID;
+import uk.ac.aston.dc2060.model.TimedEvent;
+import uk.ac.aston.dc2060.model.enemy.Enemy;
 
 import static uk.ac.aston.dc2060.TowerDefenceGame.TILE_MAP;
 
@@ -12,11 +14,14 @@ public class BasicTower extends Tower {
     private TextureRegion base;
     private TextureRegion gunfire;
 
+    private int shootingAnimationCounter;
+
     public BasicTower(float x, float y) {
         super(x, y);
         this.turret = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET.getID()).getTextureRegion();
         this.base = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_BASE.getID()).getTextureRegion();
         this.gunfire = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_GUNFIRE.getID()).getTextureRegion();
+        addTimedEvent(new TimedEvent(1000, this::shoot));
     }
 
     public BasicTower() {
@@ -44,10 +49,20 @@ public class BasicTower extends Tower {
             float turretOffsetY = (float) rotationSin * 0.17f;
             batch.draw(turret, getX() + turretOffsetX, getY() + turretOffsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
 
-            // Draw gunfire
-            float gunfireOffsetX = (float) rotationCos * 0.9f;
-            float gunfireOffsetY = (float) rotationSin * 0.9f;
-            batch.draw(gunfire, getX() + gunfireOffsetX, getY() + gunfireOffsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+            if (shootingAnimationCounter++ > 0 && shootingAnimationCounter < 10) {
+                // Draw gunfire
+                float gunfireOffsetX = (float) rotationCos * 0.9f;
+                float gunfireOffsetY = (float) rotationSin * 0.9f;
+                batch.draw(gunfire, getX() + gunfireOffsetX, getY() + gunfireOffsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+            }
+        }
+    }
+
+    public void shoot() {
+        shootingAnimationCounter = 0;
+        Enemy target = aimingStrategy.getTarget(this);
+        if (target != null) {
+            target.getHealthBar().modifyHealth(-0.2f);
         }
     }
 }

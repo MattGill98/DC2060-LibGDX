@@ -46,6 +46,10 @@ public class HealthBar implements Drawable, Disposable {
         this.currentHealth = health;
     }
 
+    public void modifyHealth(float delta) {
+        this.currentHealth += delta;
+    }
+
     private Texture getTexture() {
         if (currentHealth < lowHealthMarker) {
             return lowHealthTexture;

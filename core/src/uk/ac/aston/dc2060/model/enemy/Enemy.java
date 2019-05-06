@@ -57,6 +57,10 @@ public abstract class Enemy extends DrawableActor {
         super.act(delta);
     }
 
+    public HealthBar getHealthBar() {
+        return healthBar;
+    }
+
     /**
      * Moves the enemy along the route, or removes it from the
      * scene if the route is finished.
