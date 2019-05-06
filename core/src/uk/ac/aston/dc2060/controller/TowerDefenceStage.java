@@ -50,6 +50,13 @@ public class TowerDefenceStage extends PollingStage {
         return enemies;
     }
 
+    /**
+     * @return the width of the map in world coordinates.
+     */
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
     @Override
     public void addActor(Actor actor) {
         if (actor instanceof Enemy) {
@@ -57,8 +64,8 @@ public class TowerDefenceStage extends PollingStage {
         }
         if (actor instanceof Tower) {
             Tower tower = (Tower) actor;
-            if (!tower.isEnabled()) {
-                tower.addListener(new DragAndDropListener(tower, this));
+            if (!tower.isPlaced()) {
+                tower.addListener(new DragAndDropListener(this));
                 tower.setY(icons.size());
                 tower.setX(mapWidth);
                 icons.add(tower);

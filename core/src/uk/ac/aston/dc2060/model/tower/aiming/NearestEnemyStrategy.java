@@ -1,4 +1,4 @@
-package uk.ac.aston.dc2060.model.tower.strategy;
+package uk.ac.aston.dc2060.model.tower.aiming;
 
 import com.badlogic.gdx.math.Vector2;
 import uk.ac.aston.dc2060.model.enemy.Enemy;
@@ -6,14 +6,14 @@ import uk.ac.aston.dc2060.model.tower.Tower;
 
 import java.util.Collection;
 
-public class NearestTowerStrategy extends TowerStrategy {
+public class NearestEnemyStrategy extends TowerAimingStrategy {
 
-    public NearestTowerStrategy(Collection<Enemy> enemies) {
+    public NearestEnemyStrategy(Collection<Enemy> enemies) {
         super(enemies);
     }
 
     @Override
-    public void act(Tower tower) {
+    public void aim(Tower tower) {
         Float distanceToNearest = null;
         Enemy nearestEnemy = null;
         for (Enemy enemy : enemies) {

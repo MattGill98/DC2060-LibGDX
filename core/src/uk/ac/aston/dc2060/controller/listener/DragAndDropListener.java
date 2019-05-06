@@ -5,7 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
 import uk.ac.aston.dc2060.model.tower.BasicTower;
 import uk.ac.aston.dc2060.model.tower.Tower;
-import uk.ac.aston.dc2060.model.tower.strategy.NearestTowerStrategy;
+import uk.ac.aston.dc2060.model.tower.aiming.NearestEnemyStrategy;
+import uk.ac.aston.dc2060.model.tower.state.TowerState;
 
 /**
  * A tower icon listener that controls what happens when an icon is dragged.
@@ -19,11 +20,9 @@ public class DragAndDropListener extends ClickListener {
     /**
      * Create a drag and drop listener.
      *
-     * @param icon      the icon on which to listen.
      * @param gameStage the game stage to use for handling events.
      */
-    public DragAndDropListener(Tower icon, TowerDefenceStage gameStage) {
-        this.icon = icon;
+    public DragAndDropListener(TowerDefenceStage gameStage) {
         this.gameStage = gameStage;
     }
 
@@ -32,7 +31,7 @@ public class DragAndDropListener extends ClickListener {
         // If the drag has started, create a tower to be placed
         if (placedTower == null) {
             placedTower = new BasicTower();
-            placedTower.setStrategy(new NearestTowerStrategy(gameStage.getEnemies()));
+            placedTower.setState(TowerState.DRAGGING);
             gameStage.addActor(placedTower);
         }
 
@@ -46,8 +45,11 @@ public class DragAndDropListener extends ClickListener {
     @Override
     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
         // Place the tower, and reset the temporary object
-        placedTower.setAlpha(1f);
-        placedTower = null;
+        if (placedTower != null) {
+            placedTower.setState(TowerState.PLACED);
+            placedTower.setAimingStrategy(new NearestEnemyStrategy(gameStage.getEnemies()));
+            placedTower = null;
+        }
 
         super.touchUp(event, x, y, pointer, button);
     }

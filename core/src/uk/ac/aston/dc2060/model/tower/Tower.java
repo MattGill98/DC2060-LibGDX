@@ -1,23 +1,54 @@
 package uk.ac.aston.dc2060.model.tower;
 
 import uk.ac.aston.dc2060.model.DrawableActor;
-import uk.ac.aston.dc2060.model.tower.strategy.TowerStrategy;
+import uk.ac.aston.dc2060.model.tower.aiming.TowerAimingStrategy;
+import uk.ac.aston.dc2060.model.tower.state.TowerState;
 
 /**
  * A class modelling a placed tower.
  */
 public abstract class Tower extends DrawableActor {
 
-    private TowerStrategy strategy;
+    protected boolean placed;
+    private TowerAimingStrategy aimingStrategy;
 
-    public final void setStrategy(TowerStrategy strategy) {
-        this.strategy = strategy;
+    public Tower() {
+        setState(TowerState.ICON);
+    }
+
+    public void setState(TowerState state) {
+        if (state == null) {
+            return;
+        }
+        switch (state) {
+            case ICON:
+                break;
+            case DRAGGING:
+                setAlpha(0.65f);
+                break;
+            case PLACED:
+                setAlpha(1f);
+                placed = true;
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognised state: " + state.name());
+        }
+    }
+
+    public boolean isPlaced() {
+        return placed;
+    }
+
+    public final void setAimingStrategy(TowerAimingStrategy strategy) {
+        this.aimingStrategy = strategy;
     }
 
     @Override
     public final void act(float delta) {
-        if (strategy != null) {
-            strategy.act(this);
+        if (placed) {
+            if (aimingStrategy != null) {
+                aimingStrategy.aim(this);
+            }
         }
         super.act(delta);
     }
