@@ -12,8 +12,13 @@ public abstract class Tower extends DrawableActor {
     protected boolean placed;
     private TowerAimingStrategy aimingStrategy;
 
-    public Tower() {
+    public Tower(float x, float y) {
+        super(x, y);
         setState(TowerState.ICON);
+    }
+
+    public Tower() {
+        this(-1, -1);
     }
 
     public void setState(TowerState state) {

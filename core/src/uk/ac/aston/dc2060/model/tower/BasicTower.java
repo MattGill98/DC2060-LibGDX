@@ -12,10 +12,15 @@ public class BasicTower extends Tower {
     private TextureRegion base;
     private TextureRegion gunfire;
 
-    public BasicTower() {
+    public BasicTower(float x, float y) {
+        super(x, y);
         this.turret = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET.getID()).getTextureRegion();
         this.base = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_BASE.getID()).getTextureRegion();
         this.gunfire = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_GUNFIRE.getID()).getTextureRegion();
+    }
+
+    public BasicTower() {
+        this(-1, -1);
     }
 
     @Override

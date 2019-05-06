@@ -9,13 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public abstract class DrawableActor extends Actor implements Drawable {
 
-    protected DrawableActor() {
+    protected DrawableActor(float x, float y) {
         super();
+        setX(x);
+        setY(y);
 
         // Needed for correct rendering
         setWidth(1);
         setHeight(1);
         setOrigin(getWidth() / 2f, getHeight() / 2f);
+    }
+
+    protected DrawableActor() {
+        this(-1, -1);
     }
 
     /**
