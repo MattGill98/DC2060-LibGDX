@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
+import uk.ac.aston.dc2060.controller.spawner.TowerSpawner;
 import uk.ac.aston.dc2060.model.tower.BasicTower;
-import uk.ac.aston.dc2060.model.tower.spawner.TowerSpawner;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
 

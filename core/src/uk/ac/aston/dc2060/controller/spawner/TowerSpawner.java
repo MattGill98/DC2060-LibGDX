@@ -1,4 +1,4 @@
-package uk.ac.aston.dc2060.model.tower.spawner;
+package uk.ac.aston.dc2060.controller.spawner;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
