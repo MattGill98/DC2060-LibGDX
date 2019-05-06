@@ -30,7 +30,7 @@ public class BasicTower extends Tower {
 
     @Override
     public void draw(Batch batch) {
-        if (!placed) {
+        if (!isEnabled()) {
             batch.draw(turret, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         } else {
             // Draw base

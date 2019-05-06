@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
 import uk.ac.aston.dc2060.model.tower.Tower;
 import uk.ac.aston.dc2060.model.tower.aiming.NearestEnemyStrategy;
-import uk.ac.aston.dc2060.model.tower.state.TowerState;
 
 public class TowerSpawner extends ClickListener {
 
@@ -23,9 +22,9 @@ public class TowerSpawner extends ClickListener {
         // If the drag has started, create a tower to be placed
         if (placedTower == null && event.getTarget() instanceof Tower) {
             Tower selectedTower = (Tower) event.getTarget();
-            if (!selectedTower.isPlaced()) {
+            if (!selectedTower.isEnabled()) {
                 placedTower = selectedTower.clone();
-                placedTower.setState(TowerState.DRAGGING);
+                placedTower.setAlpha(0.65f);
                 event.getStage().addActor(placedTower);
             }
         }
@@ -42,8 +41,9 @@ public class TowerSpawner extends ClickListener {
     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
         // Place the tower, and reset the temporary object
         if (placedTower != null) {
-            placedTower.setState(TowerState.PLACED);
             placedTower.setAimingStrategy(new NearestEnemyStrategy(((TowerDefenceStage) event.getStage()).getEnemies()));
+            placedTower.setAlpha(1f);
+            placedTower.setEnabled(true);
             placedTower = null;
         }
 
