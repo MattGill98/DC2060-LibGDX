@@ -42,6 +42,10 @@ public class HealthBar implements Drawable, Disposable {
         this.y = y;
     }
 
+    public float getHealth() {
+        return currentHealth;
+    }
+
     public void setHealth(float health) {
         this.currentHealth = health;
     }

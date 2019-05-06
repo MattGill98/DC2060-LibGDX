@@ -37,4 +37,10 @@ public abstract class DrawableActor extends Actor implements Drawable {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
         draw(batch);
     }
+
+    @Override
+    public boolean remove() {
+        setVisible(false);
+        return super.remove();
+    }
 }

@@ -49,6 +49,9 @@ public abstract class Enemy extends DrawableActor {
 
     @Override
     public void act(float delta) {
+        if (getHealthBar().getHealth() <= 0.0001f) {
+            removeActor(this).act(-1);
+        }
         if (isVisible()) {
             move(delta);
             healthBar.setX(getX());

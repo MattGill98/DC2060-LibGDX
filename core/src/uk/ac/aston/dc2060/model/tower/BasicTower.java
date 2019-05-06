@@ -58,11 +58,11 @@ public class BasicTower extends Tower {
         }
     }
 
-    public void shoot() {
-        shootingAnimationCounter = 0;
+    private void shoot() {
         Enemy target = aimingStrategy.getTarget(this);
         if (target != null) {
             target.getHealthBar().modifyHealth(-0.2f);
+            shootingAnimationCounter = 0;
         }
     }
 }
