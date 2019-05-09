@@ -2,25 +2,15 @@ package uk.ac.aston.dc2060.model;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * A class modelling a drawable object on screen.
  */
-public class DrawableActor extends Actor {
+public abstract class DrawableActor extends Actor implements Drawable {
 
-    private final TextureRegion texture;
-
-    /**
-     * Create a drawable object.
-     *
-     * @param texture the texture to draw for the enemy.
-     * @param x       the x coordinate in world space of the object.
-     * @param y       the y coordinate in world space of the object.
-     */
-    DrawableActor(TextureRegion texture, int x, int y) {
-        this.texture = texture;
+    protected DrawableActor(float x, float y) {
+        super();
         setX(x);
         setY(y);
 
@@ -30,28 +20,27 @@ public class DrawableActor extends Actor {
         setOrigin(getWidth() / 2f, getHeight() / 2f);
     }
 
-    protected DrawableActor(TextureRegion texture) {
-        this(texture, 0, 0);
-    }
-
-    /**
-     * @return the texture of the object.
-     */
-    public TextureRegion getTexture() {
-        return texture;
+    protected DrawableActor() {
+        this(-1, -1);
     }
 
     /**
      * @param a the transparency value of the object, between 0 and 1.
      */
-    protected void setAlpha(float a) {
-        setColor(1, 1, 1, a);
+    public final void setAlpha(float a) {
+        getColor().a = a;
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
+    public final void draw(Batch batch, float parentAlpha) {
         Color color = getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-        batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        draw(batch);
+    }
+
+    @Override
+    public boolean remove() {
+        setVisible(false);
+        return super.remove();
     }
 }

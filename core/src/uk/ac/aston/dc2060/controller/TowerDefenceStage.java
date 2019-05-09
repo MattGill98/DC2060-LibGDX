@@ -1,20 +1,16 @@
 package uk.ac.aston.dc2060.controller;
 
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import uk.ac.aston.dc2060.controller.listener.DragAndDropListener;
-import uk.ac.aston.dc2060.model.Enemy;
-import uk.ac.aston.dc2060.model.EnemyRoute;
+import uk.ac.aston.dc2060.TowerDefenceGame;
 import uk.ac.aston.dc2060.model.TileID;
-import uk.ac.aston.dc2060.model.tower.TowerIcon;
+import uk.ac.aston.dc2060.model.enemy.BasicEnemy;
+import uk.ac.aston.dc2060.model.enemy.Enemy;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,32 +18,27 @@ import java.util.Set;
  */
 public class TowerDefenceStage extends PollingStage {
 
-    private final TiledMap tileMap;
     private final int mapWidth;
     private final int mapHeight;
 
     private Set<Enemy> enemies;
-    private List<TowerIcon> icons;
 
     private int enemySpawnInterval;
     private int enemySpawnCounter;
 
-    /**
-     * Create the game stage.
-     *
-     * @param viewport    the viewport to use in rendering the stage.
-     * @param tileMap     the tilemap to fetch textures from.
-     * @param mapWidth    the width of the map in world space.
-     * @param mapHeight    the height of the map in world space.
-     */
-    public TowerDefenceStage(Viewport viewport, TiledMap tileMap, int mapWidth, int mapHeight) {
+    public TowerDefenceStage(Viewport viewport, int mapWidth, int mapHeight) {
         super(viewport, 1000);
-        this.tileMap = tileMap;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.enemies = new HashSet<>();
-        this.icons = new ArrayList<>();
         this.enemySpawnInterval = 4;
+    }
+
+    /**
+     * @return a set of the enemies in the stage.
+     */
+    public Set<Enemy> getEnemies() {
+        return enemies;
     }
 
     @Override
@@ -55,20 +46,13 @@ public class TowerDefenceStage extends PollingStage {
         if (actor instanceof Enemy) {
             enemies.add((Enemy) actor);
         }
-        if (actor instanceof TowerIcon) {
-            TowerIcon newTowerIcon = (TowerIcon) actor;
-            newTowerIcon.addListener(new DragAndDropListener(newTowerIcon, this));
-            newTowerIcon.setY(icons.size());
-            newTowerIcon.setX(mapWidth);
-            icons.add(newTowerIcon);
-        }
         super.addActor(actor);
     }
 
     @Override
     protected void timeout() {
         if (enemySpawnCounter++ % enemySpawnInterval == 0) {
-            Enemy newEnemy = new Enemy(tileMap.getTileSets(), TileID.SOLDIER, EnemyRoute.ROUTE, 1);
+            Enemy newEnemy = new BasicEnemy(TowerDefenceGame.TILE_MAP.getTileSets());
             addActor(newEnemy);
         }
     }
@@ -95,7 +79,7 @@ public class TowerDefenceStage extends PollingStage {
      */
     public boolean isPlaceableCoordinate(Vector2 worldCoords) {
         limitToMapCoordinates(worldCoords);
-        MapLayer ground = tileMap.getLayers().get("Ground");
+        MapLayer ground = TowerDefenceGame.TILE_MAP.getLayers().get("Ground");
         if (ground == null) {
             throw new IllegalStateException("'Ground' layer was not found in the tilemap.");
         }

@@ -1,4 +1,4 @@
-package uk.ac.aston.dc2060.model;
+package uk.ac.aston.dc2060.model.enemy;
 
 import com.badlogic.gdx.math.GridPoint2;
 

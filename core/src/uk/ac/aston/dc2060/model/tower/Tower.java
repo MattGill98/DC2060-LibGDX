@@ -1,34 +1,60 @@
 package uk.ac.aston.dc2060.model.tower;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import uk.ac.aston.dc2060.model.DrawableActor;
+import uk.ac.aston.dc2060.model.TimedEvent;
+import uk.ac.aston.dc2060.model.enemy.Enemy;
+import uk.ac.aston.dc2060.model.tower.aiming.TowerAimingStrategy;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * A class modelling a placed tower.
  */
-public class Tower extends DrawableActor {
+public abstract class Tower extends DrawableActor {
 
-    /**
-     * Create a tower from a given icon.
-     *
-     * @param icon the icon to use to create the tower.
-     */
-    public Tower(TowerIcon icon) {
-        super(icon.getTexture());
-        setAlpha(0.65f);
-        addAction(new Action() {
-            @Override
-            public boolean act(float delta) {
-                rotateBy(1);
-                return false;
+    protected boolean enabled;
+    protected TowerAimingStrategy aimingStrategy;
+    private Collection<TimedEvent> timers;
+
+    public Tower(float x, float y) {
+        super(x, y);
+        this.timers = new HashSet<>();
+    }
+
+    public Tower() {
+        this(-1, -1);
+    }
+
+    protected void addTimedEvent(TimedEvent event) {
+        timers.add(event);
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public final void setAimingStrategy(TowerAimingStrategy strategy) {
+        this.aimingStrategy = strategy;
+    }
+
+    @Override
+    public final void act(float delta) {
+        if (isEnabled()) {
+            if (aimingStrategy != null) {
+                Enemy target = aimingStrategy.getTarget(this);
+                if (target != null) {
+                    setRotation((float) Math.toDegrees(Math.atan2(target.getY() - getY(), target.getX() - getX())) - 90);
+                }
             }
-        });
+            timers.forEach(timer -> timer.test(delta));
+        }
+        super.act(delta);
     }
 
-    /**
-     * Called when the tower has been placed.
-     */
-    public void realise() {
-        setAlpha(1f);
-    }
+    public abstract Tower clone();
 }

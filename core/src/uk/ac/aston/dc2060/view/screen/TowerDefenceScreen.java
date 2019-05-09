@@ -4,17 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
-import uk.ac.aston.dc2060.model.TileID;
-import uk.ac.aston.dc2060.model.tower.TowerIcon;
+import uk.ac.aston.dc2060.controller.spawner.TowerSpawner;
+import uk.ac.aston.dc2060.model.tower.BasicTower;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
+
+import static uk.ac.aston.dc2060.TowerDefenceGame.TILE_MAP;
 
 /**
  * A screen which runs the actual game.
@@ -30,24 +30,25 @@ public class TowerDefenceScreen implements Screen {
     private GridView grid;
 
     public TowerDefenceScreen() {
-        // Load tilemap
-        TiledMap map = new TmxMapLoader().load("tilemap.tmx");
-
         // Configure the game view
-        int virtualMapWidth = (Integer) map.getProperties().get("width");
+        int virtualMapWidth = (Integer) TILE_MAP.getProperties().get("width");
+        int virtualMapHeight = (Integer) TILE_MAP.getProperties().get("height");
         int virtualWidth = 1 + virtualMapWidth;
-        int virtualHeight = (Integer) map.getProperties().get("height");
+        int virtualHeight = virtualMapHeight;
         this.camera = new OrthographicCamera(virtualWidth, virtualHeight);
         Viewport gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
 
         // Configure rendered scene
-        this.gameStage = new TowerDefenceStage(gameViewport, map, virtualMapWidth, virtualHeight);
-        this.mapRenderer = new TowerDefenceMapRenderer(map, camera, virtualMapWidth);
+        this.gameStage = new TowerDefenceStage(gameViewport, virtualMapWidth, virtualMapHeight);
+        this.mapRenderer = new TowerDefenceMapRenderer(camera, virtualMapWidth);
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
 
         // Add GUI icons
-        this.gameStage.addActor(new TowerIcon(map.getTileSets(), TileID.SINGLE_TURRET));
-        this.gameStage.addActor(new TowerIcon(map.getTileSets(), TileID.DOUBLE_TURRET));
+        this.gameStage.addActor(new BasicTower(virtualMapWidth, 0));
+        this.gameStage.addActor(new BasicTower(virtualMapWidth, 1));
+
+        // Add Tower generator
+        this.gameStage.addListener(new TowerSpawner((TowerDefenceStage) gameStage));
     }
 
     @Override
@@ -69,12 +70,12 @@ public class TowerDefenceScreen implements Screen {
             // Render map
             mapRenderer.render();
 
+            // Render grid
+            grid.render();
+
             // Render actors
             gameStage.act();
             gameStage.draw();
-
-            // Render grid
-            grid.render();
         }
     }
 
