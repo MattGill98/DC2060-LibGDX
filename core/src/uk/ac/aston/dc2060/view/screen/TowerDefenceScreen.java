@@ -44,8 +44,8 @@ public class TowerDefenceScreen implements Screen {
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
 
         // Add GUI icons
-        this.gameStage.addActor(new BasicTower(virtualMapWidth, 0, 0.1f, 500));
-        this.gameStage.addActor(new BasicTower(virtualMapWidth, 1, 0.4f, 2000));
+        this.gameStage.addActor(new BasicTower(virtualMapWidth, 0, 0.05f, 500));
+        this.gameStage.addActor(new BasicTower(virtualMapWidth, 1, 0.2f, 2000));
 
         // Add Tower generator
         this.gameStage.addListener(new TowerSpawner((TowerDefenceStage) gameStage));
@@ -61,7 +61,7 @@ public class TowerDefenceScreen implements Screen {
     public void render(float delta) {
         if (enabled) {
             // Clear the window
-            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClearColor(0.5804f, 0.6941f, 0.7059f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             // Update the camera
