@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import uk.ac.aston.dc2060.model.Disposable;
 import uk.ac.aston.dc2060.model.DrawableActor;
 import uk.ac.aston.dc2060.model.TileID;
@@ -36,10 +38,9 @@ public abstract class Enemy extends DrawableActor implements Disposable {
     Enemy(TiledMapTileSets tileSet, TileID tileID, float speed) {
         this.texture = tileSet.getTile(tileID.getID()).getTextureRegion();
         this.route = new ArrayList<>(EnemyRoute.ROUTE);
-        setX(route.get(0).x);
-        setY(route.get(0).y);
         this.speed = speed;
         this.healthBar = new HealthBar();
+        planRoute();
     }
 
     @Override
@@ -54,7 +55,6 @@ public abstract class Enemy extends DrawableActor implements Disposable {
             dispose();
         }
         if (isVisible()) {
-            move(delta);
             healthBar.setX(getX());
             healthBar.setY(getY() + 0.85f);
         }
@@ -65,48 +65,12 @@ public abstract class Enemy extends DrawableActor implements Disposable {
         return healthBar;
     }
 
-    /**
-     * Moves the enemy along the route, or removes it from the
-     * scene if the route is finished.
-     *
-     * @param delta the time passed between frames
-     */
-    private void move(float delta) {
-        if (!isVisible()) {
-            return;
-        }
-        if (!route.isEmpty()) {
-
-            // Find out information about the next point
-            GridPoint2 nextPoint = route.get(0);
-            double distX = nextPoint.x - getX();
-            double distY = nextPoint.y - getY();
-            double angle = Math.toDegrees(Math.atan2(distY, distX));
-            double distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-            double travelDistance = delta * speed;
-
-            // Since the direction of motion is always at right angles,
-            // we can cheat this maths step by assuming the enemy can move
-            // the entire travel distance on both axes
-            if (distance < travelDistance) {
-                route.remove(0);
-                setX(nextPoint.x);
-                setY(nextPoint.y);
-
-                // Then move the remaining distance
-                move((float) (delta * (1 - (distance / travelDistance))));
-                return;
-            }
-            float moveX = (float) (travelDistance * Math.signum(distX));
-            float moveY = (float) (travelDistance * Math.signum(distY));
-            setX(getX() + moveX);
-            setY(getY() + moveY);
-
-            // Set the rotation
-            this.setRotation((float) angle);
-        } else {
-            dispose(true);
-        }
+    private void planRoute() {
+        SequenceAction movementSteps = new SequenceAction();
+        route.forEach(point -> {
+            movementSteps.addAction(Actions.moveTo(point.x, point.y, 2f));
+        });
+        addAction(movementSteps);
     }
 
     @Override
