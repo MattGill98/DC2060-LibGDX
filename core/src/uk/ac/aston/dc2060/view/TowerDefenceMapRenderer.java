@@ -28,7 +28,6 @@ public class TowerDefenceMapRenderer extends OrthogonalTiledMapRenderer {
      * Create a renderer. The map will be scaled up uniformly
      * until the map is the correct width.
      *
-     * @param map the tilemap to render.
      * @param camera    the camera to use to render the map.
      * @param mapWidth the width of the map to draw.
      */
@@ -40,7 +39,6 @@ public class TowerDefenceMapRenderer extends OrthogonalTiledMapRenderer {
      * Used for finding a size ratio that fulfils either the
      * correct map height or width, preferring the lower one.
      *
-     * @param map the tile map to model.
      * @param mapWidth the requested width of the map.
      * @param mapHeight the requested height of the map.
      * @return the correct ratio for scaling the tilemap to.

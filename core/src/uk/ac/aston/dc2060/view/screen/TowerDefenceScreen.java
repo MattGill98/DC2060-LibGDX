@@ -31,17 +31,26 @@ public class TowerDefenceScreen implements Screen {
 
     public TowerDefenceScreen() {
         // Configure the game view
+        int virtualMapX = 1;
+        int virtualMapY = 0;
         int virtualMapWidth = (Integer) TILE_MAP.getProperties().get("width");
         int virtualMapHeight = (Integer) TILE_MAP.getProperties().get("height");
-        int virtualWidth = 1 + virtualMapWidth;
+        int virtualWidth = 2 + virtualMapWidth;
         int virtualHeight = virtualMapHeight;
         this.camera = new OrthographicCamera(virtualWidth, virtualHeight);
         Viewport gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
 
         // Configure rendered scene
         this.gameStage = new TowerDefenceStage(gameViewport, virtualMapWidth, virtualMapHeight);
+        camera.translate(-virtualMapX, -virtualMapY);
+        camera.update();
         this.mapRenderer = new TowerDefenceMapRenderer(camera, virtualMapWidth);
+        camera.translate(virtualMapX, virtualMapY);
+        camera.update();
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
+
+        // Position camera
+        this.camera.translate(-virtualMapX, -virtualMapY);
 
         // Add GUI icons
         this.gameStage.addActor(new BasicTower(virtualMapWidth, 0, 0.05f, 500));
