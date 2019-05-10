@@ -44,8 +44,8 @@ public class TowerDefenceScreen implements Screen {
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
 
         // Add GUI icons
-        this.gameStage.addActor(new BasicTower(virtualMapWidth, 0));
-        this.gameStage.addActor(new BasicTower(virtualMapWidth, 1));
+        this.gameStage.addActor(new BasicTower(virtualMapWidth, 0, 0.1f, 500));
+        this.gameStage.addActor(new BasicTower(virtualMapWidth, 1, 0.4f, 2000));
 
         // Add Tower generator
         this.gameStage.addListener(new TowerSpawner((TowerDefenceStage) gameStage));
