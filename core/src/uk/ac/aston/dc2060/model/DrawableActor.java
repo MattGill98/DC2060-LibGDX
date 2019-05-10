@@ -3,6 +3,7 @@ package uk.ac.aston.dc2060.model;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import uk.ac.aston.dc2060.controller.TowerDefenceStage;
 
 /**
  * A class modelling a drawable object on screen.
@@ -42,5 +43,9 @@ public abstract class DrawableActor extends Actor implements Drawable {
     public boolean remove() {
         setVisible(false);
         return super.remove();
+    }
+
+    public TowerDefenceStage getStage() {
+        return (TowerDefenceStage) super.getStage();
     }
 }

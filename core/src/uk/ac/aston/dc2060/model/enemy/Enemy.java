@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.math.GridPoint2;
+import uk.ac.aston.dc2060.model.Disposable;
 import uk.ac.aston.dc2060.model.DrawableActor;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.model.health.HealthBar;
@@ -16,7 +17,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 /**
  * A class modelling an enemy.
  */
-public abstract class Enemy extends DrawableActor {
+public abstract class Enemy extends DrawableActor implements Disposable {
 
     private TextureRegion texture;
 
@@ -50,7 +51,7 @@ public abstract class Enemy extends DrawableActor {
     @Override
     public void act(float delta) {
         if (getHealthBar().getHealth() <= 0.0001f) {
-            removeActor(this).act(-1);
+            dispose();
         }
         if (isVisible()) {
             move(delta);
@@ -104,8 +105,19 @@ public abstract class Enemy extends DrawableActor {
             // Set the rotation
             this.setRotation((float) angle);
         } else {
-            removeActor(this).act(-1);
+            dispose(true);
         }
     }
 
+    @Override
+    public void dispose() {
+        dispose(false);
+    }
+
+    public void dispose(boolean completed) {
+        if (!completed) {
+            getStage().increaseScore(1);
+        }
+        removeActor(this).act(-1);
+    }
 }

@@ -21,6 +21,8 @@ public class TowerDefenceStage extends PollingStage {
     private final int mapWidth;
     private final int mapHeight;
 
+    private int score;
+
     private Set<Enemy> enemies;
 
     private int enemySpawnInterval;
@@ -32,6 +34,10 @@ public class TowerDefenceStage extends PollingStage {
         this.mapHeight = mapHeight;
         this.enemies = new HashSet<>();
         this.enemySpawnInterval = 4;
+    }
+
+    public void increaseScore(int count) {
+        this.score += count;
     }
 
     /**
