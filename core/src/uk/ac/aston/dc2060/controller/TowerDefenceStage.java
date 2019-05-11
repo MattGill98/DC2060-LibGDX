@@ -4,8 +4,10 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.TowerDefenceGame;
+import uk.ac.aston.dc2060.controller.actions.TimedAction;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.model.enemy.BasicEnemy;
 import uk.ac.aston.dc2060.model.enemy.Enemy;
@@ -16,7 +18,7 @@ import java.util.Set;
 /**
  * A stage that controls the game scene.
  */
-public class TowerDefenceStage extends PollingStage {
+public class TowerDefenceStage extends Stage {
 
     private final int mapWidth;
     private final int mapHeight;
@@ -26,16 +28,13 @@ public class TowerDefenceStage extends PollingStage {
 
     private Set<Enemy> enemies;
 
-    private int enemySpawnInterval;
-    private int enemySpawnCounter;
-
     public TowerDefenceStage(Viewport viewport, int mapWidth, int mapHeight) {
-        super(viewport, 1000);
+        super(viewport);
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.enemies = new HashSet<>();
-        this.enemySpawnInterval = 4;
         this.endpointHealth = 20;
+        addAction(new TimedAction(2000, true, this::spawnEnemy));
     }
 
     public int getScore() {
@@ -69,12 +68,8 @@ public class TowerDefenceStage extends PollingStage {
         super.addActor(actor);
     }
 
-    @Override
-    protected void timeout() {
-        if (enemySpawnCounter++ % enemySpawnInterval == 0) {
-            Enemy newEnemy = new BasicEnemy(TowerDefenceGame.TILE_MAP.getTileSets());
-            addActor(newEnemy);
-        }
+    private void spawnEnemy() {
+        addActor(new BasicEnemy(TowerDefenceGame.TILE_MAP.getTileSets()));
     }
 
     /**
