@@ -8,7 +8,7 @@ import uk.ac.aston.dc2060.model.enemy.Enemy;
 
 import static uk.ac.aston.dc2060.TowerDefenceGame.TILE_MAP;
 
-public class BasicTower extends Tower {
+public class DoubleBasicTower extends Tower {
 
     private TextureRegion turret;
     private TextureRegion base;
@@ -17,13 +17,14 @@ public class BasicTower extends Tower {
     private final float damagePerShot;
     private final int timeBetweenShotsMs;
 
+    private boolean leftGunfire;
     private boolean gunfireVisible;
 
-    public BasicTower(float x, float y, float damagePerShot, int timeBetweenShotsMs) {
+    public DoubleBasicTower(float x, float y, float damagePerShot, int timeBetweenShotsMs) {
         super(x, y);
         this.damagePerShot = damagePerShot;
         this.timeBetweenShotsMs = timeBetweenShotsMs;
-        this.turret = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET.getID()).getTextureRegion();
+        this.turret = TILE_MAP.getTileSets().getTile(TileID.DOUBLE_TURRET.getID()).getTextureRegion();
         this.base = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_BASE.getID()).getTextureRegion();
         this.gunfire = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_GUNFIRE.getID()).getTextureRegion();
         addAction(new TimedAction(timeBetweenShotsMs, true, this::shoot));
@@ -31,7 +32,7 @@ public class BasicTower extends Tower {
 
     @Override
     public Tower clone() {
-        return new BasicTower(getX(), getY(), damagePerShot, timeBetweenShotsMs);
+        return new DoubleBasicTower(getX(), getY(), damagePerShot, timeBetweenShotsMs);
     }
 
     @Override
@@ -45,6 +46,8 @@ public class BasicTower extends Tower {
             // Calculate rotation
             double rotationCos = Math.cos(Math.toRadians(getRotation() + 90));
             double rotationSin = Math.sin(Math.toRadians(getRotation() + 90));
+            double perpendicularRotationCos = Math.cos(Math.toRadians(getRotation()));
+            double perpendicularRotationSin = Math.sin(Math.toRadians(getRotation()));
 
             // Draw turret
             float turretOffsetX = (float) rotationCos * 0.17f;
@@ -53,10 +56,17 @@ public class BasicTower extends Tower {
 
             // Show the shot animation for 10 frames
             if (gunfireVisible) {
-                // Draw gunfire
-                float gunfireOffsetX = (float) rotationCos * 0.9f;
-                float gunfireOffsetY = (float) rotationSin * 0.9f;
-                batch.draw(gunfire, getX() + gunfireOffsetX, getY() + gunfireOffsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+                if (leftGunfire) {
+                    // Draw gunfire
+                    float gunfireOffsetX = (float) rotationCos * 0.9f - (float) perpendicularRotationCos * 0.1f;
+                    float gunfireOffsetY = (float) rotationSin * 0.9f - (float) perpendicularRotationSin * 0.1f;
+                    batch.draw(gunfire, getX() + gunfireOffsetX, getY() + gunfireOffsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+                } else {
+                    // Draw gunfire
+                    float gunfireOffsetX = (float) rotationCos * 0.9f + (float) perpendicularRotationCos * 0.1f;
+                    float gunfireOffsetY = (float) rotationSin * 0.9f + (float) perpendicularRotationSin * 0.1f;
+                    batch.draw(gunfire, getX() + gunfireOffsetX, getY() + gunfireOffsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+                }
             }
         }
     }
@@ -67,6 +77,7 @@ public class BasicTower extends Tower {
             if (target != null) {
                 target.getHealthBar().modifyHealth(-damagePerShot);
                 gunfireVisible = true;
+                leftGunfire = !leftGunfire;
                 addAction(new TimedAction(150, false, () -> gunfireVisible = false));
             }
         }
