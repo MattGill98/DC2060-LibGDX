@@ -2,8 +2,8 @@ package uk.ac.aston.dc2060.model.tower;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import uk.ac.aston.dc2060.controller.TimedAction;
 import uk.ac.aston.dc2060.model.TileID;
-import uk.ac.aston.dc2060.model.TimedEvent;
 import uk.ac.aston.dc2060.model.enemy.Enemy;
 
 import static uk.ac.aston.dc2060.TowerDefenceGame.TILE_MAP;
@@ -26,7 +26,7 @@ public class BasicTower extends Tower {
         this.turret = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET.getID()).getTextureRegion();
         this.base = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_BASE.getID()).getTextureRegion();
         this.gunfire = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_GUNFIRE.getID()).getTextureRegion();
-        addTimedEvent(new TimedEvent(timeBetweenShotsMs, this::shoot));
+        addAction(new TimedAction(timeBetweenShotsMs, this::shoot));
     }
 
     @Override
@@ -62,10 +62,12 @@ public class BasicTower extends Tower {
     }
 
     private void shoot() {
-        Enemy target = aimingStrategy.getTarget(this);
-        if (target != null) {
-            target.getHealthBar().modifyHealth(-damagePerShot);
-            shootingAnimationCounter = 0;
+        if (aimingStrategy != null) {
+            Enemy target = aimingStrategy.getTarget(this);
+            if (target != null) {
+                target.getHealthBar().modifyHealth(-damagePerShot);
+                shootingAnimationCounter = 0;
+            }
         }
     }
 }

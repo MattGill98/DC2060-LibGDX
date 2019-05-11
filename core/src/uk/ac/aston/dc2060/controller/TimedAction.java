@@ -1,9 +1,11 @@
-package uk.ac.aston.dc2060.model;
+package uk.ac.aston.dc2060.controller;
+
+import com.badlogic.gdx.scenes.scene2d.Action;
 
 /**
  * An event that runs after a specified time limit.
  */
-public class TimedEvent {
+public class TimedAction extends Action {
 
     /**
      * The window delta after which to run the task.
@@ -26,22 +28,19 @@ public class TimedEvent {
      * @param deltaLimit the limit in ms after which to run the task.
      * @param task       the task to run after the specified time limit elapses.
      */
-    public TimedEvent(float deltaLimit, Runnable task) {
+    public TimedAction(float deltaLimit, Runnable task) {
         this.deltaLimit = deltaLimit;
         this.task = task;
     }
 
-    /**
-     * Cause all actors in the scene to act. This will be run as usual every frame.
-     *
-     * @param delta the time elapsed between frames.
-     */
-    public void test(float delta) {
+    @Override
+    public boolean act(float delta) {
         currentDelta += delta * 1000f;
         if (currentDelta > deltaLimit) {
             currentDelta = 0;
             task.run();
         }
+        return false;
     }
 
 }
