@@ -6,6 +6,6 @@ import uk.ac.aston.dc2060.model.TileID;
 public class BasicEnemy extends Enemy {
 
     public BasicEnemy(TiledMapTileSets tileSet) {
-        super(tileSet, TileID.SOLDIER, 5);
+        super(tileSet, TileID.SOLDIER, 2);
     }
 }

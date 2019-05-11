@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.math.GridPoint2;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import uk.ac.aston.dc2060.model.Disposable;
 import uk.ac.aston.dc2060.model.DrawableActor;
@@ -14,7 +15,7 @@ import uk.ac.aston.dc2060.model.health.HealthBar;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
  * A class modelling an enemy.
@@ -23,7 +24,6 @@ public abstract class Enemy extends DrawableActor implements Disposable {
 
     private TextureRegion texture;
 
-    private final List<GridPoint2> route;
     private float speed;
 
     private HealthBar healthBar;
@@ -37,7 +37,6 @@ public abstract class Enemy extends DrawableActor implements Disposable {
      */
     Enemy(TiledMapTileSets tileSet, TileID tileID, float speed) {
         this.texture = tileSet.getTile(tileID.getID()).getTextureRegion();
-        this.route = new ArrayList<>(EnemyRoute.ROUTE);
         this.speed = speed;
         this.healthBar = new HealthBar();
         planRoute();
@@ -66,20 +65,48 @@ public abstract class Enemy extends DrawableActor implements Disposable {
     }
 
     private void planRoute() {
+
+        // Find the enemy route
+        List<GridPoint2> enemyRoute = new ArrayList<>(EnemyRoute.ROUTE);
+
+        // Start the enemy on the route
+        GridPoint2 startingPoint = enemyRoute.get(0);
+        setX(startingPoint.x);
+        setY(startingPoint.y);
+
+        // Plan the rest of the route
+        assert enemyRoute.size() > 2;
         SequenceAction movementSteps = new SequenceAction();
-        route.forEach(point -> {
-            movementSteps.addAction(Actions.moveTo(point.x, point.y, 2f));
+        GridPoint2 previousPoint = enemyRoute.get(0);
+        for (int i = 1; i < enemyRoute.size(); i++) {
+            GridPoint2 nextPoint = enemyRoute.get(i);
+
+            float distance = previousPoint.dst(nextPoint);
+            double angle = Math.toDegrees(Math.atan2(nextPoint.y - previousPoint.y, nextPoint.x - previousPoint.x));
+
+            ParallelAction nextAction = new ParallelAction();
+            nextAction.addAction(rotateTo((float) angle));
+            nextAction.addAction(moveTo(nextPoint.x, nextPoint.y, distance / speed));
+            movementSteps.addAction(nextAction);
+            previousPoint = nextPoint;
+        }
+        movementSteps.addAction(new Action() {
+            @Override
+            public boolean act(float delta) {
+                dispose(false);
+                return true;
+            }
         });
         addAction(movementSteps);
     }
 
     @Override
     public void dispose() {
-        dispose(false);
+        dispose(true);
     }
 
-    public void dispose(boolean completed) {
-        if (!completed) {
+    public void dispose(boolean killed) {
+        if (!killed) {
             getStage().increaseScore(1);
         }
         removeActor(this).act(-1);
