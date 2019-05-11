@@ -44,8 +44,10 @@ public abstract class Enemy extends DrawableActor implements Disposable {
 
     @Override
     public void draw(Batch batch) {
-        batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-        healthBar.draw(batch);
+        if (isVisible()) {
+            batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+            healthBar.draw(batch);
+        }
     }
 
     @Override

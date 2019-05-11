@@ -77,6 +77,18 @@ public class TowerDefenceStage extends PollingStage {
     }
 
     /**
+     * Verifies that a 2d vector is a point inside the map.
+     *
+     * @param worldCoords the world coordinates to bound.
+     * @return if a point is within the map.
+     * @see #limitToMapCoordinates(Vector2)
+     */
+    public boolean isWithinMap(Vector2 worldCoords) {
+        Vector2 unmodifiedCoords = new Vector2(worldCoords);
+        return unmodifiedCoords.equals(limitToMapCoordinates(worldCoords));
+    }
+
+    /**
      * Bounds a 2D vector to a point inside the map, and then verifies if the tower can be placed on that tile.
      *
      * @param worldCoords the world coordinates to bound.
