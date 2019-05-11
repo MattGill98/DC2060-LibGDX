@@ -2,7 +2,7 @@ package uk.ac.aston.dc2060.model.tower;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import uk.ac.aston.dc2060.controller.TimedAction;
+import uk.ac.aston.dc2060.controller.actions.TimedAction;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.model.enemy.Enemy;
 
@@ -17,7 +17,7 @@ public class BasicTower extends Tower {
     private final float damagePerShot;
     private final int timeBetweenShotsMs;
 
-    private int shootingAnimationCounter;
+    private boolean gunfireVisible;
 
     public BasicTower(float x, float y, float damagePerShot, int timeBetweenShotsMs) {
         super(x, y);
@@ -26,7 +26,7 @@ public class BasicTower extends Tower {
         this.turret = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET.getID()).getTextureRegion();
         this.base = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_BASE.getID()).getTextureRegion();
         this.gunfire = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET_GUNFIRE.getID()).getTextureRegion();
-        addAction(new TimedAction(timeBetweenShotsMs, this::shoot));
+        addAction(new TimedAction(timeBetweenShotsMs, true, this::shoot));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class BasicTower extends Tower {
             batch.draw(turret, getX() + turretOffsetX, getY() + turretOffsetY, getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
 
             // Show the shot animation for 10 frames
-            if (shootingAnimationCounter++ > 0 && shootingAnimationCounter < 10) {
+            if (gunfireVisible) {
                 // Draw gunfire
                 float gunfireOffsetX = (float) rotationCos * 0.9f;
                 float gunfireOffsetY = (float) rotationSin * 0.9f;
@@ -66,7 +66,8 @@ public class BasicTower extends Tower {
             Enemy target = aimingStrategy.getTarget(this);
             if (target != null) {
                 target.getHealthBar().modifyHealth(-damagePerShot);
-                shootingAnimationCounter = 0;
+                gunfireVisible = true;
+                addAction(new TimedAction(100, false, () -> gunfireVisible = false));
             }
         }
     }

@@ -2,6 +2,7 @@ package uk.ac.aston.dc2060.controller;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import uk.ac.aston.dc2060.controller.actions.TimedAction;
 
 /**
  * A stage that runs a task after a given time period.
@@ -16,7 +17,7 @@ public abstract class PollingStage extends Stage {
      */
     PollingStage(Viewport viewport, float deltaLimit) {
         super(viewport);
-        addAction(new TimedAction(deltaLimit, this::timeout));
+        addAction(new TimedAction(deltaLimit, true, this::timeout));
     }
 
     /**
