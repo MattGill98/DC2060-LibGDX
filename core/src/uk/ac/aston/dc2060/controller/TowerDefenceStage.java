@@ -21,6 +21,7 @@ public class TowerDefenceStage extends PollingStage {
     private final int mapWidth;
     private final int mapHeight;
 
+    private int endpointHealth;
     private int score;
 
     private Set<Enemy> enemies;
@@ -34,10 +35,23 @@ public class TowerDefenceStage extends PollingStage {
         this.mapHeight = mapHeight;
         this.enemies = new HashSet<>();
         this.enemySpawnInterval = 4;
+        this.endpointHealth = 20;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getEndpointHealth() {
+        return endpointHealth;
     }
 
     public void increaseScore(int count) {
         this.score += count;
+    }
+
+    public void decreaseEndpointHealth(int amount) {
+        this.endpointHealth -= amount;
     }
 
     /**

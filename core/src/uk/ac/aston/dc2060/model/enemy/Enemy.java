@@ -26,6 +26,8 @@ public abstract class Enemy extends DrawableActor implements Disposable {
 
     private float speed;
 
+    private final int enemyValue;
+
     private HealthBar healthBar;
 
     /**
@@ -34,10 +36,12 @@ public abstract class Enemy extends DrawableActor implements Disposable {
      * @param tileSet the tileset to fetch the enemy texture from.
      * @param tileID the ID of the tile in the tileset to use for the enemy texture.
      * @param speed   the number of tiles per second the enemy should move.
+     * @param enemyValue   the amount to remove from the endpoint health when this enemy completes it's route.
      */
-    Enemy(TiledMapTileSets tileSet, TileID tileID, float speed) {
+    Enemy(TiledMapTileSets tileSet, TileID tileID, float speed, int enemyValue) {
         this.texture = tileSet.getTile(tileID.getID()).getTextureRegion();
         this.speed = speed;
+        this.enemyValue = enemyValue;
         this.healthBar = new HealthBar();
         planRoute();
     }
@@ -108,8 +112,10 @@ public abstract class Enemy extends DrawableActor implements Disposable {
     }
 
     public void dispose(boolean killed) {
-        if (!killed) {
+        if (killed) {
             getStage().increaseScore(1);
+        } else {
+            getStage().decreaseEndpointHealth(enemyValue);
         }
         removeActor(this).act(-1);
     }

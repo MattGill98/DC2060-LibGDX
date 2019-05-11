@@ -5,11 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
 import uk.ac.aston.dc2060.controller.spawner.TowerSpawner;
+import uk.ac.aston.dc2060.model.number.Number;
 import uk.ac.aston.dc2060.model.tower.BasicTower;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
@@ -24,7 +24,7 @@ public class TowerDefenceScreen implements Screen {
     private boolean enabled;
 
     private OrthographicCamera camera;
-    private Stage gameStage;
+    private TowerDefenceStage gameStage;
 
     private OrthogonalTiledMapRenderer mapRenderer;
     private GridView grid;
@@ -56,8 +56,14 @@ public class TowerDefenceScreen implements Screen {
         this.gameStage.addActor(new BasicTower(virtualMapWidth, 0, 0.05f, 500));
         this.gameStage.addActor(new BasicTower(virtualMapWidth, 1, 0.2f, 2000));
 
+        // Add endpoint health
+        this.gameStage.addActor(new Number(-virtualMapX, 1, () -> gameStage.getEndpointHealth()));
+
+        // Add game score
+        this.gameStage.addActor(new Number(virtualMapWidth, virtualHeight - 1, () -> gameStage.getScore()));
+
         // Add Tower generator
-        this.gameStage.addListener(new TowerSpawner((TowerDefenceStage) gameStage));
+        this.gameStage.addListener(new TowerSpawner(gameStage));
     }
 
     @Override
