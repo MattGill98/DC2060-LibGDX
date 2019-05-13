@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import uk.ac.aston.dc2060.view.screen.TowerDefenceScreen;
+import uk.ac.aston.dc2060.view.screen.WelcomeScreen;
 
 /**
  * The entrypoint file. The screens are managed from this class.
@@ -16,6 +17,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
 
     public static TiledMap TILE_MAP;
 
+    private WelcomeScreen welcomeScreen;
     private Screen towerDefenceScreen;
 
     @Override
@@ -24,8 +26,18 @@ public class TowerDefenceGame extends ApplicationAdapter {
         parameters.textureMagFilter = Texture.TextureFilter.Linear;
         parameters.textureMinFilter = Texture.TextureFilter.Linear;
         TILE_MAP = new TmxMapLoader().load("tilemap.tmx", parameters);
+
+        welcomeScreen = new WelcomeScreen();
+        welcomeScreen.onPlayButtonPressed(() -> {
+            welcomeScreen.hide();
+            towerDefenceScreen.show();
+        });
+        welcomeScreen.onExitButtonPressed(() -> {
+            System.exit(0);
+        });
+        welcomeScreen.show();
+
         towerDefenceScreen = new TowerDefenceScreen();
-        towerDefenceScreen.show();
     }
 
     @Override
@@ -35,11 +47,13 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         float delta = Gdx.graphics.getDeltaTime();
+        welcomeScreen.render(delta);
         towerDefenceScreen.render(delta);
     }
 
     @Override
     public void dispose () {
+        welcomeScreen.dispose();
         towerDefenceScreen.dispose();
     }
 }
