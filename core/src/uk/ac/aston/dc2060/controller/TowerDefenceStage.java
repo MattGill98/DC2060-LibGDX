@@ -21,6 +21,9 @@ public class TowerDefenceStage extends PollingStage {
     private final int mapWidth;
     private final int mapHeight;
 
+    private int endpointHealth;
+    private int score;
+
     private Set<Enemy> enemies;
 
     private int enemySpawnInterval;
@@ -32,6 +35,23 @@ public class TowerDefenceStage extends PollingStage {
         this.mapHeight = mapHeight;
         this.enemies = new HashSet<>();
         this.enemySpawnInterval = 4;
+        this.endpointHealth = 20;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getEndpointHealth() {
+        return endpointHealth;
+    }
+
+    public void increaseScore(int count) {
+        this.score += count;
+    }
+
+    public void decreaseEndpointHealth(int amount) {
+        this.endpointHealth -= amount;
     }
 
     /**
@@ -68,6 +88,18 @@ public class TowerDefenceStage extends PollingStage {
         worldCoords.x = Math.max(0, Math.min(mapWidth - 1, worldCoords.x));
         worldCoords.y = Math.max(0, Math.min(mapHeight - 1, worldCoords.y));
         return worldCoords;
+    }
+
+    /**
+     * Verifies that a 2d vector is a point inside the map.
+     *
+     * @param worldCoords the world coordinates to bound.
+     * @return if a point is within the map.
+     * @see #limitToMapCoordinates(Vector2)
+     */
+    public boolean isWithinMap(Vector2 worldCoords) {
+        Vector2 unmodifiedCoords = new Vector2(worldCoords);
+        return unmodifiedCoords.equals(limitToMapCoordinates(worldCoords));
     }
 
     /**

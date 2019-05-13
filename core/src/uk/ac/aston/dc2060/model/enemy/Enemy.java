@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import uk.ac.aston.dc2060.model.Disposable;
 import uk.ac.aston.dc2060.model.DrawableActor;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.model.health.HealthBar;
@@ -11,17 +15,18 @@ import uk.ac.aston.dc2060.model.health.HealthBar;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
  * A class modelling an enemy.
  */
-public abstract class Enemy extends DrawableActor {
+public abstract class Enemy extends DrawableActor implements Disposable {
 
     private TextureRegion texture;
 
-    private final List<GridPoint2> route;
     private float speed;
+
+    private final int enemyValue;
 
     private HealthBar healthBar;
 
@@ -31,29 +36,30 @@ public abstract class Enemy extends DrawableActor {
      * @param tileSet the tileset to fetch the enemy texture from.
      * @param tileID the ID of the tile in the tileset to use for the enemy texture.
      * @param speed   the number of tiles per second the enemy should move.
+     * @param enemyValue   the amount to remove from the endpoint health when this enemy completes it's route.
      */
-    Enemy(TiledMapTileSets tileSet, TileID tileID, float speed) {
+    Enemy(TiledMapTileSets tileSet, TileID tileID, float speed, int enemyValue) {
         this.texture = tileSet.getTile(tileID.getID()).getTextureRegion();
-        this.route = new ArrayList<>(EnemyRoute.ROUTE);
-        setX(route.get(0).x);
-        setY(route.get(0).y);
         this.speed = speed;
+        this.enemyValue = enemyValue;
         this.healthBar = new HealthBar();
+        planRoute();
     }
 
     @Override
     public void draw(Batch batch) {
-        batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-        healthBar.draw(batch);
+        if (isVisible()) {
+            batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+            healthBar.draw(batch);
+        }
     }
 
     @Override
     public void act(float delta) {
         if (getHealthBar().getHealth() <= 0.0001f) {
-            removeActor(this).act(-1);
+            dispose();
         }
         if (isVisible()) {
-            move(delta);
             healthBar.setX(getX());
             healthBar.setY(getY() + 0.85f);
         }
@@ -64,48 +70,53 @@ public abstract class Enemy extends DrawableActor {
         return healthBar;
     }
 
-    /**
-     * Moves the enemy along the route, or removes it from the
-     * scene if the route is finished.
-     *
-     * @param delta the time passed between frames
-     */
-    private void move(float delta) {
-        if (!isVisible()) {
-            return;
+    private void planRoute() {
+
+        // Find the enemy route
+        List<GridPoint2> enemyRoute = new ArrayList<>(EnemyRoute.ROUTE);
+
+        // Start the enemy on the route
+        GridPoint2 startingPoint = enemyRoute.get(0);
+        setX(startingPoint.x);
+        setY(startingPoint.y);
+
+        // Plan the rest of the route
+        assert enemyRoute.size() > 2;
+        SequenceAction movementSteps = new SequenceAction();
+        GridPoint2 previousPoint = enemyRoute.get(0);
+        for (int i = 1; i < enemyRoute.size(); i++) {
+            GridPoint2 nextPoint = enemyRoute.get(i);
+
+            float distance = previousPoint.dst(nextPoint);
+            double angle = Math.toDegrees(Math.atan2(nextPoint.y - previousPoint.y, nextPoint.x - previousPoint.x));
+
+            ParallelAction nextAction = new ParallelAction();
+            nextAction.addAction(rotateTo((float) angle));
+            nextAction.addAction(moveTo(nextPoint.x, nextPoint.y, distance / speed));
+            movementSteps.addAction(nextAction);
+            previousPoint = nextPoint;
         }
-        if (!route.isEmpty()) {
-
-            // Find out information about the next point
-            GridPoint2 nextPoint = route.get(0);
-            double distX = nextPoint.x - getX();
-            double distY = nextPoint.y - getY();
-            double angle = Math.toDegrees(Math.atan2(distY, distX));
-            double distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-            double travelDistance = delta * speed;
-
-            // Since the direction of motion is always at right angles,
-            // we can cheat this maths step by assuming the enemy can move
-            // the entire travel distance on both axes
-            if (distance < travelDistance) {
-                route.remove(0);
-                setX(nextPoint.x);
-                setY(nextPoint.y);
-
-                // Then move the remaining distance
-                move((float) (delta * (1 - (distance / travelDistance))));
-                return;
+        movementSteps.addAction(new Action() {
+            @Override
+            public boolean act(float delta) {
+                dispose(false);
+                return true;
             }
-            float moveX = (float) (travelDistance * Math.signum(distX));
-            float moveY = (float) (travelDistance * Math.signum(distY));
-            setX(getX() + moveX);
-            setY(getY() + moveY);
-
-            // Set the rotation
-            this.setRotation((float) angle);
-        } else {
-            removeActor(this).act(-1);
-        }
+        });
+        addAction(movementSteps);
     }
 
+    @Override
+    public void dispose() {
+        dispose(true);
+    }
+
+    public void dispose(boolean killed) {
+        if (killed) {
+            getStage().increaseScore(1);
+        } else {
+            getStage().decreaseEndpointHealth(enemyValue);
+        }
+        removeActor(this).act(-1);
+    }
 }
