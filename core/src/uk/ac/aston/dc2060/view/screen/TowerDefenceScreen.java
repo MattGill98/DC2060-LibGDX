@@ -11,6 +11,7 @@ import uk.ac.aston.dc2060.controller.TowerDefenceStage;
 import uk.ac.aston.dc2060.controller.spawner.TowerSpawner;
 import uk.ac.aston.dc2060.model.number.Number;
 import uk.ac.aston.dc2060.model.tower.BasicTower;
+import uk.ac.aston.dc2060.model.tower.DoubleBasicTower;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
 
@@ -53,8 +54,8 @@ public class TowerDefenceScreen implements Screen {
         this.camera.translate(-virtualMapX, -virtualMapY);
 
         // Add GUI icons
-        this.gameStage.addActor(new BasicTower(virtualMapWidth, 0, 0.05f, 500));
-        this.gameStage.addActor(new BasicTower(virtualMapWidth, 1, 0.2f, 2000));
+        this.gameStage.addActor(new BasicTower(virtualMapWidth, 0, 0.1f, 1000));
+        this.gameStage.addActor(new DoubleBasicTower(virtualMapWidth, 1, 0.1f, 500));
 
         // Add endpoint health
         this.gameStage.addActor(new Number(-virtualMapX, 1, () -> gameStage.getEndpointHealth()));
