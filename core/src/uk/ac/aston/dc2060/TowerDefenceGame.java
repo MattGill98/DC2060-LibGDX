@@ -32,7 +32,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
             towerDefenceScreen.show();
         });
         welcomeScreen.onExitButtonPressed(() -> {
-            System.exit(0);
+            Gdx.app.exit();
         });
         welcomeScreen.show();
 
