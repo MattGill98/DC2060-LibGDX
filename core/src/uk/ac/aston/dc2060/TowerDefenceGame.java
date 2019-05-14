@@ -22,8 +22,8 @@ public class TowerDefenceGame extends ApplicationAdapter {
     @Override
     public void create () {
         TmxMapLoader.Parameters parameters = new TmxMapLoader.Parameters();
-        parameters.textureMagFilter = Texture.TextureFilter.Linear;
-        parameters.textureMinFilter = Texture.TextureFilter.Linear;
+        parameters.textureMagFilter = Texture.TextureFilter.Nearest;
+        parameters.textureMinFilter = Texture.TextureFilter.Nearest;
         TILE_MAP = new TmxMapLoader().load("tilemap.tmx", parameters);
 
         welcomeScreen = new WelcomeScreen();
