@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import uk.ac.aston.dc2060.model.tower.Tower;
+import uk.ac.aston.dc2060.view.screen.CustomScreen;
 import uk.ac.aston.dc2060.view.screen.PauseScreen;
 import uk.ac.aston.dc2060.view.screen.TowerDefenceScreen;
 import uk.ac.aston.dc2060.view.screen.WelcomeScreen;
@@ -23,12 +25,11 @@ public class TowerDefenceGame extends ApplicationAdapter {
     public static Skin GUI_SKIN;
 
     private WelcomeScreen welcomeScreen;
-    private TowerDefenceScreen towerDefenceScreen;
     private PauseScreen pauseScreen;
+    private TowerDefenceScreen towerDefenceScreen;
 
     @Override
     public void create () {
-
         // Load tilemap
         TmxMapLoader.Parameters parameters = new TmxMapLoader.Parameters();
         parameters.textureMagFilter = Texture.TextureFilter.Nearest;
@@ -39,32 +40,45 @@ public class TowerDefenceGame extends ApplicationAdapter {
         GUI_SKIN = new Skin(new TextureAtlas(Gdx.files.internal("theme/Holo-dark-xhdpi.atlas")));
         GUI_SKIN.load(Gdx.files.internal("theme/Holo-dark-xhdpi.json"));
 
-        welcomeScreen = new WelcomeScreen();
-        welcomeScreen.onPlayButtonPressed(() -> {
-            welcomeScreen.hide();
-            towerDefenceScreen.show();
-            towerDefenceScreen.grabInput();
-        });
-        welcomeScreen.onExitButtonPressed(() -> {
-            Gdx.app.exit();
-        });
+        // Initialise screens
+        initialiseWelcomeScreen();
+        initialisePauseScreen();
+        initialiseGameScreen();
 
+        welcomeScreen.show();
+        welcomeScreen.grabInput();
+    }
+
+    private void initialiseGameScreen() {
         towerDefenceScreen = TowerDefenceScreen.createInstance();
         towerDefenceScreen.onKeyPress(Input.Keys.ESCAPE, () -> {
             towerDefenceScreen.pause();
             pauseScreen.show();
             pauseScreen.grabInput();
         });
+        towerDefenceScreen.pause();
+    }
 
-        pauseScreen = new PauseScreen();
-        pauseScreen.onKeyPress(Input.Keys.ESCAPE, () -> {
+    private void initialiseWelcomeScreen() {
+        welcomeScreen = new WelcomeScreen();
+        welcomeScreen.onPlayButtonPressed(() -> {
+            welcomeScreen.hide();
+            towerDefenceScreen.show();
             towerDefenceScreen.resume();
-            pauseScreen.hide();
             towerDefenceScreen.grabInput();
         });
+        welcomeScreen.onExitButtonPressed(() -> {
+            Gdx.app.exit();
+        });
+    }
 
-        welcomeScreen.show();
-        welcomeScreen.grabInput();
+    private void initialisePauseScreen() {
+        pauseScreen = new PauseScreen();
+        pauseScreen.onKeyPress(Input.Keys.ESCAPE, () -> {
+            pauseScreen.hide();
+            towerDefenceScreen.resume();
+            towerDefenceScreen.grabInput();
+        });
     }
 
     @Override
@@ -75,14 +89,15 @@ public class TowerDefenceGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0.5804f, 0.6941f, 0.7059f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
-        welcomeScreen.render(delta);
         towerDefenceScreen.render(delta);
+        welcomeScreen.render(delta);
         pauseScreen.render(delta);
     }
 
     @Override
     public void dispose () {
-        welcomeScreen.dispose();
         towerDefenceScreen.dispose();
+        welcomeScreen.dispose();
+        pauseScreen.dispose();
     }
 }

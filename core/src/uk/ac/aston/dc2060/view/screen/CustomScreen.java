@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public abstract class CustomScreen implements Screen {
 
@@ -91,5 +92,15 @@ public abstract class CustomScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    protected static ClickListener createListener(Runnable task) {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                task.run();
+                super.clicked(event, x, y);
+            }
+        };
     }
 }
