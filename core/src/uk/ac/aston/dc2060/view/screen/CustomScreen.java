@@ -2,12 +2,11 @@ package uk.ac.aston.dc2060.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class CustomScreen implements Screen {
+public abstract class CustomScreen implements Screen {
 
     private Stage stage;
 
@@ -16,7 +15,6 @@ public class CustomScreen implements Screen {
 
     CustomScreen(Stage stage) {
         this.stage = stage;
-        this.paused = true;
     }
 
     CustomScreen() {
@@ -45,12 +43,12 @@ public class CustomScreen implements Screen {
             stage.act(delta);
         }
         if (isVisible()) {
-            // Clear the window
-            Gdx.gl.glClearColor(0.5804f, 0.6941f, 0.7059f, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
-
             doRender();
         }
+    }
+
+    public void grabInput() {
+        Gdx.input.setInputProcessor(getStage());
     }
 
     public void doRender() {
@@ -69,7 +67,6 @@ public class CustomScreen implements Screen {
     @Override
     public void show() {
         this.visible = true;
-        Gdx.input.setInputProcessor(stage);
     }
 
     boolean isPaused() {

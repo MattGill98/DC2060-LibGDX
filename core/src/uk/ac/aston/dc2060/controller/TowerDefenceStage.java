@@ -37,6 +37,11 @@ public class TowerDefenceStage extends Stage {
         addAction(new TimedAction(2000, true, this::spawnEnemy));
     }
 
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+    }
+
     public int getScore() {
         return score;
     }
