@@ -26,8 +26,20 @@ public class Number extends DrawableActor {
         fetchNumber();
     }
 
+    @Override
+    public void draw(Batch batch) {
+        fetchNumber();
+        for (int i = 0; i < numberTexture.size(); i++) {
+            batch.draw(numberTexture.get(i), getCharacterX(i), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        }
+    }
+
+    private float getCharacterX(int position) {
+        return getX() - 0.25f + ((getWidth() - 0.55f) * position);
+    }
+
     private void fetchNumber() {
-        String numberString = String.valueOf(numberSupplier.get());
+        String numberString = String.valueOf(numberSupplier.get()).replace("-", "");
 
         // Ignore if the number hasn't changed
         if (numberString.equals(lastNumber)) {
@@ -74,17 +86,5 @@ public class Number extends DrawableActor {
             }
             numberTexture.add(TILE_MAP.getTileSets().getTile(numberTextureID.getID()).getTextureRegion());
         }
-    }
-
-    @Override
-    public void draw(Batch batch) {
-        fetchNumber();
-        for (int i = 0; i < numberTexture.size(); i++) {
-            batch.draw(numberTexture.get(i), getCharacterX(i), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-        }
-    }
-
-    private float getCharacterX(int position) {
-        return getX() - 0.25f + ((getWidth() - 0.55f) * position);
     }
 }
