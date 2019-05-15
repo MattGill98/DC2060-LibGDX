@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
@@ -25,29 +26,13 @@ import static uk.ac.aston.dc2060.TowerDefenceGame.TILE_MAP;
 /**
  * A screen which runs the actual game.
  */
-public class TowerDefenceScreen implements Screen {
-
-    private boolean enabled;
-
-    private OrthographicCamera camera;
-    private TowerDefenceStage gameStage;
+public class TowerDefenceScreen extends CustomScreen {
 
     private OrthogonalTiledMapRenderer mapRenderer;
     private GridView grid;
 
-    public TowerDefenceScreen() {
-        // Configure the game view
-        int virtualMapX = 1;
-        int virtualMapY = 0;
-        int virtualMapWidth = (Integer) TILE_MAP.getProperties().get("width");
-        int virtualMapHeight = (Integer) TILE_MAP.getProperties().get("height");
-        int virtualWidth = 2 + virtualMapWidth;
-        int virtualHeight = virtualMapHeight;
-        this.camera = new OrthographicCamera(virtualWidth, virtualHeight);
-        Viewport gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
-
-        // Configure rendered scene
-        this.gameStage = new TowerDefenceStage(gameViewport, virtualMapWidth, virtualMapHeight);
+    private TowerDefenceScreen(TowerDefenceStage stage, OrthographicCamera camera, int virtualMapX, int virtualMapY, int virtualMapWidth, int virtualWidth, int virtualHeight) {
+        super(stage);
         camera.translate(-virtualMapX, -virtualMapY);
         camera.update();
         this.mapRenderer = new TowerDefenceMapRenderer(camera, virtualMapWidth);
@@ -56,88 +41,63 @@ public class TowerDefenceScreen implements Screen {
         this.grid = new GridView(camera, virtualWidth, virtualHeight);
 
         // Position camera
-        this.camera.translate(-virtualMapX, -virtualMapY);
+        camera.translate(-virtualMapX, -virtualMapY);
 
         // Add GUI icons
-        this.gameStage.addActor(new BasicTower(virtualMapWidth, 0, 0.1f, 1000));
-        this.gameStage.addActor(new DoubleBasicTower(virtualMapWidth, 1, 0.1f, 500));
+        getStage().addActor(new BasicTower(virtualMapWidth, 0, 0.1f, 1000));
+        getStage().addActor(new DoubleBasicTower(virtualMapWidth, 1, 0.1f, 500));
 
         // Add endpoint health
-        this.gameStage.addActor(new Number(-virtualMapX, 1, () -> gameStage.getEndpointHealth()));
+        getStage().addActor(new Number(-virtualMapX, 1, () -> getStage().getEndpointHealth()));
 
         // Add game score
-        this.gameStage.addActor(new Number(virtualMapWidth, virtualHeight - 1, () -> gameStage.getScore()));
+        getStage().addActor(new Number(virtualMapWidth, virtualHeight - 1, () -> getStage().getScore()));
 
         // Add Tower generator
-        this.gameStage.addListener(new TowerSpawner(gameStage));
+        getStage().addListener(new TowerSpawner(getStage()));
     }
 
     @Override
-    public void show() {
-        enabled = true;
-        Gdx.input.setInputProcessor(gameStage);
+    TowerDefenceStage getStage() {
+        return (TowerDefenceStage) super.getStage();
     }
 
     @Override
-    public void render(float delta) {
-        if (enabled) {
-            // Clear the window
-            Gdx.gl.glClearColor(0.5804f, 0.6941f, 0.7059f, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
-
-            // Update the camera
-            camera.update();
-
-            // Render map
-            mapRenderer.render();
-
-            // Render grid
-            grid.render();
-
-            // Render actors
-            gameStage.act();
-            gameStage.draw();
-        }
-    }
-
-    public void onKeyPress(int keycode, Runnable task) {
-        gameStage.addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int code) {
-                if (code == keycode) {
-                    task.run();
-                }
-                return false;
-            }
-        });
+    public void doRender() {
+        mapRenderer.render();
+        grid.render();
+        super.doRender();
     }
 
     @Override
     public void resize(int width, int height) {
-        throw new UnsupportedOperationException("Resizing not supported.");
         //gameViewport.update(width, height);
         //camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         //camera.update();
-    }
-
-    @Override
-    public void pause() {
-        throw new UnsupportedOperationException("Pausing not supported.");
-    }
-
-    @Override
-    public void resume() {
-        throw new UnsupportedOperationException("Resuming not supported.");
-    }
-
-    @Override
-    public void hide() {
-        enabled = false;
+        super.resize(width, height);
     }
 
     @Override
     public void dispose() {
+        mapRenderer.dispose();
         grid.dispose();
-        gameStage.dispose();
+        super.dispose();
+    }
+
+    public static TowerDefenceScreen createInstance() {
+        // Configure the game view
+        int virtualMapX = 1;
+        int virtualMapY = 0;
+        int virtualMapWidth = (Integer) TILE_MAP.getProperties().get("width");
+        int virtualMapHeight = (Integer) TILE_MAP.getProperties().get("height");
+        int virtualWidth = 2 + virtualMapWidth;
+        int virtualHeight = virtualMapHeight;
+        OrthographicCamera camera = new OrthographicCamera(virtualWidth, virtualHeight);
+        Viewport gameViewport = new FitViewport(virtualWidth, virtualHeight, camera);
+
+        // Configure rendered scene
+        TowerDefenceStage gameStage = new TowerDefenceStage(gameViewport, virtualMapWidth, virtualMapHeight);
+
+        return new TowerDefenceScreen(gameStage, camera, virtualMapX, virtualMapY, virtualMapWidth, virtualWidth, virtualHeight);
     }
 }

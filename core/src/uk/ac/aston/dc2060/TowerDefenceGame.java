@@ -25,8 +25,6 @@ public class TowerDefenceGame extends ApplicationAdapter {
     public static TiledMap TILE_MAP;
 
     public static Skin GUI_SKIN;
-    public static BitmapFont GUI_FONT;
-    public static TextButtonStyle GUI_BUTTON_STYLE;
 
     private WelcomeScreen welcomeScreen;
     private TowerDefenceScreen towerDefenceScreen;
@@ -42,15 +40,8 @@ public class TowerDefenceGame extends ApplicationAdapter {
         TILE_MAP = new TmxMapLoader().load("tilemap.tmx", parameters);
 
         // Initialise GUI themes
-        GUI_SKIN = new Skin();
-        GUI_SKIN.addRegions(new TextureAtlas(Gdx.files.internal("theme/Holo-dark-xhdpi.atlas")));
-        GUI_FONT = new BitmapFont(Gdx.files.internal("theme/Roboto-xhdpi.fnt"), false);
-
-        GUI_BUTTON_STYLE = new TextButtonStyle();
-        GUI_BUTTON_STYLE.up = GUI_SKIN.getDrawable("btn_default_normal");
-        GUI_BUTTON_STYLE.down = GUI_SKIN.getDrawable("btn_default_pressed");
-        GUI_BUTTON_STYLE.focused = GUI_SKIN.getDrawable("btn_default_focused");
-        GUI_BUTTON_STYLE.font = GUI_FONT;
+        GUI_SKIN = new Skin(new TextureAtlas(Gdx.files.internal("theme/Holo-dark-xhdpi.atlas")));
+        GUI_SKIN.load(Gdx.files.internal("theme/Holo-dark-xhdpi.json"));
 
         welcomeScreen = new WelcomeScreen();
         welcomeScreen.onPlayButtonPressed(() -> {
@@ -61,10 +52,13 @@ public class TowerDefenceGame extends ApplicationAdapter {
             Gdx.app.exit();
         });
 
-        towerDefenceScreen = new TowerDefenceScreen();
-        towerDefenceScreen.onKeyPress(Input.Keys.ESCAPE, () -> {towerDefenceScreen.pause();
+        towerDefenceScreen = TowerDefenceScreen.createInstance();
+        towerDefenceScreen.onKeyPress(Input.Keys.ESCAPE, () -> {
+            towerDefenceScreen.pause();
             pauseScreen.show();
         });
+
+        pauseScreen = new PauseScreen();
 
         welcomeScreen.show();
     }

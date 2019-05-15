@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import static uk.ac.aston.dc2060.TowerDefenceGame.GUI_BUTTON_STYLE;
 import static uk.ac.aston.dc2060.TowerDefenceGame.GUI_SKIN;
 
 public class PauseScreen extends CustomScreen {
