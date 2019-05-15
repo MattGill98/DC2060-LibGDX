@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import static uk.ac.aston.dc2060.TowerDefenceGame.GUI_BUTTON_STYLE;
+
 public class WelcomeScreen implements Screen {
 
     private Stage stage;
@@ -21,24 +23,13 @@ public class WelcomeScreen implements Screen {
     private boolean enabled;
 
     public WelcomeScreen() {
-
-        // Initialise button textures
-        Skin buttonSkin = new Skin();
-        buttonSkin.addRegions(new TextureAtlas(Gdx.files.internal("theme/Holo-dark-xhdpi.atlas")));
-        BitmapFont font = new BitmapFont(Gdx.files.internal("theme/Roboto-xhdpi.fnt"), false);
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.up = buttonSkin.getDrawable("btn_default_normal");
-        buttonStyle.down = buttonSkin.getDrawable("btn_default_pressed");
-        buttonStyle.focused = buttonSkin.getDrawable("btn_default_focused");
-        buttonStyle.font = font;
-
         // Create play button
-        playButton = new TextButton("Play", buttonStyle);
+        playButton = new TextButton("Play", GUI_BUTTON_STYLE);
         playButton.setX((Gdx.graphics.getWidth() - playButton.getWidth()) / 2f);
         playButton.setY((Gdx.graphics.getHeight() - playButton.getHeight()) / 2f + playButton.getHeight());
 
         // Create exit button
-        exitButton = new TextButton("Exit", buttonStyle);
+        exitButton = new TextButton("Exit", GUI_BUTTON_STYLE);
         exitButton.setX((Gdx.graphics.getWidth() - exitButton.getWidth()) / 2f);
         exitButton.setY((Gdx.graphics.getHeight() - exitButton.getHeight()) / 2f - exitButton.getHeight());
 
