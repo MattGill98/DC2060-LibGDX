@@ -2,6 +2,7 @@ package uk.ac.aston.dc2060;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,8 +11,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import uk.ac.aston.dc2060.view.screen.PauseScreen;
 import uk.ac.aston.dc2060.view.screen.TowerDefenceScreen;
 import uk.ac.aston.dc2060.view.screen.WelcomeScreen;
+
+import java.awt.event.KeyEvent;
 
 /**
  * The entrypoint file. The screens are managed from this class.
@@ -25,7 +29,8 @@ public class TowerDefenceGame extends ApplicationAdapter {
     public static TextButtonStyle GUI_BUTTON_STYLE;
 
     private WelcomeScreen welcomeScreen;
-    private Screen towerDefenceScreen;
+    private TowerDefenceScreen towerDefenceScreen;
+    private PauseScreen pauseScreen;
 
     @Override
     public void create () {
@@ -40,6 +45,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
         GUI_SKIN = new Skin();
         GUI_SKIN.addRegions(new TextureAtlas(Gdx.files.internal("theme/Holo-dark-xhdpi.atlas")));
         GUI_FONT = new BitmapFont(Gdx.files.internal("theme/Roboto-xhdpi.fnt"), false);
+
         GUI_BUTTON_STYLE = new TextButtonStyle();
         GUI_BUTTON_STYLE.up = GUI_SKIN.getDrawable("btn_default_normal");
         GUI_BUTTON_STYLE.down = GUI_SKIN.getDrawable("btn_default_pressed");
@@ -54,9 +60,13 @@ public class TowerDefenceGame extends ApplicationAdapter {
         welcomeScreen.onExitButtonPressed(() -> {
             Gdx.app.exit();
         });
-        welcomeScreen.show();
 
         towerDefenceScreen = new TowerDefenceScreen();
+        towerDefenceScreen.onKeyPress(Input.Keys.ESCAPE, () -> {towerDefenceScreen.pause();
+            pauseScreen.show();
+        });
+
+        welcomeScreen.show();
     }
 
     @Override

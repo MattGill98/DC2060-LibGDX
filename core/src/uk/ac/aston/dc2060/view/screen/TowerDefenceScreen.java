@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
@@ -14,6 +16,9 @@ import uk.ac.aston.dc2060.model.tower.BasicTower;
 import uk.ac.aston.dc2060.model.tower.DoubleBasicTower;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import static uk.ac.aston.dc2060.TowerDefenceGame.TILE_MAP;
 
@@ -93,6 +98,18 @@ public class TowerDefenceScreen implements Screen {
             gameStage.act();
             gameStage.draw();
         }
+    }
+
+    public void onKeyPress(int keycode, Runnable task) {
+        gameStage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int code) {
+                if (code == keycode) {
+                    task.run();
+                }
+                return false;
+            }
+        });
     }
 
     @Override
