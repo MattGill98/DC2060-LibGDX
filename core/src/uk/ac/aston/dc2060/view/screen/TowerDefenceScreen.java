@@ -53,6 +53,9 @@ public class TowerDefenceScreen extends CustomScreen {
         // Add game score
         getStage().addActor(new Number(virtualMapWidth, virtualHeight - 1, () -> getStage().getScore()));
 
+        // Add round counter
+        getStage().addActor(new Number(-virtualMapX, virtualHeight - 1, () -> getStage().getRound()));
+
         // Add Tower generator
         getStage().addListener(new TowerSpawner(getStage()));
     }

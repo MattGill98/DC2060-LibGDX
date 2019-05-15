@@ -10,6 +10,7 @@ public enum TileID {
     SINGLE_TURRET_GUNFIRE(296),
     DOUBLE_TURRET(250),
     SOLDIER(245),
+    HEAVY_SOLDIER(247),
     ZERO(276),
     ONE(277),
     TWO(278),

@@ -25,6 +25,7 @@ public class TowerDefenceStage extends Stage {
 
     private int endpointHealth;
     private int score;
+    private int round;
 
     private Set<Enemy> enemies;
 
@@ -34,6 +35,7 @@ public class TowerDefenceStage extends Stage {
         this.mapHeight = mapHeight;
         this.enemies = new HashSet<>();
         this.endpointHealth = 20;
+        this.round = 1;
         addAction(new TimedAction(2000, true, this::spawnEnemy));
     }
 
@@ -44,6 +46,10 @@ public class TowerDefenceStage extends Stage {
 
     public int getScore() {
         return score;
+    }
+
+    public int getRound() {
+        return round;
     }
 
     public int getEndpointHealth() {

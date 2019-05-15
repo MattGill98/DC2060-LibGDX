@@ -10,22 +10,22 @@ public class TimedAction extends Action {
     /**
      * The window delta after which to run the task.
      */
-    private float deltaLimit;
+    protected float deltaLimit;
 
     /**
      * Whether the action should repeat after executing once.
      */
-    private boolean repeat;
+    protected boolean repeat;
+
+    /**
+     * The task to run after the specified time limit elapses.
+     */
+    protected Runnable task;
 
     /**
      * A running total of the window delta time elapsed.
      */
     private float currentDelta;
-
-    /**
-     * The task to run after the specified time limit elapses.
-     */
-    private Runnable task;
 
     /**
      * Create a stage with a recurring task.
@@ -38,6 +38,9 @@ public class TimedAction extends Action {
         this.deltaLimit = deltaLimit;
         this.repeat = repeat;
         this.task = task;
+    }
+
+    protected TimedAction() {
     }
 
     @Override
