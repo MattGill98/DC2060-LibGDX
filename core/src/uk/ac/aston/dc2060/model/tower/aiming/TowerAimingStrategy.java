@@ -13,6 +13,6 @@ public abstract class TowerAimingStrategy {
         this.enemies = enemies;
     }
 
-    public abstract Enemy getTarget(Tower tower);
+    public abstract Enemy getTarget(Tower tower, float range);
 
 }

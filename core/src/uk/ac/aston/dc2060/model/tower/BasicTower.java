@@ -19,8 +19,8 @@ public class BasicTower extends Tower {
 
     private boolean gunfireVisible;
 
-    public BasicTower(float x, float y, float damagePerShot, int timeBetweenShotsMs) {
-        super(x, y);
+    public BasicTower(float x, float y, float damagePerShot, int timeBetweenShotsMs, float range) {
+        super(x, y, range);
         this.damagePerShot = damagePerShot;
         this.timeBetweenShotsMs = timeBetweenShotsMs;
         this.turret = TILE_MAP.getTileSets().getTile(TileID.SINGLE_TURRET.getID()).getTextureRegion();
@@ -31,7 +31,7 @@ public class BasicTower extends Tower {
 
     @Override
     public Tower clone() {
-        return new BasicTower(getX(), getY(), damagePerShot, timeBetweenShotsMs);
+        return new BasicTower(getX(), getY(), damagePerShot, timeBetweenShotsMs, range);
     }
 
     @Override
@@ -63,11 +63,13 @@ public class BasicTower extends Tower {
 
     private void shoot() {
         if (aimingStrategy != null) {
-            Enemy target = aimingStrategy.getTarget(this);
+            Enemy target = aimingStrategy.getTarget(this, range);
             if (target != null) {
                 target.getHealthBar().modifyHealth(-damagePerShot);
                 gunfireVisible = true;
                 addAction(new TimedAction(150, false, () -> gunfireVisible = false));
+            } else {
+                gunfireVisible = false;
             }
         }
     }

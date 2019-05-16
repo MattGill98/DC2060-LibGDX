@@ -11,9 +11,11 @@ public abstract class Tower extends DrawableActor {
 
     protected boolean enabled;
     protected TowerAimingStrategy aimingStrategy;
+    protected float range;
 
-    public Tower(float x, float y) {
+    public Tower(float x, float y, float range) {
         super(x, y);
+        this.range = range;
     }
 
     public void setEnabled(boolean enabled) {
@@ -32,7 +34,7 @@ public abstract class Tower extends DrawableActor {
     public final void act(float delta) {
         if (isEnabled()) {
             if (aimingStrategy != null) {
-                Enemy target = aimingStrategy.getTarget(this);
+                Enemy target = aimingStrategy.getTarget(this, range);
                 if (target != null) {
                     setRotation((float) Math.toDegrees(Math.atan2(target.getY() - getY(), target.getX() - getX())) - 90);
                 }

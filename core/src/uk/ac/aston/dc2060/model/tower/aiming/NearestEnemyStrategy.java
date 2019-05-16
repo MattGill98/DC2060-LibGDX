@@ -12,13 +12,13 @@ public class NearestEnemyStrategy extends TowerAimingStrategy {
         super(enemies);
     }
 
-    public Enemy getTarget(Tower tower) {
+    public Enemy getTarget(Tower tower, float range) {
         Float distanceToNearest = null;
         Enemy nearestEnemy = null;
         for (Enemy enemy : enemies) {
             if (enemy.isVisible()) {
                 float distance = new Vector2(tower.getX(), tower.getY()).dst(enemy.getX(), enemy.getY());
-                if (distanceToNearest == null || distance < distanceToNearest) {
+                if (distance < range && (distanceToNearest == null || distance < distanceToNearest)) {
                     nearestEnemy = enemy;
                     distanceToNearest = distance;
                 }
