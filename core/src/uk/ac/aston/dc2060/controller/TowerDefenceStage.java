@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.TowerDefenceGame;
+import uk.ac.aston.dc2060.controller.actions.TimedAction;
 import uk.ac.aston.dc2060.controller.spawner.EnemySpawner;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.model.enemy.Enemy;
@@ -26,6 +27,7 @@ public class TowerDefenceStage extends Stage {
     private int endpointHealth;
     private int score;
     private int round;
+    private int towerLimit;
 
     private EnemySpawner spawner;
     private Set<Tower> towers;
@@ -41,8 +43,14 @@ public class TowerDefenceStage extends Stage {
         this.towers = new HashSet<>();
         this.endpointHealth = 20;
         this.round = 1;
-        this.spawner = new EnemySpawner(this);
+        this.towerLimit = 2;
+        this.spawner = new EnemySpawner(this, round);
         addAction(spawner);
+        addAction(new TimedAction(60000, true, () -> {
+            round++;
+            towerLimit += 2;
+            spawner.setRound(round);
+        }));
     }
 
     public void setEndGameTask(Runnable endGameTask) {
@@ -89,6 +97,9 @@ public class TowerDefenceStage extends Stage {
     @Override
     public void addActor(Actor actor) {
         if (actor instanceof Tower) {
+            if (towers.stream().filter(tower -> tower.isEnabled()).count() >= towerLimit) {
+                return;
+            }
             towers.add((Tower) actor);
         }
         if (actor instanceof Enemy) {

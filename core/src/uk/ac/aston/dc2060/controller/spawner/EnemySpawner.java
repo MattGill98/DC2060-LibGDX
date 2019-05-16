@@ -11,9 +11,8 @@ public class EnemySpawner extends TimedAction {
 
     private int round;
 
-    public EnemySpawner(Stage stage) {
+    public EnemySpawner(Stage stage, int round) {
         this.stage = stage;
-        this.round = 1;
         super.deltaLimit = 2000;
         super.repeat = true;
         super.task = this::spawn;
