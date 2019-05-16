@@ -35,8 +35,8 @@ public class TowerDefenceScreen extends CustomScreen {
         camera.translate(-virtualMapX, -virtualMapY);
 
         // Add GUI icons
-        getStage().addActor(new BasicTower(virtualMapWidth, 0, 0.15f, 1000, 10));
-        getStage().addActor(new DoubleBasicTower(virtualMapWidth, 1, 0.15f, 500, 5));
+        getStage().addActor(new BasicTower(virtualMapWidth, 0, 0.2f, 1000, 10));
+        getStage().addActor(new DoubleBasicTower(virtualMapWidth, 1, 0.2ZZf, 500, 5));
 
         // Add endpoint health
         getStage().addActor(new Number(-virtualMapX, 1, () -> getStage().getEndpointHealth()));
