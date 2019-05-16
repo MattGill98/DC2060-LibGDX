@@ -7,11 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.TowerDefenceGame;
-import uk.ac.aston.dc2060.controller.actions.TimedAction;
 import uk.ac.aston.dc2060.controller.spawner.EnemySpawner;
 import uk.ac.aston.dc2060.model.TileID;
-import uk.ac.aston.dc2060.model.enemy.BasicEnemy;
 import uk.ac.aston.dc2060.model.enemy.Enemy;
+import uk.ac.aston.dc2060.model.tower.Tower;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +28,7 @@ public class TowerDefenceStage extends Stage {
     private int round;
 
     private EnemySpawner spawner;
+    private Set<Tower> towers;
     private Set<Enemy> enemies;
 
     public TowerDefenceStage(Viewport viewport, int mapWidth, int mapHeight) {
@@ -36,6 +36,7 @@ public class TowerDefenceStage extends Stage {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.enemies = new HashSet<>();
+        this.towers = new HashSet<>();
         this.endpointHealth = 20;
         this.round = 1;
         this.spawner = new EnemySpawner(this);
@@ -76,6 +77,9 @@ public class TowerDefenceStage extends Stage {
 
     @Override
     public void addActor(Actor actor) {
+        if (actor instanceof Tower) {
+            towers.add((Tower) actor);
+        }
         if (actor instanceof Enemy) {
             enemies.add((Enemy) actor);
         }
@@ -119,6 +123,13 @@ public class TowerDefenceStage extends Stage {
         MapLayer ground = TowerDefenceGame.TILE_MAP.getLayers().get("Ground");
         if (ground == null) {
             throw new IllegalStateException("'Ground' layer was not found in the tilemap.");
+        }
+        for (Tower tower : towers) {
+            if (tower.isEnabled()) {
+                if ((int) tower.getX() == (int) worldCoords.x && (int) tower.getY() == (int) worldCoords.y) {
+                    return false;
+                }
+            }
         }
         return TileID.DIRT.getID() != ((TiledMapTileLayer) ground).getCell((int) worldCoords.x, (int) worldCoords.y).getTile().getId();
     }
