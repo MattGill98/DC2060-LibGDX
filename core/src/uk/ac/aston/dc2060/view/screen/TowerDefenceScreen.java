@@ -35,17 +35,17 @@ public class TowerDefenceScreen extends CustomScreen {
         camera.translate(-virtualMapX, -virtualMapY);
 
         // Add GUI icons
-        getStage().addActor(new BasicTower(virtualMapWidth, 0, 0.2f, 1000, 10));
-        getStage().addActor(new DoubleBasicTower(virtualMapWidth, 1, 0.2ZZf, 500, 5));
+        getStage().addActor(new BasicTower(virtualMapWidth, 0, 0.22f, 1000, 10));
+        getStage().addActor(new DoubleBasicTower(virtualMapWidth, 1, 0.2f, 500, 5));
 
         // Add endpoint health
         getStage().addActor(new Number(-virtualMapX, 1, () -> getStage().getEndpointHealth()));
 
         // Add game score
-        getStage().addActor(new Number(virtualMapWidth, virtualHeight - 1, () -> getStage().getScore()));
+        getStage().addActor(new Number(-virtualMapX, virtualHeight - 1, () -> getStage().getScore()));
 
         // Add round counter
-        getStage().addActor(new Number(-virtualMapX, virtualHeight - 1, () -> getStage().getRound()));
+        getStage().addActor(new Number(virtualMapWidth, virtualHeight - 1, () -> getStage().getRound()));
 
         // Add Tower generator
         getStage().addListener(new TowerSpawner(getStage()));
