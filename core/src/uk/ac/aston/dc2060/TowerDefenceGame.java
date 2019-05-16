@@ -97,7 +97,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
         float delta = Gdx.graphics.getDeltaTime();
 
         // Clear the window
-        Gdx.gl.glClearColor(0.5804f, 0.6941f, 0.7059f, 1);
+        Gdx.gl.glClearColor(0.1804f, 0.8f, 0.4431f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
         towerDefenceScreen.render(delta);
