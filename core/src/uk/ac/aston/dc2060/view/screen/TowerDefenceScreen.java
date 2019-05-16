@@ -1,13 +1,7 @@
 package uk.ac.aston.dc2060.view.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.controller.TowerDefenceStage;
@@ -17,9 +11,6 @@ import uk.ac.aston.dc2060.model.tower.BasicTower;
 import uk.ac.aston.dc2060.model.tower.DoubleBasicTower;
 import uk.ac.aston.dc2060.view.GridView;
 import uk.ac.aston.dc2060.view.TowerDefenceMapRenderer;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import static uk.ac.aston.dc2060.TowerDefenceGame.TILE_MAP;
 
@@ -60,8 +51,12 @@ public class TowerDefenceScreen extends CustomScreen {
         getStage().addListener(new TowerSpawner(getStage()));
     }
 
+    public void onGameEnd(Runnable task) {
+        getStage().setEndGameTask(task);
+    }
+
     @Override
-    TowerDefenceStage getStage() {
+    public TowerDefenceStage getStage() {
         return (TowerDefenceStage) super.getStage();
     }
 

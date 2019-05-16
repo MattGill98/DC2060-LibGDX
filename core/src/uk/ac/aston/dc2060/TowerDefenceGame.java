@@ -9,8 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import uk.ac.aston.dc2060.model.tower.Tower;
-import uk.ac.aston.dc2060.view.screen.CustomScreen;
+import uk.ac.aston.dc2060.view.screen.EndGameScreen;
 import uk.ac.aston.dc2060.view.screen.PauseScreen;
 import uk.ac.aston.dc2060.view.screen.TowerDefenceScreen;
 import uk.ac.aston.dc2060.view.screen.WelcomeScreen;
@@ -26,6 +25,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
 
     private WelcomeScreen welcomeScreen;
     private PauseScreen pauseScreen;
+    private EndGameScreen endGameScreen;
     private TowerDefenceScreen towerDefenceScreen;
 
     @Override
@@ -43,6 +43,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
         // Initialise screens
         initialiseWelcomeScreen();
         initialisePauseScreen();
+        initialiseEndGameScreen();
         initialiseGameScreen();
 
         welcomeScreen.show();
@@ -55,6 +56,12 @@ public class TowerDefenceGame extends ApplicationAdapter {
             towerDefenceScreen.pause();
             pauseScreen.show();
             pauseScreen.grabInput();
+        });
+        towerDefenceScreen.onGameEnd(() -> {
+            towerDefenceScreen.pause();
+            towerDefenceScreen.hide();
+            endGameScreen.setScore(towerDefenceScreen.getStage().getScore());
+            endGameScreen.show();
         });
         towerDefenceScreen.pause();
     }
@@ -81,6 +88,10 @@ public class TowerDefenceGame extends ApplicationAdapter {
         });
     }
 
+    private void initialiseEndGameScreen() {
+        endGameScreen = new EndGameScreen();
+    }
+
     @Override
     public void render () {
         float delta = Gdx.graphics.getDeltaTime();
@@ -92,6 +103,7 @@ public class TowerDefenceGame extends ApplicationAdapter {
         towerDefenceScreen.render(delta);
         welcomeScreen.render(delta);
         pauseScreen.render(delta);
+        endGameScreen.render(delta);
     }
 
     @Override

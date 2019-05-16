@@ -31,6 +31,8 @@ public class TowerDefenceStage extends Stage {
     private Set<Tower> towers;
     private Set<Enemy> enemies;
 
+    private Runnable endGameTask;
+
     public TowerDefenceStage(Viewport viewport, int mapWidth, int mapHeight) {
         super(viewport);
         this.mapWidth = mapWidth;
@@ -43,9 +45,18 @@ public class TowerDefenceStage extends Stage {
         addAction(spawner);
     }
 
+    public void setEndGameTask(Runnable endGameTask) {
+        this.endGameTask = endGameTask;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (getEndpointHealth() <= 0) {
+            if (endGameTask != null) {
+                endGameTask.run();
+            }
+        }
     }
 
     public int getScore() {
