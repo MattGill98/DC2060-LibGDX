@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static uk.ac.aston.dc2060.TowerDefenceGame.*;
 
 /**
  * A class modelling an enemy.
@@ -38,8 +39,8 @@ public abstract class Enemy extends DrawableActor implements Disposable {
      * @param speed   the number of tiles per second the enemy should move.
      * @param enemyValue   the amount to remove from the endpoint health when this enemy completes it's route.
      */
-    Enemy(TiledMapTileSets tileSet, TileID tileID, float speed, int enemyValue) {
-        this.texture = tileSet.getTile(tileID.getID()).getTextureRegion();
+    Enemy(TileID tileID, float speed, int enemyValue) {
+        this.texture = TILE_MAP.getTileSets().getTile(tileID.getID()).getTextureRegion();
         this.speed = speed;
         this.enemyValue = enemyValue;
         this.healthBar = new HealthBar();

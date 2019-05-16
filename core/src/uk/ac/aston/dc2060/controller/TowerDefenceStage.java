@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uk.ac.aston.dc2060.TowerDefenceGame;
 import uk.ac.aston.dc2060.controller.actions.TimedAction;
+import uk.ac.aston.dc2060.controller.spawner.EnemySpawner;
 import uk.ac.aston.dc2060.model.TileID;
 import uk.ac.aston.dc2060.model.enemy.BasicEnemy;
 import uk.ac.aston.dc2060.model.enemy.Enemy;
@@ -27,6 +28,7 @@ public class TowerDefenceStage extends Stage {
     private int score;
     private int round;
 
+    private EnemySpawner spawner;
     private Set<Enemy> enemies;
 
     public TowerDefenceStage(Viewport viewport, int mapWidth, int mapHeight) {
@@ -36,7 +38,8 @@ public class TowerDefenceStage extends Stage {
         this.enemies = new HashSet<>();
         this.endpointHealth = 20;
         this.round = 1;
-        addAction(new TimedAction(2000, true, this::spawnEnemy));
+        this.spawner = new EnemySpawner(this);
+        addAction(spawner);
     }
 
     @Override
@@ -77,10 +80,6 @@ public class TowerDefenceStage extends Stage {
             enemies.add((Enemy) actor);
         }
         super.addActor(actor);
-    }
-
-    private void spawnEnemy() {
-        addActor(new BasicEnemy(TowerDefenceGame.TILE_MAP.getTileSets()));
     }
 
     /**

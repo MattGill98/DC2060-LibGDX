@@ -6,8 +6,8 @@ import uk.ac.aston.dc2060.model.TileID;
 
 public class HeavyEnemy extends Enemy {
 
-    public HeavyEnemy(TiledMapTileSets tileSet) {
-        super(tileSet, TileID.HEAVY_SOLDIER, 1, 3);
+    public HeavyEnemy() {
+        super(TileID.HEAVY_SOLDIER, 1, 3);
     }
 
     @Override
