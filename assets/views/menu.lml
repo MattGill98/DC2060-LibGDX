@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE SYSTEM "lml.dtd">
+
+<table onecolumn="true" fillparent="true">
+    <animation width="600" height="338" src="logo.gif" />
+    <button onclick="setView" id="game">@playButton</button>
+    <button onclick="exit">@exitButton</button>
+</table>
