@@ -23,7 +23,7 @@ configure(subprojects) {
 
 subprojects {
   version = '1.0-SNAPSHOT'
-  ext.appName = 'test-gdx-project'
+  ext.appName = 'tower-defence-game'
   repositories {
     mavenLocal()
     mavenCentral()

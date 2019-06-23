@@ -2,7 +2,28 @@
 <!DOCTYPE :noop SYSTEM "lml.dtd">
 
 <:noop>
-    <window id="pauseWindow" visible="false" title="@pauseTitle" linealignment="center">
-        <button onclick="quitGame">@exitButton</button>
-    </window>
+    <!-- Round Text -->
+    <container transform="true" scale="0.007" x="16" y="11.6">
+        <label>@round</label>
+    </container>
+    <!-- TODO: Properly center text -->
+    <container transform="true" scale="0.007" x="16.35" y="11">
+        <label id="round" />
+    </container>
+
+    <!-- Score Text -->
+    <container transform="true" scale="0.007" x="16" y="10.6">
+        <label>@score</label>
+    </container>
+    <container transform="true" scale="0.007" x="16.35" y="10">
+        <label id="score" />
+    </container>
+
+    <!-- Lives Text -->
+    <container transform="true" scale="0.007" x="16" y="9.6">
+        <label>@lives</label>
+    </container>
+    <container transform="true" scale="0.007" x="16.35" y="9">
+        <label id="lives" />
+    </container>
 </:noop>

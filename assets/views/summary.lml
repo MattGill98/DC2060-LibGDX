@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE :noop SYSTEM "lml.dtd">
+
+<:noop>
+    <window title="@summaryTitle" linealignment="center">
+        <verticalgroup>
+            <label id="score">@finalScore</label>
+            <button onclick="quitGame">@exitButton</button>
+        </verticalgroup>
+    </window>
+</:noop>
