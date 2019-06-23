@@ -1,10 +1,8 @@
 package uk.me.mattgill.gdx;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.github.czyzby.kiwi.util.gdx.GdxUtilities;
@@ -13,16 +11,16 @@ import com.github.czyzby.lml.util.Lml;
 import com.github.czyzby.lml.util.LmlApplicationListener;
 import uk.me.mattgill.gdx.view.GameLmlView;
 import uk.me.mattgill.gdx.view.MenuLmlView;
-import uk.me.mattgill.gdx.view.PauseLmlView;
 import uk.me.mattgill.gdx.view.ViewActions;
 import uk.me.mattgill.gdx.view.attributes.SrcAttribute;
-import uk.me.mattgill.gdx.view.tags.AnimationTag;
 import uk.me.mattgill.gdx.view.tags.AnimationTagProvider;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class GdxApplication extends LmlApplicationListener {
 
     private final ViewActions viewActions;
+
+    private GameLmlView gameView;
 
     public GdxApplication() {
         this.viewActions = new ViewActions(this);
@@ -34,10 +32,10 @@ public class GdxApplication extends LmlApplicationListener {
         super.create();
 
         // Initialise views
-        initiateView(new GameLmlView(viewActions));
+        this.gameView = new GameLmlView();
+        initiateView(this.gameView);
         addClassAlias("menu", MenuLmlView.class);
         addClassAlias("game", GameLmlView.class);
-        addClassAlias("pause", PauseLmlView.class);
         setView(MenuLmlView.class);
     }
 
@@ -62,6 +60,16 @@ public class GdxApplication extends LmlApplicationListener {
                 .tag(new AnimationTagProvider(), "animation")
                 .attribute(new SrcAttribute(), "src")
                 .actions("viewActions", viewActions)
+                .action("quitGame", actor -> {
+                    setView(MenuLmlView.class, new Action() {
+                        @Override
+                        public boolean act(float delta) {
+                            gameView.clear();
+                            return true;
+                        }
+                    });
+                    return null;
+                })
                 .build();
     }
 }

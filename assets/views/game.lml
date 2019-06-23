@@ -2,7 +2,7 @@
 <!DOCTYPE :noop SYSTEM "lml.dtd">
 
 <:noop>
-    <window>
-        Hello World!
+    <window id="pauseWindow" visible="false" title="@pauseTitle" linealignment="center">
+        <button onclick="quitGame">@exitButton</button>
     </window>
 </:noop>

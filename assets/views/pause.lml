@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE :noop SYSTEM "lml.dtd">
-
-<:noop>
-    <window title="@pauseTitle" linealignment="center">
-        <button onclick="setView" id="menu">@exitButton</button>
-    </window>
-</:noop>
