@@ -24,21 +24,28 @@ public class TowerManager extends Group {
         // Configure tower icon
         Tower towerIcon = Tower.createTower(towerType, tileSet, x, y);
         towerIcon.addListener(new ClickListener(0) {
+
+            private boolean dragged;
+
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 super.touchDragged(event, x, y, pointer);
                 Vector2 worldCoords = new Vector2(event.getStageX(), event.getStageY());
-                moveToNearestAvailableTile(worldCoords);
+                moveDraggedTowerToNearestAvailableTile(worldCoords);
+                dragged = true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
-                Tower tower = Tower.createTower(towerType, tileSet, (int) draggedTower.getX(), (int) draggedTower.getY());
-                tower.enable();
-                gameStage.addActor(tower);
-                draggedTower.setX(towerIcon.getX());
-                draggedTower.setY(towerIcon.getY());
+                if (dragged) {
+                    Tower tower = Tower.createTower(towerType, tileSet, (int) draggedTower.getX(), (int) draggedTower.getY());
+                    tower.enable();
+                    gameStage.addActor(tower);
+                    draggedTower.setX(towerIcon.getX());
+                    draggedTower.setY(towerIcon.getY());
+                    dragged = false;
+                }
             }
         });
         addActor(towerIcon);
@@ -50,7 +57,7 @@ public class TowerManager extends Group {
      *
      * @param worldCoords the point to move the tower close to.
      */
-    private void moveToNearestAvailableTile(Vector2 worldCoords) {
+    private void moveDraggedTowerToNearestAvailableTile(Vector2 worldCoords) {
         if (draggedTower != null && worldCoords != null) {
             worldCoords.x = (int) worldCoords.x;
             worldCoords.y = (int) worldCoords.y;
