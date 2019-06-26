@@ -1,7 +1,11 @@
 package uk.aston.dc2060.model.tower;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import uk.aston.dc2060.model.enemy.Enemy;
 import uk.aston.dc2060.model.tiles.TileID;
 import uk.aston.dc2060.model.tower.components.TowerBase;
@@ -28,6 +32,22 @@ public abstract class Tower extends Group {
 
     void enable() {
         addAction(new TowerStrategy(this));
+        addCaptureListener(new ClickListener(0) {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("clicked");
+                setColor(1, 1, 1, 0.8f);
+            }
+        });
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        Color color = getColor();
+        Color batchColor = batch.getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        super.draw(batch, parentAlpha);
+        batch.setColor(batchColor);
     }
 
     public void shoot(Enemy enemy) {
