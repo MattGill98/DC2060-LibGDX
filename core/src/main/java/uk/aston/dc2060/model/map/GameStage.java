@@ -11,21 +11,25 @@ import uk.aston.dc2060.controller.enemy.EnemySpawner;
 import uk.aston.dc2060.model.tiles.TileID;
 import uk.aston.dc2060.model.tower.Tower;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class GameStage extends Stage {
 
     private final TiledMap tiledMap;
 
-    private final EnemySpawner enemySpawner;
-
+    private final AtomicInteger round;
     private int score;
     private int lives;
+
+    private final EnemySpawner enemySpawner;
 
     public GameStage(TiledMap tiledMap, int worldWidth, int worldHeight) {
         super(new FitViewport(worldWidth, worldHeight));
         this.tiledMap = tiledMap;
-        this.enemySpawner = new EnemySpawner(tiledMap.getTileSets(), this::addActor);
         this.lives = 20;
         this.score = 0;
+        this.round = new AtomicInteger(1);
+        this.enemySpawner = new EnemySpawner(tiledMap.getTileSets(), round, this::addActor);
         addAction(enemySpawner);
     }
 
@@ -42,7 +46,7 @@ public class GameStage extends Stage {
     }
 
     public int getRound() {
-        return enemySpawner.getRound();
+        return round.get();
     }
 
     public int getLives() {

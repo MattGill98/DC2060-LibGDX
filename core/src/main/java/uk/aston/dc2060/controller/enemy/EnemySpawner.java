@@ -7,34 +7,36 @@ import uk.aston.dc2060.model.enemy.HeavyEnemy;
 import uk.aston.dc2060.model.enemy.SimpleEnemy;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class EnemySpawner extends TimedAction {
 
-    private final Consumer<Actor> addActorFunction;
+    private final Random random;
 
     private final TiledMapTileSets tileSet;
 
-    private final Random random;
+    private final Consumer<Actor> addActorFunction;
 
-    private int round;
+    private final AtomicInteger round;
 
-    public EnemySpawner(TiledMapTileSets tileSet, Consumer<Actor> addActorFunction) {
+    public EnemySpawner(TiledMapTileSets tileSet, AtomicInteger round, Consumer<Actor> addActorFunction) {
         super(2);
+        this.random = new Random();
         this.tileSet = tileSet;
         this.addActorFunction = addActorFunction;
-        this.random = new Random();
-        this.round = 1;
+        this.round = round;
     }
 
     @Override
     public boolean act() {
         // Random amount of time for next spawn
         float variation = (random.nextFloat() / 2f) - 1;
-        this.deltaLimit = 1000 * Math.max(2f + variation - (0.1f * round), 0.1f);
+        this.deltaLimit = 1000 * Math.max(2f + variation - (0.1f * round.get()), 0.1f);
 
         float randomEnemy = (float) Math.random();
-        if (randomEnemy < round * 0.1) {
+        if (randomEnemy < round.get() * 0.1) {
             addActorFunction.accept(new HeavyEnemy(tileSet));
         } else {
             addActorFunction.accept(new SimpleEnemy(tileSet));
@@ -42,11 +44,7 @@ public class EnemySpawner extends TimedAction {
         return false;
     }
 
-    public int getRound() {
-        return round;
-    }
+    public void spawnEnemy() {
 
-    public void setRound(int round) {
-        this.round = round;
     }
 }
