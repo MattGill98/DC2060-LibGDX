@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 
 public class SummaryLmlView extends CustomLmlView {
 
+    public static final String ID = "summary";
+
     private final Supplier<Integer> scoreSupplier;
 
     @LmlActor("score")
@@ -19,7 +21,7 @@ public class SummaryLmlView extends CustomLmlView {
     }
 
     public SummaryLmlView(Supplier<Integer> scoreSupplier) {
-        super("summary");
+        super(ID);
         this.scoreSupplier = scoreSupplier;
     }
 }

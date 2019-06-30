@@ -16,8 +16,6 @@ import uk.aston.dc2060.view.tags.AnimationTagProvider;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class GdxApplication extends LmlApplicationListener {
 
-    public static Skin SKIN;
-
     private final ViewActions viewActions;
 
     public GdxApplication() {
@@ -34,10 +32,6 @@ public class GdxApplication extends LmlApplicationListener {
         initiateView(gameLmlView);
         initiateView(new PauseLmlView(viewActions));
         initiateView(new SummaryLmlView(() -> gameLmlView.getStage().getScore()));
-        addClassAlias("menu", MenuLmlView.class);
-        addClassAlias("game", GameLmlView.class);
-        addClassAlias("pause", PauseLmlView.class);
-        addClassAlias("summary", SummaryLmlView.class);
         setView(MenuLmlView.class);
     }
 
@@ -63,12 +57,12 @@ public class GdxApplication extends LmlApplicationListener {
     @Override
     protected LmlParser createParser() {
         // Initialise GUI theme
-        SKIN = new Skin(new TextureAtlas(Gdx.files.internal("theme/packed/theme.atlas")));
-        SKIN.load(Gdx.files.internal("theme/Holo-dark-xhdpi.json"));
+        Skin skin = new Skin(new TextureAtlas(Gdx.files.internal("theme/packed/theme.atlas")));
+        skin.load(Gdx.files.internal("theme/Holo-dark-xhdpi.json"));
 
         return Lml
                 .parser()
-                .skin(SKIN)
+                .skin(skin)
                 .i18nBundle(I18NBundle.createBundle(Gdx.files.internal("i18n/bundle")))
                 .tag(new AnimationTagProvider(), "animation")
                 .attribute(new SrcAttribute(), "src")

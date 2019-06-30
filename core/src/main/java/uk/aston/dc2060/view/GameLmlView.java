@@ -20,6 +20,8 @@ import uk.aston.dc2060.model.tower.TowerManager;
 
 public class GameLmlView extends CustomLmlView {
 
+    public static final String ID = "game";
+
     private final OrthogonalTiledMapRenderer tiledMapRenderer;
 
     @LmlActor("score")
@@ -49,7 +51,7 @@ public class GameLmlView extends CustomLmlView {
     }
 
     public GameLmlView(ViewActions viewActions) {
-        super("game", new GameStage(new TmxMapLoader().load("level/tilemap.tmx"), 17, 12));
+        super(ID, new GameStage(new TmxMapLoader().load("level/tilemap.tmx"), 17, 12));
 
         // Configure pause button
         getStage().addListener(new InputListener() {

@@ -6,8 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class PauseLmlView extends CustomLmlView {
 
+    public static final String ID = "pause";
+
     public PauseLmlView(ViewActions viewActions) {
-        super("pause");
+        super(ID);
         getStage().addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
