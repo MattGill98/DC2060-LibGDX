@@ -21,8 +21,9 @@ public class TowerTurret extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        Color parentColor = getParent().getColor();
         Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+        batch.setColor(parentColor.r * color.r, parentColor.g * color.g, parentColor.b * color.b, color.a * parentAlpha);
         batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), 1, 1, getScaleX(), getScaleY(), getRotation());
     }
 }

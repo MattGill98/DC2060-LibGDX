@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.github.czyzby.lml.annotation.LmlActor;
 import com.github.czyzby.lml.annotation.LmlAfter;
 import uk.aston.dc2060.controller.UpdateAction;
-import uk.aston.dc2060.model.map.GameStage;
+import uk.aston.dc2060.model.stage.GameStage;
 import uk.aston.dc2060.model.tower.DoubleTurret;
 import uk.aston.dc2060.model.tower.SingleTurret;
 import uk.aston.dc2060.model.tower.TowerManager;
@@ -62,7 +62,7 @@ public class GameLmlView extends CustomLmlView {
             }
         });
 
-        // Configure map rendering
+        // Configure stage rendering
         OrthographicCamera mapCamera = new OrthographicCamera();
         mapCamera.setToOrtho(false, 17, 12);
         mapCamera.update();

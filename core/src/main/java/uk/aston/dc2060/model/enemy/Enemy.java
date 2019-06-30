@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import uk.aston.dc2060.controller.enemy.RemoveWhenDeadAction;
 import uk.aston.dc2060.model.health.HealthBar;
-import uk.aston.dc2060.model.map.GameStage;
+import uk.aston.dc2060.model.stage.GameStage;
 import uk.aston.dc2060.model.tiles.TileID;
 
 import java.util.ArrayList;

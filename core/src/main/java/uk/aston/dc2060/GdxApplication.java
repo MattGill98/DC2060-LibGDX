@@ -3,7 +3,6 @@ package uk.aston.dc2060;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.github.czyzby.lml.parser.LmlParser;
@@ -17,9 +16,9 @@ import uk.aston.dc2060.view.tags.AnimationTagProvider;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class GdxApplication extends LmlApplicationListener {
 
-    private final ViewActions viewActions;
+    public static Skin SKIN;
 
-    private TiledMapTileSets tileSet;
+    private final ViewActions viewActions;
 
     public GdxApplication() {
         this.viewActions = new ViewActions(this);
@@ -32,7 +31,6 @@ public class GdxApplication extends LmlApplicationListener {
 
         // Initialise views
         GameLmlView gameLmlView = new GameLmlView(viewActions);
-        this.tileSet = gameLmlView.getStage().getTiledMap().getTileSets();
         initiateView(gameLmlView);
         initiateView(new PauseLmlView(viewActions));
         initiateView(new SummaryLmlView(() -> gameLmlView.getStage().getScore()));
@@ -65,12 +63,12 @@ public class GdxApplication extends LmlApplicationListener {
     @Override
     protected LmlParser createParser() {
         // Initialise GUI theme
-        Skin skin = new Skin(new TextureAtlas(Gdx.files.internal("theme/packed/theme.atlas")));
-        skin.load(Gdx.files.internal("theme/Holo-dark-xhdpi.json"));
+        SKIN = new Skin(new TextureAtlas(Gdx.files.internal("theme/packed/theme.atlas")));
+        SKIN.load(Gdx.files.internal("theme/Holo-dark-xhdpi.json"));
 
         return Lml
                 .parser()
-                .skin(skin)
+                .skin(SKIN)
                 .i18nBundle(I18NBundle.createBundle(Gdx.files.internal("i18n/bundle")))
                 .tag(new AnimationTagProvider(), "animation")
                 .attribute(new SrcAttribute(), "src")

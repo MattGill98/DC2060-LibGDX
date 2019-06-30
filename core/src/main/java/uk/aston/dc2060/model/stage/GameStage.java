@@ -1,4 +1,4 @@
-package uk.aston.dc2060.model.map;
+package uk.aston.dc2060.model.stage;
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -34,7 +34,7 @@ public class GameStage extends Stage {
         super(new FitViewport(worldWidth, worldHeight));
         this.tiledMap = tiledMap;
         this.lives = 20;
-        this.score = 0;
+        this.score = 10;
         this.round = 1;
         roundTask = () -> addAction(
                 Actions.sequence(
@@ -92,7 +92,7 @@ public class GameStage extends Stage {
     }
 
     /**
-     * Bounds a 2D vector to a point inside the map.
+     * Bounds a 2D vector to a point inside the stage.
      *
      * @param worldCoords the world coordinates to bound.
      * @return the bound coordinates.
@@ -105,7 +105,7 @@ public class GameStage extends Stage {
     }
 
     /**
-     * Bounds a 2D vector to a point inside the map, and then verifies if the tower can be placed on that tile.
+     * Bounds a 2D vector to a point inside the stage, and then verifies if the tower can be placed on that tile.
      *
      * @param worldCoords the world coordinates to bound.
      * @return the bound coordinates.

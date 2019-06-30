@@ -13,8 +13,12 @@ public class DoubleTurret extends Tower {
 
     private boolean isRightNext;
 
-    DoubleTurret(TiledMapTileSets tileSet, int x, int y) {
-        super(x, y, tileSet, TileID.DOUBLE_TURRET, 5, 0.25f, 500);
+    public DoubleTurret(TiledMapTileSets tileSet, int x, int y) {
+        this(tileSet, x, y, 20);
+    }
+
+    DoubleTurret(TiledMapTileSets tileSet, int x, int y, int cost) {
+        super(tileSet, TileID.DOUBLE_TURRET, x, y, 5, 0.25f, 500, cost);
         this.leftGunfire = new TowerGunfire(tileSet, TileID.SINGLE_TURRET_GUNFIRE, -0.1f);
         this.rightGunfire = new TowerGunfire(tileSet, TileID.SINGLE_TURRET_GUNFIRE, 0.1f);
         leftGunfire.setVisible(false);

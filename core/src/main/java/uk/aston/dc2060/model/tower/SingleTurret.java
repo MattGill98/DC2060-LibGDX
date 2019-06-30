@@ -10,8 +10,12 @@ public class SingleTurret extends Tower {
 
     private final TowerGunfire gunfire;
 
-    SingleTurret(TiledMapTileSets tileSet, int x, int y) {
-        super(x, y, tileSet, TileID.SINGLE_TURRET, 10, 0.25f, 1000);
+    public SingleTurret(TiledMapTileSets tileSet, int x, int y) {
+        this(tileSet, x, y, 10);
+    }
+
+    SingleTurret(TiledMapTileSets tileSet, int x, int y, int cost) {
+        super(tileSet, TileID.SINGLE_TURRET, x, y, 10, 0.25f, 1000, cost);
         this.gunfire = new TowerGunfire(tileSet, TileID.SINGLE_TURRET_GUNFIRE);
         gunfire.setVisible(false);
         addActor(gunfire);

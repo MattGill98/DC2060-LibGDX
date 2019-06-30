@@ -12,7 +12,7 @@ public class ContextMenu {
 
     private Tower target;
 
-    public ContextMenu(Actor contextMenu, Actor deleteButton) {
+    ContextMenu(Actor contextMenu, Actor deleteButton) {
         this.contextMenu = contextMenu;
         this.deleteButton = deleteButton;
         configureActions();
