@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import uk.aston.dc2060.model.stage.GameStage;
 import uk.aston.dc2060.model.tower.Tower;
 
+/**
+ * Action to check if a tower is affordable, and shade it red if it's not.
+ */
 public class TowerAffordableAction extends Action {
 
     @Override

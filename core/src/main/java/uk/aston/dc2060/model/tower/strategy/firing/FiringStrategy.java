@@ -4,6 +4,9 @@ import uk.aston.dc2060.controller.TimedAction;
 import uk.aston.dc2060.model.enemy.Enemy;
 import uk.aston.dc2060.model.tower.Tower;
 
+/**
+ * The action used to shoot an enemy.
+ */
 public class FiringStrategy extends TimedAction {
 
     private final Tower tower;

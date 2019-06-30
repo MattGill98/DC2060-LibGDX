@@ -7,6 +7,9 @@ import uk.aston.dc2060.model.tower.strategy.aiming.AimingStrategy;
 import uk.aston.dc2060.model.tower.strategy.aiming.NearestAimingStrategy;
 import uk.aston.dc2060.model.tower.strategy.firing.FiringStrategy;
 
+/**
+ * The action that a tower uses.
+ */
 public class TowerStrategy extends Action {
 
     private final AimingStrategy aimingStrategy;

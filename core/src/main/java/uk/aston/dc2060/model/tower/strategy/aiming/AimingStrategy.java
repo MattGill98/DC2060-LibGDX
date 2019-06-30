@@ -4,6 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import uk.aston.dc2060.model.enemy.Enemy;
 import uk.aston.dc2060.model.tower.Tower;
 
+/**
+ * The action used to aim at an enemy.
+ */
 public abstract class AimingStrategy extends Action {
 
     final Tower tower;

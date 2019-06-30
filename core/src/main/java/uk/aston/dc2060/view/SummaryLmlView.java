@@ -6,6 +6,9 @@ import com.github.czyzby.lml.annotation.LmlAfter;
 
 import java.util.function.Supplier;
 
+/**
+ * The screen used to show the end of game summary screen.
+ */
 public class SummaryLmlView extends CustomLmlView {
 
     public static final String ID = "summary";

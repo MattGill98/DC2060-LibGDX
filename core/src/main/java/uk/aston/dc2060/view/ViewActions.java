@@ -5,6 +5,9 @@ import com.github.czyzby.lml.annotation.LmlAction;
 import com.github.czyzby.lml.parser.action.ActionContainer;
 import uk.aston.dc2060.GdxApplication;
 
+/**
+ * Actions that can be used by any screen.
+ */
 public class ViewActions implements ActionContainer {
 
     private final GdxApplication app;

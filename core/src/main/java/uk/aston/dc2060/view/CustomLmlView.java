@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.lml.parser.impl.AbstractLmlView;
 
+/**
+ * A custom screen.
+ */
 public class CustomLmlView extends AbstractLmlView {
 
     private String viewId;

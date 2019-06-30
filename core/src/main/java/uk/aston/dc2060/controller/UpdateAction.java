@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import java.util.function.Supplier;
 
+/**
+ * An action used to update a Label with a certain value.
+ */
 public class UpdateAction extends Action {
 
     private final Supplier<Object> supplier;

@@ -4,6 +4,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
+/**
+ * The screen used to show the pause screen.
+ */
 public class PauseLmlView extends CustomLmlView {
 
     public static final String ID = "pause";

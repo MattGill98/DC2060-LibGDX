@@ -9,6 +9,9 @@ import uk.aston.dc2060.model.tower.Tower;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Listener to drag and drop towers.
+ */
 public class TowerDragListener extends ClickListener {
 
     private final GameStage gameStage;

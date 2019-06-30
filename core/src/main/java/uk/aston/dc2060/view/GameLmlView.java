@@ -18,6 +18,9 @@ import uk.aston.dc2060.model.tower.DoubleTurret;
 import uk.aston.dc2060.model.tower.SingleTurret;
 import uk.aston.dc2060.model.tower.TowerManager;
 
+/**
+ * The screen used to show the game.
+ */
 public class GameLmlView extends CustomLmlView {
 
     public static final String ID = "game";

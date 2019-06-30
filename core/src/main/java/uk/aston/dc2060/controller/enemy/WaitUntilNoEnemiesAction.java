@@ -7,6 +7,9 @@ import uk.aston.dc2060.model.enemy.Enemy;
 
 import java.util.Iterator;
 
+/**
+ * An action used to wait until all enemies have been removed from the map. Used at the end of each round.
+ */
 public class WaitUntilNoEnemiesAction extends Action {
 
     private final Array<Actor> actors;

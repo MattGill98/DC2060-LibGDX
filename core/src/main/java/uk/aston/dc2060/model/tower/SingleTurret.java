@@ -6,6 +6,9 @@ import uk.aston.dc2060.model.enemy.Enemy;
 import uk.aston.dc2060.model.tiles.TileID;
 import uk.aston.dc2060.model.tower.components.TowerGunfire;
 
+/**
+ * The basic turret type.
+ */
 public class SingleTurret extends Tower {
 
     private static final float MAX_RANGE = 10;

@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import uk.aston.dc2060.controller.enemy.RemoveWhenDeadAction;
-import uk.aston.dc2060.model.health.HealthBar;
+import uk.aston.dc2060.model.enemy.health.HealthBar;
 import uk.aston.dc2060.model.stage.GameStage;
 import uk.aston.dc2060.model.tiles.TileID;
 
@@ -59,7 +59,7 @@ public abstract class Enemy extends Group {
     }
 
     public boolean isDead() {
-        return healthBar.getHealth() < 0.001f;
+        return healthBar.getHealth() < 0.01f;
     }
 
     @Override

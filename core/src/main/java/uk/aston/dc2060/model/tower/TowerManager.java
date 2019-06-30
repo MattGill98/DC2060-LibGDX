@@ -12,6 +12,9 @@ import uk.aston.dc2060.controller.tower.TowerAffordableAction;
 import uk.aston.dc2060.controller.tower.TowerDragListener;
 import uk.aston.dc2060.model.stage.GameStage;
 
+/**
+ * A class used to manage a tower icon and draggable tower and enable placed towers.
+ */
 public class TowerManager extends Group {
 
     public <T extends Tower> TowerManager(GameStage gameStage, Class<T> towerType, TiledMapTileSets tileSet, int x, int y) {

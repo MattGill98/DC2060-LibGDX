@@ -14,6 +14,17 @@ public class SimpleEnemy extends Enemy {
      * @param tileSet the tileset to fetch the enemy texture from.
      */
     public SimpleEnemy(TiledMapTileSets tileSet) {
-        super(tileSet, TileID.SOLDIER, SPEED, HEALTH);
+        this(tileSet, 1f, 1f);
+    }
+
+    /**
+     * Create a basic enemy.
+     *
+     * @param tileSet          the tileset to fetch the enemy texture from.
+     * @param speedMultiplier  the multiplier for the standard speed.
+     * @param healthMultiplier the multiplier for the standard health.
+     */
+    public SimpleEnemy(TiledMapTileSets tileSet, float speedMultiplier, float healthMultiplier) {
+        super(tileSet, TileID.SOLDIER, SPEED * speedMultiplier, HEALTH * healthMultiplier);
     }
 }

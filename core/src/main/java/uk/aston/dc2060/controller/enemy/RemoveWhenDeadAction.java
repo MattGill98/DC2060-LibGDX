@@ -3,6 +3,9 @@ package uk.aston.dc2060.controller.enemy;
 import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
 import uk.aston.dc2060.model.enemy.Enemy;
 
+/**
+ * An action used to remove an enemy when it is dead.
+ */
 public class RemoveWhenDeadAction extends RemoveActorAction {
 
     public RemoveWhenDeadAction(Enemy enemy) {

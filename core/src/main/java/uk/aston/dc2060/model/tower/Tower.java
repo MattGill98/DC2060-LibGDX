@@ -12,6 +12,9 @@ import uk.aston.dc2060.model.tower.strategy.TowerStrategy;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * The generic class for all towers.
+ */
 public abstract class Tower extends Group {
 
     private final TowerTurret turret;

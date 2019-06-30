@@ -6,6 +6,9 @@ import uk.aston.dc2060.model.enemy.Enemy;
 import uk.aston.dc2060.model.tiles.TileID;
 import uk.aston.dc2060.model.tower.components.TowerGunfire;
 
+/**
+ * A turret that is more powerful but costs more.
+ */
 public class DoubleTurret extends Tower {
 
     private static final float MAX_RANGE = 5;

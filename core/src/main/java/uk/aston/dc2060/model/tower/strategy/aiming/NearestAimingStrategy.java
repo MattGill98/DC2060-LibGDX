@@ -6,6 +6,9 @@ import com.badlogic.gdx.utils.Array;
 import uk.aston.dc2060.model.enemy.Enemy;
 import uk.aston.dc2060.model.tower.Tower;
 
+/**
+ * The action used to aim at the nearest enemy.
+ */
 public class NearestAimingStrategy extends AimingStrategy {
 
     public NearestAimingStrategy(Tower tower) {

@@ -7,6 +7,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import uk.aston.dc2060.model.tiles.TileID;
 
+/**
+ * The gunfire model of a tower.
+ */
 public class TowerGunfire extends Actor {
 
     private final TextureRegion texture;

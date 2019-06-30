@@ -18,6 +18,9 @@ import uk.aston.dc2060.view.ContextMenu;
 
 import java.util.Iterator;
 
+/**
+ * The stage representing the game.
+ */
 public class GameStage extends Stage {
 
     private final TiledMap tiledMap;

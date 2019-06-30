@@ -1,4 +1,4 @@
-package uk.aston.dc2060.model.health;
+package uk.aston.dc2060.model.enemy.health;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * A model representing the health of an enemy.
+ */
 public class HealthBar extends Actor {
 
     private final Texture lowHealthTexture;

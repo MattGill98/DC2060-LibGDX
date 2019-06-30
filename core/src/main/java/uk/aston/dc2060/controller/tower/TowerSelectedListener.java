@@ -5,6 +5,9 @@ import uk.aston.dc2060.controller.SelectedListener;
 import uk.aston.dc2060.model.tower.Tower;
 import uk.aston.dc2060.view.ContextMenu;
 
+/**
+ * Listener to allow selecting a tower.
+ */
 public class TowerSelectedListener extends SelectedListener<Tower> {
 
     private final ContextMenu contextMenu;

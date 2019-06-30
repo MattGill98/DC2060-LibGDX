@@ -5,6 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import uk.aston.dc2060.model.tower.Tower;
 
+/**
+ * The context menu showing what you can do with a tower.
+ */
 public class ContextMenu {
 
     private Actor contextMenu;
