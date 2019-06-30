@@ -8,14 +8,19 @@ import uk.aston.dc2060.model.tower.components.TowerGunfire;
 
 public class SingleTurret extends Tower {
 
+    private static final float MAX_RANGE = 10;
+    private static final float DAMAGE = 1f;
+    private static final int FIRE_RATE = 800;
+    private static final int DEFAULT_COST = 10;
+
     private final TowerGunfire gunfire;
 
-    public SingleTurret(TiledMapTileSets tileSet, int x, int y) {
-        this(tileSet, x, y, 10);
+    SingleTurret(TiledMapTileSets tileSet, int x, int y) {
+        this(tileSet, x, y, DEFAULT_COST);
     }
 
     SingleTurret(TiledMapTileSets tileSet, int x, int y, int cost) {
-        super(tileSet, TileID.SINGLE_TURRET, x, y, 10, 0.25f, 1000, cost);
+        super(tileSet, TileID.SINGLE_TURRET, x, y, MAX_RANGE, DAMAGE, FIRE_RATE, cost);
         this.gunfire = new TowerGunfire(tileSet, TileID.SINGLE_TURRET_GUNFIRE);
         gunfire.setVisible(false);
         addActor(gunfire);

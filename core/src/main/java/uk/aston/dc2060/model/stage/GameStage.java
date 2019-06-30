@@ -40,8 +40,8 @@ public class GameStage extends Stage {
                 Actions.sequence(
                         // Wait 3 seconds
                         Actions.delay(3),
-                        // Spawn enemies for 30 seconds
-                        new EnemySpawner(tiledMap.getTileSets(), round, 30000, this::addActor),
+                        // Spawn enemies for 20 seconds
+                        new EnemySpawner(tiledMap.getTileSets(), round, 20000, this::addActor),
                         // Wait until the enemies disappear
                         new WaitUntilNoEnemiesAction(getActors()),
                         // Increment the round
