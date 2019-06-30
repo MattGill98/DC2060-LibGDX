@@ -29,7 +29,7 @@ public class EnemySpawner extends TimedAction {
         this.random = new Random();
         this.tileSet = tileSet;
         this.addActorFunction = addActorFunction;
-        this.round = round;
+        this.round = round + 1;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class EnemySpawner extends TimedAction {
         float variation = (random.nextFloat() / 2f) - 1;
 
         // Reconfigure the time to wait before spawning another enemy.
-        this.deltaLimit = 1000 * Math.max(0.1f, INITIAL_SPAWN_TIME + variation - (0.1f * round));
+        this.deltaLimit = Math.max(100, INITIAL_SPAWN_TIME + variation - (100 * round));
 
         spawnEnemy();
         return false;
@@ -46,13 +46,22 @@ public class EnemySpawner extends TimedAction {
 
     /**
      * Spawn an enemy. In round 1 there is a 0% chance of spawning heavy enemies. In subsequent rounds this chance will increase by 10%.
+     * The speed of the enemies scaled linearly with the round, and the health of them scales exponentially.
      */
     private void spawnEnemy() {
         float randomEnemy = (float) Math.random();
-        if (randomEnemy < (round - 1) * 0.1) {
-            addActorFunction.accept(new HeavyEnemy(tileSet));
-        } else {
+
+        if (round == 1) {
             addActorFunction.accept(new SimpleEnemy(tileSet));
+        } else {
+            float speedMultiplier = 1 + (0.08f * round);
+            float healthMultiplier = 1 + (0.01f * round * round);
+
+            if (randomEnemy < (round - 1) * 0.1) {
+                addActorFunction.accept(new HeavyEnemy(tileSet, speedMultiplier, healthMultiplier));
+            } else {
+                addActorFunction.accept(new SimpleEnemy(tileSet, speedMultiplier, healthMultiplier));
+            }
         }
     }
 }
