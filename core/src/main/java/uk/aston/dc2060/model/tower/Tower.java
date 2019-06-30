@@ -6,7 +6,6 @@ import uk.aston.dc2060.model.enemy.Enemy;
 import uk.aston.dc2060.model.tiles.TileID;
 import uk.aston.dc2060.model.tower.components.TowerBase;
 import uk.aston.dc2060.model.tower.components.TowerTurret;
-import uk.aston.dc2060.model.tower.strategy.TowerStrategy;
 
 public abstract class Tower extends Group {
 
@@ -24,10 +23,6 @@ public abstract class Tower extends Group {
         addActor(new TowerBase(tileSet, TileID.SINGLE_TURRET_BASE));
         turret = new TowerTurret(tileSet, turretTileID);
         addActor(turret);
-    }
-
-    void enable() {
-        addAction(new TowerStrategy(this));
     }
 
     public void shoot(Enemy enemy) {

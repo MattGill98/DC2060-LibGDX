@@ -6,9 +6,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.github.czyzby.lml.annotation.LmlActor;
 import com.github.czyzby.lml.annotation.LmlAfter;
 import uk.aston.dc2060.controller.UpdateAction;
@@ -30,12 +34,21 @@ public class GameLmlView extends CustomLmlView {
     @LmlActor("lives")
     private Label livesLabel;
 
+    @LmlActor("context_menu")
+    private Actor contextMenuContainer;
+
+    @LmlActor("delete_button")
+    private Actor deleteButton;
+
     @LmlAfter
     public void initialise() {
         GameStage stage = getStage();
         scoreLabel.addAction(new UpdateAction(() -> stage.getScore()));
         roundLabel.addAction(new UpdateAction(() -> stage.getRound()));
         livesLabel.addAction(new UpdateAction(() -> stage.getLives()));
+
+        // Configure the context menu
+        getStage().setContextMenu(new ContextMenu(contextMenuContainer, deleteButton));
     }
 
     public GameLmlView(ViewActions viewActions) {

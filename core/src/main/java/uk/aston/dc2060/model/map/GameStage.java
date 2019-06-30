@@ -8,17 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import uk.aston.dc2060.controller.enemy.EnemySpawner;
 import uk.aston.dc2060.controller.enemy.WaitUntilNoEnemiesAction;
 import uk.aston.dc2060.model.tiles.TileID;
 import uk.aston.dc2060.model.tower.Tower;
+import uk.aston.dc2060.view.ContextMenu;
 
 import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameStage extends Stage {
 
@@ -29,6 +27,8 @@ public class GameStage extends Stage {
     private int lives;
 
     private final Runnable roundTask;
+
+    private ContextMenu contextMenu;
 
     public GameStage(TiledMap tiledMap, int worldWidth, int worldHeight) {
         super(new FitViewport(worldWidth, worldHeight));
@@ -57,6 +57,14 @@ public class GameStage extends Stage {
                 )
         );
         roundTask.run();
+    }
+
+    public ContextMenu getContextMenu() {
+        return contextMenu;
+    }
+
+    public void setContextMenu(ContextMenu contextMenu) {
+        this.contextMenu = contextMenu;
     }
 
     public TiledMap getTiledMap() {

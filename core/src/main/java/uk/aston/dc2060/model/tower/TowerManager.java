@@ -5,7 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import uk.aston.dc2060.controller.tower.TowerSelectedListener;
 import uk.aston.dc2060.model.map.GameStage;
+import uk.aston.dc2060.model.tower.strategy.TowerStrategy;
 
 public class TowerManager extends Group {
 
@@ -40,8 +42,9 @@ public class TowerManager extends Group {
                 super.touchUp(event, x, y, pointer, button);
                 if (dragged) {
                     Tower tower = Tower.createTower(towerType, tileSet, (int) draggedTower.getX(), (int) draggedTower.getY());
-                    tower.enable();
                     gameStage.addActor(tower);
+                    tower.addAction(new TowerStrategy(tower));
+                    getStage().addListener(new TowerSelectedListener(tower, ((GameStage) getStage()).getContextMenu()));
                     draggedTower.setX(towerIcon.getX());
                     draggedTower.setY(towerIcon.getY());
                     dragged = false;

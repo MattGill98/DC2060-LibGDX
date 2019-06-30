@@ -26,4 +26,12 @@
     <container transform="true" scale="0.007" x="16.35" y="9">
         <label id="lives" />
     </container>
+
+    <!-- Context menu for towers -->
+    <container id="context_menu" x="16" y="6" visible="false">
+        <container id="delete_button" transform="true" width="1" height="1">
+            <image style="delete_icon" scaling="fill"/>
+        </container>
+    </container>
+
 </:noop>
